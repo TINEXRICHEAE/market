@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Payment Method - Marketplace</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .payment-selection-container {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .payment-selection-container h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .payment-selection-container > p {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .seller-group {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid #e0e0e0;
+        }
+
+        .seller-group h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-option:hover {
+            background: #f0f0f0;
+        }
+
+        .payment-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .payment-option label {
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .items-list {
+            margin: 1rem 0;
+            background: white;
+            border-radius: 5px;
+            padding: 1rem;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .item:last-child {
+            border-bottom: none;
+        }
+
+        .item span:first-child {
+            color: #333;
+        }
+
+        .item span:last-child {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .seller-total {
+            text-align: right;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #667eea;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 100%;
+            margin-top: 2rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #333;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s;
+            z-index: 10000;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.error {
+            background: #e74c3c;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .payment-selection-container {
+                padding: 1rem;
+            }
+
+            .seller-group {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% include "navbar_base.html" %}
+
+    <div class="container">
+        <div class="payment-selection-container">
+            <h1>💳 Select Payment Methods</h1>
+            <p>Choose how you'd like to pay for each seller's items</p>
+            
+            <form id="paymentSelectionForm">
+                {% csrf_token %}
+                
+                {% for seller_email, seller_data in grouped_items.items %}
+                <div class="seller-group">
+                    <h3>📦 {{ seller_email }}</h3>
+                    
+                    {% if seller_data.payment_options.online %}
+                    <div class="payment-option" onclick="selectRadio('online_{{ forloop.counter }}')">
+                        <input type="radio" 
+                               name="payment_{{ seller_email }}" 
+                               value="online" 
+                               id="online_{{ forloop.counter }}"
+                               checked>
+                        <label for="online_{{ forloop.counter }}">
+                            💳 Pay Online via Fair Cashier (Instant)
+                        </label>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="payment-option" onclick="selectRadio('cash_{{ forloop.counter }}')">
+                        <input type="radio" 
+                               name="payment_{{ seller_email }}" 
+                               value="cash" 
+                               id="cash_{{ forloop.counter }}"
+                               {% if not seller_data.payment_options.online %}checked{% endif %}>
+                        <label for="cash_{{ forloop.counter }}">
+                            💵 Cash on Delivery{% if not seller_data.payment_options.online %} (Only Available){% endif %}
+                        </label>
+                    </div>
+                    
+                    <!-- Items list -->
+                    <div class="items-list">
+                        {% for item in seller_data.items %}
+                        <div class="item">
+                            <span>{{ item.product.name }} (×{{ item.quantity }})</span>
+                            <span>${{ item.subtotal }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="seller-total">
+                        Total: ${{ seller_data.total }}
+                    </div>
+                </div>
+                {% endfor %}
+                
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    Continue to Payment
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="{% static 'js/navbar.js' %}"></script>
+    <script>
+        function selectRadio(id) {
+            document.getElementById(id).checked = true;
+        }
+
+        function showToast(message, type = 'error') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        
+
+        document.getElementById('paymentSelectionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Show loading
+            document.getElementById('loadingOverlay').classList.add('active');
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').textContent = 'Processing...';
+            
+            // Collect selections
+            const formData = new FormData(this);
+            const selections = {};
+            
+            for (let [key, value] of formData.entries()) {
+                if (key.startsWith('payment_')) {
+                    const seller = key.replace('payment_', '');
+                    selections[seller] = value;
+                }
+            }
+            
+            try {
+                // Submit to backend
+                const response = await fetch('/api/process-payment-selection/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: JSON.stringify({ selections })
+                });
+                
+                const data = await response.json();
+                
+                // Hide loading
+                document.getElementById('loadingOverlay').classList.remove('active');
+                
+                if (response.ok && data.success) {
+                    if (data.online_payment_required) {
+                        // Redirect to Fair Cashier iframe
+                        showToast('Redirecting to payment gateway...', 'success');
+                        setTimeout(() => {
+                            window.location.href = `/payment/process/${data.payment_request_id}/`;
+                        }, 500);
+                    } else {
+                        // All cash - proceed to order confirmation
+                        showToast('Order placed successfully!', 'success');
+                        setTimeout(() => {
+                            window.location.href = `/orders/${data.order_id}/`;
+                        }, 1000);
+                    }
+                } else {
+                    showToast(data.error || 'Failed to process payment selection', 'error');
+                    document.getElementById('submitBtn').disabled = false;
+                    document.getElementById('submitBtn').textContent = 'Continue to Payment';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('loadingOverlay').classList.remove('active');
+                showToast('Network error. Please try again.', 'error');
+                document.getElementById('submitBtn').disabled = false;
+                document.getElementById('submitBtn').textContent = 'Continue to Payment';
+            }
+        });
+    </script>
+</body>
+</html>

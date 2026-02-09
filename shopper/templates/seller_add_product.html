@@ -1,0 +1,435 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product - Seller Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .page-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .page-title {
+            font-size: 2rem;
+            color: #333;
+        }
+
+        .form-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-label.required::after {
+            content: " *";
+            color: #e74c3c;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .image-upload-section {
+            border: 2px dashed #e0e0e0;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .image-upload-section:hover {
+            border-color: #667eea;
+            background: #f8f9fa;
+        }
+
+        .image-preview {
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .image-preview.show {
+            display: block;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-upload {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .help-text {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #333;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            background: #27ae60;
+        }
+
+        .toast.error {
+            background: #e74c3c;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .loading.show {
+            display: block;
+        }
+    </style>
+    <!-- Navbar Styles -->
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
+    
+</head>
+<body>
+    <!-- Include Navbar -->
+    {% include "navbar_base.html" %}
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">➕ Add New Product</h1>
+        </div>
+
+        <div class="form-container">
+            <form id="productForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label required">Product Name</label>
+                        <input type="text" id="name" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required">Description</label>
+                        <textarea id="description" class="form-textarea" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required">Price ($)</label>
+                        <input type="number" id="price" class="form-input" step="0.01" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required">Stock Quantity</label>
+                        <input type="number" id="stock_quantity" class="form-input" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Category</label>
+                        <select id="category" class="form-select">
+                            <option value="">Select a category</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Product Image</label>
+                        <div class="image-upload-section" onclick="document.getElementById('imageFile').click()">
+                            <p>📸 Click to upload image</p>
+                            <p class="help-text">Max size: 5MB. Formats: JPG, PNG, GIF, WEBP</p>
+                        </div>
+                        <input type="file" id="imageFile" class="file-input" accept="image/*" onchange="previewImage(event)">
+                        
+                        <div id="imagePreview" class="image-preview">
+                            <img id="previewImg" class="preview-image" alt="Preview">
+                            <button type="button" class="btn btn-secondary" style="margin-top: 1rem;" onclick="clearImage()">Remove Image</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Or use Image URL</label>
+                        <input type="url" id="imageUrl" class="form-input" placeholder="https://example.com/image.jpg">
+                        <span class="help-text">Provide an external image URL if not uploading</span>
+                    </div>
+                </div>
+
+                <div id="loading" class="loading">
+                    <p>Creating product...</p>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Create Product</button>
+                    <a href="/seller/products/" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <!-- Navbar JavaScript -->
+    <script src="{% static 'js/navbar.js' %}"></script>
+    <!-- Page-specific JavaScript -->
+    <script>
+        
+
+        async function loadCategories() {
+            try {
+                const response = await fetch('/api/categories/');
+                const data = await response.json();
+                
+                const select = document.getElementById('category');
+                data.categories.forEach(cat => {
+                    const option = document.createElement('option');
+                    option.value = cat.id;
+                    option.textContent = cat.name;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Failed to load categories:', error);
+            }
+        }
+
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Validate file size
+            if (file.size > 5 * 1024 * 1024) {
+                showToast('Image file size must be less than 5MB', 'error');
+                event.target.value = '';
+                return;
+            }
+
+            // Validate file type
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+            if (!validTypes.includes(file.type)) {
+                showToast('Invalid image format. Use JPG, PNG, GIF, or WEBP', 'error');
+                event.target.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('previewImg').src = e.target.result;
+                document.getElementById('imagePreview').classList.add('show');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearImage() {
+            document.getElementById('imageFile').value = '';
+            document.getElementById('imagePreview').classList.remove('show');
+        }
+
+        document.getElementById('productForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const loading = document.getElementById('loading');
+            loading.classList.add('show');
+
+            const formData = new FormData();
+            formData.append('name', document.getElementById('name').value);
+            formData.append('description', document.getElementById('description').value);
+            formData.append('price', document.getElementById('price').value);
+            formData.append('stock_quantity', document.getElementById('stock_quantity').value);
+            
+            const categoryId = document.getElementById('category').value;
+            if (categoryId) {
+                formData.append('category_id', categoryId);
+            }
+
+            const imageFile = document.getElementById('imageFile').files[0];
+            if (imageFile) {
+                formData.append('image', imageFile);
+            } else {
+                const imageUrl = document.getElementById('imageUrl').value;
+                if (imageUrl) {
+                    formData.append('image_url', imageUrl);
+                }
+            }
+
+            try {
+                const response = await fetch('/api/seller/products/create/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showToast('Product created successfully!', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/seller/products/';
+                    }, 1500);
+                } else {
+                    showToast(data.error || 'Failed to create product', 'error');
+                    loading.classList.remove('show');
+                }
+            } catch (error) {
+                console.error('Create failed:', error);
+                showToast('Failed to create product', 'error');
+                loading.classList.remove('show');
+            }
+        });
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        (async function init() {
+            await getCSRFToken();
+            await loadCategories();
+        })();
+    </script>
+</body>
+</html>

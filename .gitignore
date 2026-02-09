@@ -1,0 +1,21 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Translations
+*.mo
+*.pot
+# Environments
+.env
+mktenv/
+
+# Temporary files
+*.tmp
+*.temp
+temp.txt
+prompt.txt

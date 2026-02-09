@@ -1,0 +1,419 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .orders-header {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .orders-header h1 {
+            font-size: 2rem;
+            color: #333;
+        }
+
+        .orders-count {
+            background: #667eea;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .orders-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .order-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .order-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 1rem;
+        }
+
+        .order-number {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .order-status {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-processing {
+            background: #cfe2ff;
+            color: #084298;
+        }
+
+        .status-completed {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .status-cancelled {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        .order-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .info-label {
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .info-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .order-items-preview {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+        }
+
+        .items-preview-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+
+        .item-preview {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .item-preview:last-child {
+            border-bottom: none;
+        }
+
+        .item-name {
+            color: #333;
+        }
+
+        .item-details {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .order-total {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+        }
+
+        .empty-orders {
+            background: white;
+            border-radius: 10px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-text {
+            font-size: 1.3rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #333;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.error {
+            background: #e74c3c;
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
+</head>
+<body>
+    <!-- Navbar -->
+    {% include "navbar_base.html" %}
+
+    <div class="container">
+        <div class="orders-header">
+            <h1>📦 My Orders</h1>
+            <span class="orders-count" id="ordersCount">0 orders</span>
+        </div>
+
+        <div id="ordersContainer">
+            <div class="loading">Loading orders...</div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="{% static 'js/navbar.js' %}"></script>
+    <script>
+        
+        async function logout(e) {
+            e.preventDefault();
+            const response = await fetch('/logout_user/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                }
+            });
+            if (response.ok) window.location.href = '/login_user/';
+        }
+
+        async function loadOrders() {
+            try {
+                const response = await fetch('/api/orders/');
+                const data = await response.json();
+                displayOrders(data);
+            } catch (error) {
+                console.error('Failed to load orders:', error);
+                showToast('Failed to load orders', 'error');
+            }
+        }
+
+        function getStatusClass(status) {
+            return `status-${status}`;
+        }
+
+        function displayOrders(data) {
+            const container = document.getElementById('ordersContainer');
+            const countEl = document.getElementById('ordersCount');
+
+            countEl.textContent = `${data.total_orders} order${data.total_orders !== 1 ? 's' : ''}`;
+
+            if (!data.orders || data.orders.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-orders">
+                        <div class="empty-icon">📦</div>
+                        <div class="empty-text">You haven't placed any orders yet</div>
+                        <button class="btn btn-primary" onclick="window.location.href='/products/'">
+                            Start Shopping
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="orders-list">
+                    ${data.orders.map(order => `
+                        <div class="order-card">
+                            <div class="order-header">
+                                <span class="order-number">${order.order_number}</span>
+                                <span class="order-status ${getStatusClass(order.status)}">${order.status_display}</span>
+                            </div>
+                            
+                            <div class="order-info">
+                                <div class="info-item">
+                                    <span class="info-label">Order Date</span>
+                                    <span class="info-value">${new Date(order.created_at).toLocaleDateString()}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Total Amount</span>
+                                    <span class="info-value">$${order.total_amount}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Items</span>
+                                    <span class="info-value">${order.items_count} item${order.items_count !== 1 ? 's' : ''}</span>
+                                </div>
+                            </div>
+
+                            <div class="order-items-preview">
+                                <div class="items-preview-title">Order Items:</div>
+                                ${order.items.slice(0, 3).map(item => `
+                                    <div class="item-preview">
+                                        <span class="item-name">${item.product_name}</span>
+                                        <span class="item-details">${item.quantity} × $${item.price}</span>
+                                    </div>
+                                `).join('')}
+                                ${order.items.length > 3 ? `<div style="text-align: center; color: #666; margin-top: 0.5rem;">+ ${order.items.length - 3} more item${order.items.length - 3 !== 1 ? 's' : ''}</div>` : ''}
+                            </div>
+
+                            <div class="order-footer">
+                                <span class="order-total">Total: $${order.total_amount}</span>
+                                <a href="/orders/${order.id}/" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function showToast(message, type = 'error') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Initialize
+        (async function init() {
+            
+            await loadOrders();
+        })();
+    </script>
+</body>
+</html>

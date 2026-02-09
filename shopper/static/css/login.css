@@ -1,0 +1,184 @@
+/* Color Variables */
+:root {
+    --primary-color: #339999; /* Teal */
+    --primary-light: #55C4A1; /* 20% lighter version */
+    --primary-dark: #2A7B79; /* 20% darker version */
+    --complement-color: #4F9D99; /* Complementary color */
+    --grayscale: #A9A9A9; /* Gray color */
+    --dark-gray: #333333; /* Dark gray for text/backgrounds */
+    --white: #FFFFFF; /* White for text */
+    --black: #000000; /* Black for backgrounds */
+}
+
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--white);
+    color: var(--dark-gray);
+    line-height: 1.6;
+}
+h1 {
+    font-size: 2em;
+    margin: 0;
+}
+
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.message-box {
+  margin: 20px auto;
+  padding: 15px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  max-width: 400px;
+  text-align: center;
+  display: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.message-box.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.message-box.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.message-box.show {
+  display: block;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+/* Divider */
+.divider {
+  text-align: center;
+  margin: 25px 0;
+  position: relative;
+  color: var(--grayscale);
+}
+
+.divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: var(--grayscale);
+  z-index: 1;
+}
+
+.divider span {
+  background-color: var(--white);
+  position: relative;
+  z-index: 2;
+  padding: 0 15px;
+  font-size: 0.9rem;
+}
+
+/* Form Styles */
+.form-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.form {
+    background-color: var(--white);
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid var(--grayscale);
+    border-radius: 4px;
+}
+
+input[type="submit"],
+.btn {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+}
+
+input[type="submit"]:hover {
+    background-color: var(--primary-dark);
+}
+
+/* Social Login Buttons */
+.social-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  width: 100%;
+  margin: 10px 0;
+  border: 1px solid var(--grayscale);
+  border-radius: 8px;
+  background-color: var(--white);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.social-login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.google-btn {
+  color: #DB4437;
+  border-color: #DB4437;
+}
+
+
+.social-login svg {
+  width: 18px;
+  height: 18px;
+}
+
+
+
+

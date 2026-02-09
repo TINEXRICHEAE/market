@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Payment - Marketplace</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .payment-iframe-container {
+            max-width: 900px;
+            margin: 1rem auto;
+            padding: 0 1rem;
+        }
+
+        .payment-header {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .payment-header h2 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .payment-header .order-info {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .payment-header .amount {
+            font-size: 2rem;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .iframe-wrapper {
+            background: white;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            min-height: 600px;
+        }
+
+        #paymentFrame {
+            width: 100%;
+            height: 700px;
+            border: none;
+            display: block;
+        }
+
+        /* Loading overlay */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .loading-overlay.hidden {
+            display: none;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Payment status display */
+        #paymentStatus {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        #paymentStatus.show {
+            display: block;
+        }
+
+        .status-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .status-icon.success {
+            color: #27ae60;
+        }
+
+        .status-icon.error {
+            color: #e74c3c;
+        }
+
+        #statusMessage {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .status-details {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .security-note {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1.5rem;
+            text-align: center;
+            color: #666;
+            font-size: 0.85rem;
+            border-left: 4px solid #667eea;
+        }
+
+        .security-note strong {
+            color: #333;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Progress indicator */
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding: 0 1rem;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            padding: 0.5rem;
+        }
+
+        .step::before {
+            content: '';
+            position: absolute;
+            top: 1rem;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e0e0e0;
+            z-index: -1;
+        }
+
+        .step:first-child::before {
+            left: 50%;
+        }
+
+        .step:last-child::before {
+            right: 50%;
+        }
+
+        .step-number {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: #666;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .step.active .step-number {
+            background: #667eea;
+            color: white;
+        }
+
+        .step.completed .step-number {
+            background: #27ae60;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .payment-iframe-container {
+                padding: 0.5rem;
+                margin: 0.5rem auto;
+            }
+
+            .payment-header {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .payment-header h2 {
+                font-size: 1.2rem;
+            }
+
+            .payment-header .amount {
+                font-size: 1.5rem;
+            }
+
+            #paymentFrame {
+                height: calc(100vh - 250px);
+                min-height: 500px;
+            }
+
+            .progress-steps {
+                font-size: 0.8rem;
+            }
+
+            .step-number {
+                width: 1.5rem;
+                height: 1.5rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .progress-steps {
+                display: none; /* Hide on very small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    {% include "navbar_base.html" %}
+
+    <div class="payment-iframe-container">
+        <!-- Progress Steps -->
+        <div class="progress-steps">
+            <div class="step completed">
+                <div class="step-number">✓</div>
+                <div class="step-label">Cart</div>
+            </div>
+            <div class="step completed">
+                <div class="step-number">✓</div>
+                <div class="step-label">Checkout</div>
+            </div>
+            <div class="step active">
+                <div class="step-number">3</div>
+                <div class="step-label">Payment</div>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-label">Confirmation</div>
+            </div>
+        </div>
+
+        <!-- Payment Header -->
+        <div class="payment-header">
+            <h2>🔒 Secure Payment</h2>
+            <div class="order-info">Order: {{ order_number }}</div>
+            <div class="amount">{{ amount }} UGX</div>
+        </div>
+        
+        <!-- Payment Iframe -->
+        <div class="iframe-wrapper">
+            <div id="loadingOverlay" class="loading-overlay">
+                <div class="spinner"></div>
+            </div>
+            
+            <iframe 
+                id="paymentFrame"
+                src="{{ payment_url }}"
+                allow="payment; fullscreen"
+                sandbox="allow-same-origin allow-scripts allow-forms allow-top-navigation allow-popups"
+                title="Fair Cashier Payment Gateway">
+            </iframe>
+        </div>
+        
+        <!-- Payment Status (Hidden initially) -->
+        <div id="paymentStatus">
+            <div class="status-icon" id="statusIcon"></div>
+            <h3 id="statusMessage"></h3>
+            <div class="status-details" id="statusDetails"></div>
+            <a href="#" id="continueBtn" class="btn" style="display: none;"></a>
+        </div>
+
+        <!-- Security Note -->
+        <div class="security-note">
+            <strong>🛡️ Secure Transaction</strong>
+            Your payment is protected by Fair Cashier's secure payment gateway.
+            Do not close this window until the payment is complete.
+        </div>
+    </div>
+
+    <script src="{% static 'js/navbar.js' %}"></script>
+    <script>
+        console.log('💳 Payment iframe initialized');
+        console.log('Fair Cashier domain:', '{{ fair_cashier_domain }}');
+        
+        const FAIR_CASHIER_DOMAIN = '{{ fair_cashier_domain }}';
+        const REQUEST_ID = '{{ request_id }}';
+        const ORDER_NUMBER = '{{ order_number }}';
+        
+        let paymentCompleted = false;
+        
+        // Hide loading overlay when iframe loads
+        document.getElementById('paymentFrame').addEventListener('load', function() {
+            console.log('✅ Payment iframe loaded successfully');
+            setTimeout(() => {
+                document.getElementById('loadingOverlay').classList.add('hidden');
+            }, 500);
+        });
+
+        // Handle iframe load errors
+        document.getElementById('paymentFrame').addEventListener('error', function() {
+            console.error('❌ Failed to load payment iframe');
+            showError('Failed to load payment page. Please check your internet connection.');
+        });
+
+        // Listen for postMessage from Fair Cashier iframe
+        window.addEventListener('message', function(event) {
+            console.log('📨 Received message:', event);
+            
+            // Verify origin
+            const isDevelopment = event.origin.includes('localhost') || event.origin.includes('127.0.0.1');
+            const isTrustedOrigin = event.origin === FAIR_CASHIER_DOMAIN;
+            
+            if (!isDevelopment && !isTrustedOrigin) {
+                console.warn('⚠️ Received message from untrusted origin:', event.origin);
+                return;
+            }
+            
+            const data = event.data;
+            console.log('📦 Message data:', data);
+            
+            if (paymentCompleted) {
+                console.log('⏭️ Payment already completed, ignoring message');
+                return;
+            }
+            
+            // Handle payment success
+            if (data.type === 'payment_success') {
+                paymentCompleted = true;
+                console.log('✅ Payment successful!');
+                
+                // Hide iframe
+                document.getElementById('paymentFrame').style.display = 'none';
+                document.getElementById('loadingOverlay').classList.add('hidden');
+                
+                // Show success status
+                showSuccess('Payment Successful!', 'Your order has been confirmed.');
+                
+                // Auto-redirect after 2 seconds
+                setTimeout(() => {
+                    window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=success`;
+                }, 2000);
+            }
+            
+            // Handle payment cancellation
+            else if (data.type === 'payment_cancelled') {
+                paymentCompleted = true;
+                console.log('⚠️ Payment cancelled by user');
+                
+                window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=cancelled`;
+            }
+            
+            // Handle payment failure
+            else if (data.type === 'payment_failed') {
+                paymentCompleted = true;
+                console.error('❌ Payment failed:', data.message);
+                
+                showError('Payment Failed', data.message || 'An error occurred during payment.');
+                
+                // Show retry button after 3 seconds
+                setTimeout(() => {
+                    const continueBtn = document.getElementById('continueBtn');
+                    continueBtn.textContent = 'Try Again';
+                    continueBtn.href = '/cart/';
+                    continueBtn.style.display = 'inline-block';
+                }, 3000);
+            }
+            
+            // Handle status updates
+            else if (data.type === 'payment_status') {
+                console.log('📊 Payment status update:', data.status);
+                // Could show progress indicators here
+            }
+        });
+
+        function showSuccess(title, details) {
+            const statusDiv = document.getElementById('paymentStatus');
+            const statusIcon = document.getElementById('statusIcon');
+            const statusMessage = document.getElementById('statusMessage');
+            const statusDetails = document.getElementById('statusDetails');
+            const continueBtn = document.getElementById('continueBtn');
+            
+            statusIcon.textContent = '✅';
+            statusIcon.className = 'status-icon success';
+            statusMessage.textContent = title;
+            statusMessage.style.color = '#27ae60';
+            statusDetails.textContent = details;
+            
+            continueBtn.textContent = 'View Order';
+            continueBtn.href = `/payment/return/?request_id=${REQUEST_ID}&status=success`;
+            continueBtn.style.display = 'inline-block';
+            
+            statusDiv.classList.add('show');
+        }
+
+        function showError(title, details) {
+            const statusDiv = document.getElementById('paymentStatus');
+            const statusIcon = document.getElementById('statusIcon');
+            const statusMessage = document.getElementById('statusMessage');
+            const statusDetails = document.getElementById('statusDetails');
+            
+            statusIcon.textContent = '❌';
+            statusIcon.className = 'status-icon error';
+            statusMessage.textContent = title;
+            statusMessage.style.color = '#e74c3c';
+            statusDetails.textContent = details;
+            
+            document.getElementById('paymentFrame').style.display = 'none';
+            statusDiv.classList.add('show');
+        }
+
+        // Prevent accidental page navigation
+        window.addEventListener('beforeunload', function(e) {
+            if (!paymentCompleted) {
+                e.preventDefault();
+                e.returnValue = 'Payment is in progress. Are you sure you want to leave?';
+                return e.returnValue;
+            }
+        });
+
+        // Heartbeat to keep session alive
+        setInterval(() => {
+            if (!paymentCompleted) {
+                // Ping to keep session active
+                fetch('/api/csrf/', {
+                    credentials: 'include'
+                }).catch(() => {});
+            }
+        }, 60000); // Every minute
+    </script>
+</body>
+</html>

@@ -1,0 +1,477 @@
+# shopping_app/proxy_views.py
+"""
+E-commerce App - Fair Cashier Payment Gateway Proxy Layer
+This module handles all communication with Fair Cashier payment system
+"""
+
+import requests
+import json
+import logging
+from decimal import Decimal
+
+from django.conf import settings
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
+from django.db import transaction as db_transaction
+
+from .models import Order, OrderItem
+
+logger = logging.getLogger(__name__)
+
+# Fair Cashier Configuration
+FAIR_CASHIER_URL = getattr(settings, 'FAIR_CASHIER_API_URL', 'http://localhost:8001')
+FAIR_CASHIER_API_KEY = getattr(settings, 'FAIR_CASHIER_API_KEY', '')
+
+
+# ============= HELPER FUNCTIONS =============
+
+def get_client_ip(request):
+    """Extract client IP address"""
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        return x_forwarded_for.split(',')[0].strip()
+    return request.META.get('REMOTE_ADDR')
+
+
+def call_fair_cashier_api(endpoint, method='POST', data=None, timeout=15):
+    """
+    Centralized API caller for Fair Cashier
+    
+    Args:
+        endpoint: API endpoint (e.g., '/api/check-sellers/')
+        method: HTTP method
+        data: Request payload
+        timeout: Request timeout in seconds
+    
+    Returns:
+        tuple: (success: bool, response_data: dict, status_code: int)
+    """
+    url = f"{FAIR_CASHIER_URL}{endpoint}"
+    
+    try:
+        if method == 'POST':
+            response = requests.post(
+                url,
+                json=data,
+                headers={'Content-Type': 'application/json'},
+                timeout=timeout
+            )
+        else:
+            response = requests.get(url, params=data, timeout=timeout)
+        
+        response_data = response.json() if response.content else {}
+        
+        return (
+            response.status_code in [200, 201],
+            response_data,
+            response.status_code
+        )
+        
+    except requests.exceptions.Timeout:
+        logger.error(f"Fair Cashier API timeout: {endpoint}")
+        return False, {'error': 'Payment gateway timeout'}, 503
+        
+    except requests.exceptions.ConnectionError:
+        logger.error(f"Fair Cashier connection error: {endpoint}")
+        return False, {'error': 'Cannot connect to payment gateway'}, 503
+        
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Fair Cashier request error: {str(e)}")
+        return False, {'error': str(e)}, 500
+        
+    except json.JSONDecodeError:
+        logger.error(f"Invalid JSON from Fair Cashier: {endpoint}")
+        return False, {'error': 'Invalid response from payment gateway'}, 500
+
+
+# ============= SELLER VERIFICATION =============
+
+@login_required
+@require_http_methods(["POST"])
+def check_sellers_registration(request):
+    """
+    Check if sellers are registered with Fair Cashier
+    
+    Request: {"seller_emails": ["seller1@example.com", "seller2@example.com"]}
+    Response: {
+        "results": {
+            "seller1@example.com": {"registered": true, "has_wallet": true, "has_pin": true},
+            "seller2@example.com": {"registered": false, "has_wallet": false, "has_pin": false}
+        }
+    }
+    """
+    try:
+        data = json.loads(request.body)
+        seller_emails = data.get('seller_emails', [])
+        
+        success, response_data, status = call_fair_cashier_api(
+            '/api/check-sellers/',
+            data={
+                'api_key': FAIR_CASHIER_API_KEY,
+                'seller_emails': seller_emails
+            }
+        )
+        
+        if success:
+            return JsonResponse(response_data)
+        else:
+            return JsonResponse(response_data, status=status)
+            
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        logger.error(f"Error checking sellers: {str(e)}")
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+# ============= PAYMENT REQUEST CREATION =============
+
+@login_required
+@require_http_methods(["POST"])
+def create_payment_request(request):
+    """
+    Create payment request with Fair Cashier
+    
+    Request: {
+        "buyer_email": "buyer@example.com",
+        "items": [
+            {
+                "seller_email": "seller@example.com",
+                "amount": "100.00",
+                "description": "Product A + Product B"
+            }
+        ],
+        "metadata": {"order_id": 123, "order_number": "ORD-123"}
+    }
+    """
+    try:
+        data = json.loads(request.body)
+        
+        # Validate buyer email matches logged-in user
+        if data.get('buyer_email') != request.user.email:
+            return JsonResponse({'error': 'Buyer email mismatch'}, status=403)
+        
+        # Call Fair Cashier API
+        success, response_data, status = call_fair_cashier_api(
+            '/api/payment-request/create/',
+            data={
+                'api_key': FAIR_CASHIER_API_KEY,
+                'buyer_email': data['buyer_email'],
+                'items': data['items'],
+                'metadata': data.get('metadata', {})
+            },
+            timeout=15
+        )
+        
+        if success:
+            # Store payment info in session
+            request.session['pending_payment'] = {
+                'request_id': str(response_data['request_id']),
+                'amount': str(response_data['total_amount']),
+                'order_id': data.get('metadata', {}).get('order_id'),
+                'order_number': data.get('metadata', {}).get('order_number')
+            }
+            
+            logger.info(f"Payment request created: {response_data['request_id']}")
+            return JsonResponse(response_data)
+        else:
+            logger.error(f"Payment request failed: {response_data}")
+            return JsonResponse(response_data, status=status)
+            
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        logger.error(f"Error creating payment request: {str(e)}", exc_info=True)
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+# ============= PAYMENT CALLBACK HANDLER =============
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def payment_callback(request):
+    """
+    Handle payment confirmation callbacks from Fair Cashier
+    
+    This is a server-to-server webhook endpoint
+    
+    Payload: {
+        "request_id": "uuid",
+        "status": "paid",
+        "total_amount": "100.00",
+        "timestamp": "2026-02-01T10:30:00Z"
+    }
+    """
+    try:
+        data = json.loads(request.body)
+        
+        request_id = data.get('request_id')
+        status = data.get('status')
+        
+        logger.info(f"📥 Payment callback: {request_id} - Status: {status}")
+        
+        with db_transaction.atomic():
+            # Find order by Fair Cashier request ID
+            try:
+                order = Order.objects.select_for_update().get(
+                    fair_cashier_request_id=request_id
+                )
+            except Order.DoesNotExist:
+                logger.error(f"❌ Order not found for payment: {request_id}")
+                return JsonResponse({'error': 'Order not found'}, status=404)
+            
+            if status == 'paid':
+                # Update order items marked for online payment
+                updated_count = order.items.filter(
+                    payment_method='online',
+                    payment_status='pending'
+                ).update(payment_status='paid')
+                
+                logger.info(f"✅ Updated {updated_count} order items to paid")
+                
+                # Check if all items are paid
+                all_items = order.items.all()
+                all_paid = all(
+                    item.payment_status in ['paid', 'cash']
+                    for item in all_items
+                )
+                
+                if all_paid:
+                    order.status = 'processing'
+                    order.online_payment_status = 'completed'
+                    logger.info(f"✅ Order {order.order_number} fully paid")
+                else:
+                    order.online_payment_status = 'partial'
+                    logger.info(f"⚠️ Order {order.order_number} partially paid")
+                
+                order.save()
+                
+                return JsonResponse({
+                    'status': 'success',
+                    'message': 'Payment status updated',
+                    'order_number': order.order_number
+                })
+            
+            elif status == 'failed':
+                order.online_payment_status = 'failed'
+                order.save()
+                
+                logger.warning(f"⚠️ Payment failed for order {order.order_number}")
+                
+                return JsonResponse({
+                    'status': 'acknowledged',
+                    'message': 'Payment failure recorded'
+                })
+            
+            else:
+                logger.warning(f"⚠️ Unknown payment status: {status}")
+                return JsonResponse({
+                    'status': 'acknowledged',
+                    'message': f'Unknown status: {status}'
+                })
+            
+    except json.JSONDecodeError:
+        logger.error("❌ Invalid JSON in payment callback")
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        logger.error(f"❌ Payment callback error: {str(e)}", exc_info=True)
+        return JsonResponse({'error': 'Internal server error'}, status=500)
+
+
+# ============= PAYMENT IFRAME PROXY =============
+
+@login_required
+def payment_iframe_proxy(request, request_id):
+    """
+    Container page for Fair Cashier payment iframe
+    
+    This view embeds Fair Cashier's payment page in an iframe
+    and handles postMessage communication
+    """
+    # Verify this is user's payment request
+    pending_payment = request.session.get('pending_payment', {})
+    
+    if pending_payment.get('request_id') != str(request_id):
+        logger.warning(
+            f"⚠️ User {request.user.email} attempted unauthorized access to payment {request_id}"
+        )
+        return redirect('view_cart')
+    
+    context = {
+        'payment_url': f'{FAIR_CASHIER_URL}/payment/{request_id}/',
+        'request_id': request_id,
+        'amount': pending_payment.get('amount', '0.00'),
+        'order_number': pending_payment.get('order_number', 'N/A'),
+        'fair_cashier_domain': FAIR_CASHIER_URL
+    }
+    
+    return render(request, 'payment_iframe.html', context)
+
+
+# ============= PAYMENT RETURN HANDLER =============
+
+@login_required
+def payment_return(request):
+    """
+    Handle return from Fair Cashier after payment
+    
+    Query params:
+    - request_id: Payment request UUID
+    - status: success/failed/cancelled
+    """
+    request_id = request.GET.get('request_id')
+    status = request.GET.get('status')
+    
+    logger.info(f"🔙 Payment return: {request_id} - Status: {status}")
+    
+    # Clear pending payment from session
+    pending_payment = request.session.pop('pending_payment', {})
+    order_id = pending_payment.get('order_id')
+    order_number = pending_payment.get('order_number')
+    online_item_ids = pending_payment.get('online_item_ids', [])
+    
+    if status == 'success':
+        # Payment successful - update order and order items
+        if order_id:
+            try:
+                order = Order.objects.get(id=order_id)
+                order.online_payment_status = 'completed'
+                order.status = 'processing'
+                
+                order.save()
+                
+                # Update payment status for online order items
+                if online_item_ids:
+                    OrderItem.objects.filter(
+                        id__in=online_item_ids,
+                        order=order
+                    ).update(payment_status='paid')
+                
+                logger.info(f"✅ Payment successful for order {order_number}")
+                logger.info(f"✅ Updated {len(online_item_ids)} order items to 'paid' status")
+                return redirect('view_order_detail', order_id=order_id)
+            except Order.DoesNotExist:
+                logger.error(f"Order {order_id} not found")
+                return redirect('view_orders')
+        else:
+            return redirect('view_orders')
+    
+    elif status == 'cancelled':
+        # Payment cancelled by user
+        if order_id:
+            try:
+                order = Order.objects.get(id=order_id)
+                order.online_payment_status = 'failed'
+                order.status = 'cancelled'
+                order.save()
+                
+                # Update payment status for online order items
+                if online_item_ids:
+                    OrderItem.objects.filter(
+                        id__in=online_item_ids,
+                        order=order
+                    ).update(payment_status='failed')
+                
+            except Order.DoesNotExist:
+                pass
+        
+        logger.info(f"⚠️ Payment cancelled for order {order_number}")
+        from django.contrib import messages
+        messages.warning(request, 'Payment was cancelled. Your cart has been restored.')
+        return redirect('view_cart')
+    
+    else:
+        # Payment failed
+        if order_id:
+            try:
+                order = Order.objects.get(id=order_id)
+                order.online_payment_status = 'failed'
+                order.status = 'cancelled'
+                order.save()
+                
+                # Update payment status for online order items
+                if online_item_ids:
+                    OrderItem.objects.filter(
+                        id__in=online_item_ids,
+                        order=order
+                    ).update(payment_status='failed')
+                
+            except Order.DoesNotExist:
+                pass
+        
+        logger.error(f"❌ Payment failed for order {order_number}")
+        from django.contrib import messages
+        messages.error(request, 'Payment failed. Please try again or choose another payment method.')
+        return redirect('view_cart')
+
+# ============= CHECK BUYER STATUS (FOR FAIR CASHIER) =============
+
+@csrf_exempt
+@require_http_methods(["GET", "POST"])
+def check_buyer_fair_cashier_status(request):
+    """
+    Check if buyer exists in Fair Cashier system
+    
+    This is called by payment confirmation page to route buyer
+    to either PIN setup or PIN login
+    """
+    if request.method == 'GET':
+        email = request.GET.get('email')
+    else:
+        data = json.loads(request.body)
+        email = data.get('email')
+    
+    if not email:
+        return JsonResponse({'error': 'Email required'}, status=400)
+    
+    # Call Fair Cashier API
+    success, response_data, status = call_fair_cashier_api(
+        '/api/check-buyer-status/',
+        method='GET',
+        data={'email': email}
+    )
+    
+    if success:
+        return JsonResponse(response_data)
+    else:
+        # Default to setup if API fails
+        return JsonResponse({
+            'exists': False,
+            'has_pin': False,
+            'has_wallet': False,
+            'action': 'pin_setup',
+            'is_locked': False
+        })
+
+
+# ============= HELPER: GET SELLER PAYMENT OPTIONS =============
+
+def get_seller_payment_options(seller_email):
+    """
+    Quick check if seller accepts online payment
+    
+    Returns: {'online': bool, 'cash': bool}
+    """
+    success, response_data, _ = call_fair_cashier_api(
+        '/api/check-sellers/',
+        data={
+            'api_key': FAIR_CASHIER_API_KEY,
+            'seller_emails': [seller_email]
+        },
+        timeout=5
+    )
+    
+    if success:
+        results = response_data.get('results', {})
+        seller_data = results.get(seller_email, {})
+        
+        return {
+            'online': seller_data.get('registered', False) and seller_data.get('has_wallet', False),
+            'cash': True  # Cash always available
+        }
+    
+    # Default to cash only on error
+    return {'online': False, 'cash': True}

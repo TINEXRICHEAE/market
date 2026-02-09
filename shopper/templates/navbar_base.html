@@ -1,0 +1,159 @@
+{% load static %}
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="/" class="nav-brand">
+            <span>🛒</span>
+            <span>Marketplace</span>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <div class="nav-links">
+            <!-- Public Links (Always Visible) -->
+            <a href="/">Home</a>
+            <a href="/products/">Products</a>
+            
+            <!-- Buyer Links (Visible when authenticated as buyer) -->
+            <span id="buyerLinks" style="display: none;">
+                <a href="/cart/" class="cart-badge-wrapper">
+                    🛒 Cart
+                    <span class="cart-badge" id="cartBadge">0</span>
+                </a>
+                <a href="/wishlist/">❤️ Wishlist</a>
+                <a href="/orders/">📦 Orders</a>
+            </span>
+            
+            <!-- Seller Links (Visible when authenticated as seller) -->
+            <span id="sellerLinks" style="display: none;">
+                <a href="/seller/dashboard/">📊 Dashboard</a>
+                <a href="/seller/products/">📦 My Products</a>
+                <a href="/seller/cashout/">💰 Cash Out</a>
+            </span>
+            
+            <!-- Profile Button (Visible when authenticated) -->
+            <button class="profile-btn" id="profileBtn" onclick="openProfileModal()" style="display: none;">
+                <span id="navUserEmail">Profile</span>
+                <span>⚙️</span>
+            </button>
+            
+            <!-- Login Link (Visible when not authenticated) -->
+            <a href="/login_user/" id="loginLink" style="display: none;">
+                Login
+            </a>
+        </div>
+
+        <!-- Mobile Hamburger -->
+        <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+    <!-- Profile Section (Visible when authenticated) -->
+    <div class="profile-section" id="mobileProfileSection" style="display: none;">
+        <div style="font-weight: 600; margin-bottom: 0.5rem;" id="mobileUserEmail">User Profile</div>
+        <button class="btn btn-primary" onclick="openProfileModal(); closeMobileMenu();">
+            Manage Profile
+        </button>
+    </div>
+    
+    <!-- Public Links (Always Visible) -->
+    <a href="/">Home</a>
+    <a href="/products/">Products</a>
+    
+    <!-- Buyer Links (Visible when authenticated as buyer) -->
+    <div id="mobileBuyerLinks" style="display: none;">
+        <a href="/cart/">
+            🛒 Cart <span id="mobileCartBadge">(0)</span>
+        </a>
+        <a href="/wishlist/">❤️ Wishlist</a>
+        <a href="/orders/">📦 Orders</a>
+    </div>
+    
+    <!-- Seller Links (Visible when authenticated as seller) -->
+    <div id="mobileSellerLinks" style="display: none;">
+        <a href="/seller/dashboard/">📊 Dashboard</a>
+        <a href="/seller/products/">📦 My Products</a>
+        <a href="/seller/cashout/">💰 Cash Out</a>
+    </div>
+    
+    <!-- Login Link (Visible when not authenticated) -->
+    <a href="/login_user/" id="mobileLoginLink" style="display: none;">
+        Login
+    </a>
+</div>
+
+<!-- Profile Modal -->
+<div class="modal-overlay" id="profileModal">
+    <div class="profile-modal">
+        <div class="modal-header">
+            <h2>Profile Settings</h2>
+            <button class="close-modal" onclick="closeProfileModal()">×</button>
+        </div>
+
+        <!-- User Info -->
+        <div class="profile-info">
+            <div class="info-item">
+                <span class="info-label">Email Address</span>
+                <div class="info-value" id="modalUserEmail">loading...</div>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Current Role</span>
+                <div class="info-value" id="modalUserRole">loading...</div>
+            </div>
+        </div>
+
+        <!-- Phone Number -->
+        <div class="input-group">
+            <label for="phoneInput">Phone Number</label>
+            <input type="tel" id="phoneInput" placeholder="e.g., +256700000000">
+        </div>
+
+        <!-- Role Toggle -->
+        <div class="role-toggle">
+            <div class="role-toggle-title">Switch Role</div>
+            <div class="role-options">
+                <div class="role-option" data-role="buyer" onclick="selectRole('buyer')">
+                    🛍️ Buyer
+                </div>
+                <div class="role-option" data-role="seller" onclick="selectRole('seller')">
+                    💼 Seller
+                </div>
+            </div>
+            <div style="margin-top: 1rem; font-size: 0.85rem; color: #666;">
+                Switch between buyer and seller modes without creating a new account.
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <button class="btn btn-primary" onclick="saveProfile()">
+            Save Changes
+        </button>
+        <button class="btn btn-secondary" onclick="closeProfileModal()">
+            Cancel
+        </button>
+        <button class="btn btn-danger" onclick="handleLogout()">
+            Logout
+        </button>
+        
+        <!-- Delete Account Section -->
+        <div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #f0f0f0;">
+            <div style="margin-bottom: 1rem;">
+                <strong style="color: #ff4757;">Danger Zone</strong>
+                <p style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">
+                    Permanently delete your account and all associated data. This action cannot be undone.
+                </p>
+            </div>
+            <button class="btn btn-danger" onclick="handleDeleteAccount()" style="background: #c0392b;">
+                🗑️ Delete Account
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" class="toast"></div>

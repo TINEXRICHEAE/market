@@ -1,0 +1,824 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .back-button {
+            background: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            display: inline-block;
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background: #f0f0f0;
+        }
+
+        .order-detail-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .order-section {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .order-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .order-status {
+            padding: 0.75rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-processing {
+            background: #cfe2ff;
+            color: #084298;
+        }
+
+        .status-completed {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .status-cancelled {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        .status-paid {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .status-cash {
+            background: #e7f3ff;
+            color: #004085;
+        }
+
+        .order-info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .info-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .order-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+
+        .item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+            background: #f0f0f0;
+            flex-shrink: 0;
+        }
+
+        .item-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .item-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+
+        .item-seller {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .item-quantity {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .item-payment-info {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .payment-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .payment-online {
+            background: #e7f3ff;
+            color: #004085;
+        }
+
+        .payment-cash {
+            background: #f8f9fa;
+            color: #495057;
+        }
+
+        .item-price-section {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .item-unit-price {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .item-subtotal {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1rem;
+        }
+
+        .seller-payment {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        .seller-payment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .seller-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .seller-payment-details {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .seller-payment-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 0.75rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .summary-section {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+            padding-top: 1rem;
+            margin-top: 0.5rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .summary-label {
+            color: #666;
+        }
+
+        .summary-value {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .total-value {
+            color: #667eea;
+            font-size: 1.5rem;
+        }
+
+        .payment-alert {
+            background: #fff3cd;
+            border-left: 4px solid #ff9800;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1.5rem;
+        }
+
+        .payment-alert-title {
+            font-weight: 600;
+            color: #856404;
+            margin-bottom: 0.5rem;
+        }
+
+        .payment-alert-text {
+            font-size: 0.9rem;
+            color: #856404;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #333;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            background: #27ae60;
+        }
+
+        .toast.error {
+            background: #e74c3c;
+        }
+
+        @media (max-width: 768px) {
+            .order-detail-container {
+                grid-template-columns: 1fr;
+            }
+
+            .order-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .order-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .item-price-section {
+                text-align: left;
+                width: 100%;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
+</head>
+<body>
+    {% include "navbar_base.html" %}
+
+    <div class="container">
+        <a href="/orders/" class="back-button">← Back to Orders</a>
+
+        <div id="orderContainer">
+            <div class="loading">Loading order details...</div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="{% static 'js/navbar.js' %}"></script>
+    <script>
+        const orderId = "{{ order_id }}";
+        let currentOrder = null;
+        
+        async function loadOrderDetail() {
+            try {
+                const response = await fetch(`/api/orders/${orderId}/`);
+                const data = await response.json();
+                currentOrder = data.order;
+                displayOrderDetail(data.order);
+            } catch (error) {
+                console.error('Failed to load order:', error);
+                showToast('Failed to load order details', 'error');
+            }
+        }
+
+        function getStatusClass(status) {
+            return `status-${status}`;
+        }
+
+        function displayOrderDetail(order) {
+            const container = document.getElementById('orderContainer');
+
+            // Filter items that can be paid online and are pending
+            const payableItems = order.items.filter(item => 
+                item.can_pay_online && item.payment_status === 'pending'
+            );
+
+            // Build unpaid alert if needed
+            const unpaidAlert = order.has_unpaid_online ? `
+                <div class="payment-alert">
+                    <div class="payment-alert-title">⚠️ Payment Available</div>
+                    <div class="payment-alert-text">
+                        You can pay online for ${payableItems.length} item${payableItems.length !== 1 ? 's' : ''} in this order. 
+                        Select the items you want to pay for below.
+                    </div>
+                </div>
+            ` : '';
+
+            container.innerHTML = `
+                <div class="order-detail-container">
+                    <div>
+                        ${unpaidAlert}
+
+                        <div class="order-section">
+                            <div class="order-header">
+                                <div>
+                                    <div class="order-number">${order.order_number}</div>
+                                    <div style="margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
+                                        Payment: ${order.payment_method_display}
+                                    </div>
+                                </div>
+                                <span class="order-status ${getStatusClass(order.status)}">${order.status_display}</span>
+                            </div>
+                            
+                            <div class="order-info-grid">
+                                <div class="info-item">
+                                    <span class="info-label">Order Date</span>
+                                    <span class="info-value">${new Date(order.created_at).toLocaleDateString()}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Last Updated</span>
+                                    <span class="info-value">${new Date(order.updated_at).toLocaleDateString()}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Total Items</span>
+                                    <span class="info-value">${order.items.length} item${order.items.length !== 1 ? 's' : ''}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Total Amount</span>
+                                    <span class="info-value">$${order.total_amount}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="order-section">
+                            <div class="section-title">Order Items</div>
+                            ${order.has_unpaid_online ? `
+                                <div style="margin-bottom: 1rem; padding: 0.75rem; background: #e7f3ff; border-radius: 5px; font-size: 0.9rem;">
+                                    💡 Check the items you want to pay for online
+                                </div>
+                                ${payableItems.map(item => `
+                                    <div class="order-item" style="border: 2px solid #667eea;">
+                                        <input type="checkbox" 
+                                               class="item-checkbox" 
+                                               data-item-id="${item.id}"
+                                               data-amount="${item.subtotal}"
+                                               checked
+                                               style="width: 20px; height: 20px; cursor: pointer; margin-right: 0.5rem; flex-shrink: 0;">
+                                        <img src="${item.product_image || 'https://via.placeholder.com/80x80?text=No+Image'}" 
+                                             alt="${item.product_name}" 
+                                             class="item-image">
+                                        <div class="item-details">
+                                            <div>
+                                                <div class="item-name">${item.product_name}</div>
+                                                <div class="item-seller">Sold by: ${item.seller_email}</div>
+                                                <div class="item-quantity">Quantity: ${item.quantity}</div>
+                                                <div style="margin-top: 0.25rem; font-size: 0.8rem; color: #667eea;">
+                                                    ✓ Online payment available
+                                                </div>
+                                            </div>
+                                            <div class="item-payment-info">
+                                                <span class="payment-badge payment-${item.payment_method}">
+                                                    ${item.payment_method_display}
+                                                </span>
+                                                <span class="payment-badge ${getStatusClass(item.payment_status)}">
+                                                    ${item.payment_status_display}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="item-price-section">
+                                            <div class="item-unit-price">$${item.price} each</div>
+                                            <div class="item-subtotal">$${item.subtotal}</div>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            ` : `
+                                <div style="padding: 2rem; text-align: center; color: #666;">
+                                    <div style="font-size: 3rem; margin-bottom: 1rem;">✅</div>
+                                    <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">
+                                        All Items Paid
+                                    </div>
+                                    <div style="font-size: 0.9rem;">
+                                        There are no pending payments for this order
+                                    </div>
+                                </div>
+                            `}
+                        </div>
+
+                        <div class="order-section">
+                            <div class="section-title">Payment by Seller</div>
+                            ${order.seller_payments.map(seller => {
+                                // Get all items for this seller
+                                const sellerItems = order.items.filter(item => item.seller_email === seller.seller_email);
+                                
+                                // Calculate totals by payment status
+                                const paidOnlineItems = sellerItems.filter(item => item.payment_method === 'online' && item.payment_status === 'paid');
+                                const pendingOnlineItems = sellerItems.filter(item => item.payment_method === 'online' && item.payment_status === 'pending');
+                                const cashItems = sellerItems.filter(item => item.payment_method === 'cash');
+                                
+                                const paidOnlineTotal = paidOnlineItems.reduce((sum, item) => sum + parseFloat(item.subtotal), 0);
+                                const pendingOnlineTotal = pendingOnlineItems.reduce((sum, item) => sum + parseFloat(item.subtotal), 0);
+                                const cashTotal = cashItems.reduce((sum, item) => sum + parseFloat(item.subtotal), 0);
+                                
+                                // Determine seller's payment method badge based on actual item payment methods
+                                const hasOnlineItems = (paidOnlineItems.length > 0 || pendingOnlineItems.length > 0);
+                                const hasCashItems = cashItems.length > 0;
+                                
+                                let sellerPaymentBadge = '';
+                                let badgeClass = '';
+                                
+                                if (hasOnlineItems && hasCashItems) {
+                                    sellerPaymentBadge = '📊 Mixed Payment';
+                                    badgeClass = 'payment-badge' + ' ' + 'status-processing';
+                                } else if (hasOnlineItems) {
+                                    sellerPaymentBadge = '💳 Online Payment';
+                                    badgeClass = 'payment-badge' + ' ' + 'payment-online';
+                                } else if (hasCashItems) {
+                                    sellerPaymentBadge = '💵 Cash on Delivery';
+                                    badgeClass = 'payment-badge' + ' ' + 'payment-cash';
+                                }
+                                
+                                return `
+                                    <div class="seller-payment">
+                                        <div class="seller-payment-header">
+                                            <div class="seller-name">📦 ${seller.seller_email}</div>
+                                            <span class="${badgeClass}">
+                                                ${sellerPaymentBadge}
+                                            </span>
+                                        </div>
+                                        
+                                        <div style="margin-top: 0.75rem;">
+                                            ${sellerItems.map(item => {
+                                                // Determine display based on actual item status
+                                                let statusIcon = '';
+                                                let statusText = '';
+                                                let statusColor = '';
+                                                let bgColor = '';
+                                                let borderColor = '';
+                                                
+                                                if (item.payment_method === 'online' && item.payment_status === 'paid') {
+                                                    statusIcon = '✅';
+                                                    statusText = 'Paid Online';
+                                                    statusColor = '#0f5132';
+                                                    bgColor = '#e7f5ed';
+                                                    borderColor = '#c3e6cb';
+                                                } else if (item.payment_method === 'online' && item.payment_status === 'pending') {
+                                                    statusIcon = '⏳';
+                                                    statusText = 'Pending Online Payment';
+                                                    statusColor = '#856404';
+                                                    bgColor = '#fff3cd';
+                                                    borderColor = '#ffeeba';
+                                                } else if (item.payment_method === 'cash') {
+                                                    statusIcon = '💵';
+                                                    statusText = 'Cash on Delivery';
+                                                    statusColor = '#004085';
+                                                    bgColor = '#e7f3ff';
+                                                    borderColor = '#b8daff';
+                                                }
+                                                
+                                                return `
+                                                    <div style="background: ${bgColor}; padding: 0.75rem; border-radius: 5px; margin-bottom: 0.5rem; border-left: 3px solid ${borderColor};">
+                                                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.25rem;">
+                                                            <div style="flex: 1;">
+                                                                <div style="font-size: 0.85rem; font-weight: 600; color: #333; margin-bottom: 0.25rem;">
+                                                                    ${item.product_name}
+                                                                </div>
+                                                                <div style="font-size: 0.75rem; color: #666;">
+                                                                    Quantity: ${item.quantity} × $${item.price}
+                                                                </div>
+                                                            </div>
+                                                            <div style="text-align: right; margin-left: 1rem;">
+                                                                <div style="font-size: 0.9rem; font-weight: 700; color: #667eea;">
+                                                                    $${item.subtotal}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(0,0,0,0.05);">
+                                                            <span style="font-size: 0.75rem;">${statusIcon}</span>
+                                                            <span style="font-size: 0.75rem; color: ${statusColor}; font-weight: 600;">
+                                                                ${statusText}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                `;
+                                            }).join('')}
+                                        </div>
+                                        
+                                        <!-- Payment Breakdown Summary -->
+                                        ${(paidOnlineItems.length > 0 || pendingOnlineItems.length > 0 || cashItems.length > 0) ? `
+                                            <div style="margin-top: 1rem; padding: 0.75rem; background: #f8f9fa; border-radius: 5px; border: 1px solid #e0e0e0;">
+                                                <div style="font-size: 0.8rem; font-weight: 600; color: #666; margin-bottom: 0.5rem;">
+                                                    Payment Summary
+                                                </div>
+                                                
+                                                ${paidOnlineItems.length > 0 ? `
+                                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem; font-size: 0.75rem;">
+                                                        <span style="color: #0f5132;">
+                                                            ✅ Paid Online (${paidOnlineItems.length} item${paidOnlineItems.length !== 1 ? 's' : ''})
+                                                        </span>
+                                                        <span style="font-weight: 600; color: #0f5132;">
+                                                            $${paidOnlineTotal.toFixed(2)}
+                                                        </span>
+                                                    </div>
+                                                ` : ''}
+                                                
+                                                ${pendingOnlineItems.length > 0 ? `
+                                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem; font-size: 0.75rem;">
+                                                        <span style="color: #856404;">
+                                                            ⏳ Pending Payment (${pendingOnlineItems.length} item${pendingOnlineItems.length !== 1 ? 's' : ''})
+                                                        </span>
+                                                        <span style="font-weight: 600; color: #856404;">
+                                                            $${pendingOnlineTotal.toFixed(2)}
+                                                        </span>
+                                                    </div>
+                                                ` : ''}
+                                                
+                                                ${cashItems.length > 0 ? `
+                                                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem;">
+                                                        <span style="color: #004085;">
+                                                            💵 Cash on Delivery (${cashItems.length} item${cashItems.length !== 1 ? 's' : ''})
+                                                        </span>
+                                                        <span style="font-weight: 600; color: #004085;">
+                                                            $${cashTotal.toFixed(2)}
+                                                        </span>
+                                                    </div>
+                                                ` : ''}
+                                            </div>
+                                        ` : ''}
+                                        
+                                        <div class="seller-payment-summary" style="margin-top: 0.75rem;">
+                                            <span style="font-weight: 600;">Total to Seller</span>
+                                            <span style="font-weight: 700; color: #667eea; font-size: 1.1rem;">$${seller.total_amount}</span>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+
+                    <div class="summary-section">
+                        <div class="section-title">Order Summary</div>
+                        <div class="summary-row">
+                            <span class="summary-label">Subtotal</span>
+                            <span class="summary-value">$${order.total_amount}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Shipping</span>
+                            <span class="summary-value">Free</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Tax</span>
+                            <span class="summary-value">$0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Total</span>
+                            <span class="summary-value total-value">$${order.total_amount}</span>
+                        </div>
+
+                        ${order.has_unpaid_online ? `
+                            <div style="margin-top: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 5px;">
+                                <div style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">Selected for payment:</div>
+                                <div style="font-size: 1.2rem; font-weight: bold; color: #667eea;" id="selectedTotal">
+                                    $${payableItems.reduce((sum, item) => sum + parseFloat(item.subtotal), 0).toFixed(2)}
+                                </div>
+                                <div style="font-size: 0.8rem; color: #666; margin-top: 0.25rem;" id="selectedCount">
+                                    ${payableItems.length} item${payableItems.length !== 1 ? 's' : ''} selected
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" id="payNowBtn" onclick="processSelectedPayment()">
+                                💳 Pay Selected Items
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+
+            // Add event listeners for checkboxes
+            if (order.has_unpaid_online) {
+                document.querySelectorAll('.item-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('change', updateSelectedTotal);
+                });
+            }
+        }
+
+        function updateSelectedTotal() {
+            const checkboxes = document.querySelectorAll('.item-checkbox:checked');
+            let total = 0;
+            
+            checkboxes.forEach(cb => {
+                total += parseFloat(cb.dataset.amount);
+            });
+
+            document.getElementById('selectedTotal').textContent = `$${total.toFixed(2)}`;
+            document.getElementById('selectedCount').textContent = 
+                `${checkboxes.length} item${checkboxes.length !== 1 ? 's' : ''} selected`;
+            
+            // Disable button if no items selected
+            const payBtn = document.getElementById('payNowBtn');
+            if (checkboxes.length === 0) {
+                payBtn.disabled = true;
+                payBtn.style.opacity = '0.5';
+            } else {
+                payBtn.disabled = false;
+                payBtn.style.opacity = '1';
+            }
+        }
+
+        async function processSelectedPayment() {
+            const checkboxes = document.querySelectorAll('.item-checkbox:checked');
+            
+            if (checkboxes.length === 0) {
+                showToast('Please select at least one item to pay for', 'error');
+                return;
+            }
+
+            const itemIds = Array.from(checkboxes).map(cb => parseInt(cb.dataset.itemId));
+            
+            const btn = document.getElementById('payNowBtn');
+            btn.disabled = true;
+            btn.textContent = 'Processing...';
+
+            try {
+                const response = await fetch(`/api/orders/${orderId}/pay-selected-items/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: JSON.stringify({ item_ids: itemIds })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    showToast(`Redirecting to payment ($${data.total_amount})...`, 'success');
+                    setTimeout(() => {
+                        window.location.href = `/payment/process/${data.payment_request_id}/`;
+                    }, 500);
+                } else {
+                    showToast(data.error || 'Failed to initiate payment', 'error');
+                    btn.disabled = false;
+                    btn.textContent = '💳 Pay Selected Items';
+                }
+            } catch (error) {
+                console.error('Payment failed:', error);
+                showToast('Network error. Please try again.', 'error');
+                btn.disabled = false;
+                btn.textContent = '💳 Pay Selected Items';
+            }
+        }
+
+        function showToast(message, type = 'error') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Initialize
+        (async function init() {
+            await loadOrderDetail();
+        })();
+    </script>
+</body>
+</html>

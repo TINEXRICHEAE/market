@@ -1,0 +1,442 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wishlist</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .wishlist-header {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .wishlist-header h1 {
+            font-size: 2rem;
+            color: #333;
+        }
+
+        .wishlist-count {
+            background: #667eea;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .wishlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .wishlist-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .wishlist-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #f0f0f0;
+            cursor: pointer;
+        }
+
+        .remove-wishlist-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            font-size: 1.2rem;
+            color: #ff4757;
+            transition: all 0.3s;
+        }
+
+        .remove-wishlist-btn:hover {
+            transform: scale(1.1);
+            background: #ff4757;
+            color: white;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .product-name:hover {
+            color: #667eea;
+        }
+
+        .product-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .stock-status {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .out-of-stock {
+            color: #ff4757;
+        }
+
+        .added-date {
+            font-size: 0.8rem;
+            color: #999;
+            margin-top: 0.5rem;
+        }
+
+        .empty-wishlist {
+            background: white;
+            border-radius: 10px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-text {
+            font-size: 1.3rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #333;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            background: #27ae60;
+        }
+
+        .toast.error {
+            background: #e74c3c;
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
+</head>
+<body>
+    <!-- Navbar -->
+    {% include "navbar_base.html" %}
+
+    <div class="container">
+        <div class="wishlist-header">
+            <h1>❤️ My Wishlist</h1>
+            <span class="wishlist-count" id="wishlistCount">0 items</span>
+        </div>
+
+        <div id="wishlistContainer">
+            <div class="loading">Loading wishlist...</div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        let csrfToken = '';
+
+        async function getCSRFToken() {
+            try {
+                const response = await fetch('/api/csrf/');
+                const data = await response.json();
+                csrfToken = data.csrfToken;
+            } catch (error) {
+                console.error('Failed to get CSRF token:', error);
+            }
+        }
+
+        async function logout(e) {
+            e.preventDefault();
+            const response = await fetch('/logout_user/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                }
+            });
+            if (response.ok) window.location.href = '/login_user/';
+        }
+
+        async function loadWishlist() {
+            try {
+                const response = await fetch('/api/wishlist/');
+                const data = await response.json();
+                displayWishlist(data);
+            } catch (error) {
+                console.error('Failed to load wishlist:', error);
+                showToast('Failed to load wishlist', 'error');
+            }
+        }
+
+        function displayWishlist(data) {
+            const container = document.getElementById('wishlistContainer');
+            const countEl = document.getElementById('wishlistCount');
+
+            countEl.textContent = `${data.total_items} item${data.total_items !== 1 ? 's' : ''}`;
+
+            if (!data.wishlist_items || data.wishlist_items.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-wishlist">
+                        <div class="empty-icon">❤️</div>
+                        <div class="empty-text">Your wishlist is empty</div>
+                        <button class="btn btn-primary" onclick="window.location.href='/products/'">
+                            Browse Products
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="wishlist-grid">
+                    ${data.wishlist_items.map(item => `
+                        <div class="wishlist-card">
+                            <button class="remove-wishlist-btn" onclick="removeFromWishlist(${item.id})" title="Remove from wishlist">
+                                ❌
+                            </button>
+                            <img src="${item.product_image || 'https://via.placeholder.com/280x200?text=No+Image'}" 
+                                 alt="${item.product_name}" 
+                                 class="product-image"
+                                 onclick="window.location.href='/products/${item.product_id}/'">
+                            <div class="product-info">
+                                <h3 class="product-name" onclick="window.location.href='/products/${item.product_id}/'">${item.product_name}</h3>
+                                <p class="product-description">${item.product_description}</p>
+                                <div class="product-footer">
+                                    <span class="product-price">$${item.product_price}</span>
+                                    <button class="btn btn-primary" 
+                                            onclick="addToCart(${item.product_id})"
+                                            ${!item.in_stock ? 'disabled' : ''}>
+                                        ${item.in_stock ? 'Add to Cart' : 'Out of Stock'}
+                                    </button>
+                                </div>
+                                <div class="stock-status ${!item.in_stock ? 'out-of-stock' : ''}">
+                                    ${item.stock_quantity} in stock
+                                </div>
+                                <div class="added-date">
+                                    Added: ${new Date(item.added_at).toLocaleDateString()}
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        async function removeFromWishlist(wishlistId) {
+            try {
+                const response = await fetch(`/api/wishlist/remove/${wishlistId}/`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': csrfToken
+                    }
+                });
+
+                if (response.ok) {
+                    showToast('Removed from wishlist', 'success');
+                    loadWishlist();
+                } else {
+                    showToast('Failed to remove item', 'error');
+                }
+            } catch (error) {
+                console.error('Remove failed:', error);
+                showToast('Failed to remove item', 'error');
+            }
+        }
+
+        async function addToCart(productId) {
+            try {
+                const response = await fetch('/api/cart/add/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: JSON.stringify({
+                        product_id: productId,
+                        quantity: 1
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showToast('Added to cart!', 'success');
+                } else {
+                    showToast(data.error || 'Failed to add to cart', 'error');
+                }
+            } catch (error) {
+                console.error('Add to cart failed:', error);
+                showToast('Failed to add to cart', 'error');
+            }
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Initialize
+        (async function init() {
+            await getCSRFToken();
+            await loadWishlist();
+        })();
+    </script>
+</body>
+</html>

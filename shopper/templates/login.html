@@ -1,0 +1,71 @@
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/jpeg" href="{% static 'image/logo.jpg' %}" />
+    <title>Login - Co-Opt</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}" />
+  </head>
+  <body>
+   
+
+    <!-- Main Section (Login Form) -->
+    <section class="form-container">
+      <div class="form">
+        <h2>Login</h2>
+        <!-- Use Django's form handling with csrf_token -->
+        <!-- Login Form -->
+    <form id="loginForm" method="post" action="{% url 'login_user' %}">
+      {% csrf_token %}
+
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        <span class="error-message" id="emailError"></span>
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        <span class="error-message" id="passwordError"></span>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn">Login</button>
+      <!-- Messages Section -->
+    <div id="messageBox" class="message-box"></div>
+
+      <div class="divider">
+        <span>Or login with</span>
+      </div>
+          <button type="button" class="social-login google-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22.56 12.25C22.56 11.47 22.49 10.72 22.36 10H12V14.26H17.92C17.66 15.63 16.87 16.8 15.68 17.54V20.29H19.34C22.03 18.13 22.56 15.35 22.56 12.25Z" fill="#4285F4"/>
+                <path d="M12 23C14.97 23 17.46 22.02 19.34 20.29L15.68 17.54C14.71 18.13 13.5 18.46 12 18.46C9.55 18.46 7.47 16.43 7.47 14C7.47 11.57 9.55 9.54 12 9.54C13.5 9.54 14.71 9.87 15.68 10.46L19.34 7.71C17.46 5.98 14.97 5 12 5C8.07 5 4.82 7.5 3.42 11H7.06C7.82 9.5 9.25 8.5 11 8.5C13.07 8.5 14.94 10.37 14.94 12.5C14.94 14.63 13.07 16.5 11 16.5C9.25 16.5 7.82 15.5 7.06 14H3.42C4.82 17.5 8.07 20 12 20Z" fill="#34A853"/>
+                <path d="M7.47 14C7.47 11.57 9.55 9.54 12 9.54C13.5 9.54 14.71 9.87 15.68 10.46L19.34 7.71C17.46 5.98 14.97 5 12 5C8.07 5 4.82 7.5 3.42 11H7.06C7.82 9.5 9.25 8.5 11 8.5C13.07 8.5 14.94 10.37 14.94 12.5C14.94 14.63 13.07 16.5 11 16.5C9.25 16.5 7.82 15.5 7.06 14H7.47Z" fill="#FBBC05"/>
+                <path d="M12 23C14.97 23 17.46 22.02 19.34 20.29L15.68 17.54C14.71 18.13 13.5 18.46 12 18.46C9.55 18.46 7.47 16.43 7.47 14C7.47 11.57 9.55 9.54 12 9.54C13.5 9.54 14.71 9.87 15.68 10.46L19.34 7.71C17.46 5.98 14.97 5 12 5C8.07 5 4.82 7.5 3.42 11H7.06C7.82 9.5 9.25 8.5 11 8.5C13.07 8.5 14.94 10.37 14.94 12.5C14.94 14.63 13.07 16.5 11 16.5C9.25 16.5 7.82 15.5 7.06 14H3.42C4.82 17.5 8.07 20 12 20Z" fill="#EA4335"/>
+              </svg>
+              Google
+          </button>
+    </form>
+
+    
+    <!-- Link to Registration Page -->
+    <p class="register-link">Don't have an account? <a href="{% url 'register_user' %}">Register here</a>. <br> OR Return <a href="{% url 'home' %}">
+      &#8592; Back To Home</a></p>
+  </div>
+
+      </div>
+    </section>
+
+    <!-- JavaScript -->
+    <script src="{% static 'js/login-validation.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+  </body>
+</html>
+{% endblock %}
