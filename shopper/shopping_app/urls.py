@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 from shopping_app.proxy_urls import proxy_urlpatterns
+from shopping_app.seller_proxy_urls import seller_proxy_urlpatterns
 
 urlpatterns = [
     # === User Authentication ===
@@ -53,15 +54,17 @@ urlpatterns = [
 
     # === Seller Dashboard (Non-API) ===
     path('seller/dashboard/', views.seller_dashboard, name='seller_dashboard'),
+    path('seller/sales/', views.seller_sales, name='seller_sales'),
     path('seller/products/', views.seller_products, name='seller_products'),
     path('seller/products/add/', views.seller_add_product,
          name='seller_add_product'),
     path('seller/products/edit/<int:product_id>/',
          views.seller_edit_product, name='seller_edit_product'),
-    path('seller/cashout/', views.seller_cashout, name='seller_cashout'),
 
     # === Seller API Endpoints ===
+    path('api/seller/dashboard-stats/', views.get_seller_dashboard_stats, name='get_seller_dashboard_stats'),
     path('api/seller/sales/', views.get_seller_sales, name='get_seller_sales'),
+    path('api/seller/recent-sales/', views.get_seller_recent_sales, name='get_seller_recent_sales'),
     path('api/seller/products/', views.get_seller_products,
          name='get_seller_products'),
     path('api/seller/products/create/',
@@ -73,14 +76,6 @@ urlpatterns = [
     path('api/seller/products/<int:product_id>/delete/',
          views.delete_product, name='delete_product'),
 
-    # === Seller Balance & Cash-Out API ===
-    path('api/seller/balance/', views.get_seller_balance,
-         name='get_seller_balance'),
-    path('api/seller/cashout/request/',
-         views.request_cashout, name='request_cashout'),
-    path('api/seller/cashout/history/',
-         views.get_cashout_history, name='get_cashout_history'),
-
     # === Optional: Categories (used by seller form) ===
     path('api/categories/', views.get_categories, name='get_categories'),
 
@@ -90,9 +85,11 @@ urlpatterns = [
     path('api/user/update-password/', views.update_user_password,
          name='update_user_password'),
 
+    # === Payment Selection ===
     path('payment/select/', views.payment_selection_page, name='payment_selection_page'),
     path('api/process-payment-selection/', views.process_payment_selection, name='process_payment_selection'),
 
+    # === Retry Payment ===
     path('api/orders/<int:order_id>/retry-payment/', 
          views.retry_online_payment, 
          name='retry_online_payment'),
@@ -100,4 +97,4 @@ urlpatterns = [
      path('api/orders/<int:order_id>/pay-selected-items/', 
      views.retry_selected_items_payment, 
      name='retry_selected_items_payment'),
-] + proxy_urlpatterns
+] + proxy_urlpatterns + seller_proxy_urlpatterns

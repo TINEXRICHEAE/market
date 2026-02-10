@@ -1,0 +1,304 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finances & Cashout</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .back-button {
+            background: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            display: inline-block;
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background: #f0f0f0;
+        }
+
+        .page-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .iframe-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            min-height: 800px;
+            position: relative;
+        }
+
+        .iframe-container iframe {
+            width: 100%;
+            height: 800px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .error-message h3 {
+            color: #856404;
+            margin-bottom: 0.5rem;
+        }
+
+        .error-message p {
+            color: #856404;
+            margin-bottom: 1rem;
+        }
+
+        .retry-button {
+            background: #667eea;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .retry-button:hover {
+            background: #5568d3;
+        }
+
+        /* Status indicator */
+        .status-indicator {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-loading {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-ready {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #842029;
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
+</head>
+<body>
+    {% include "navbar_base.html" %}
+
+    <div class="container">
+        <a href="/seller/dashboard/" class="back-button">← Back to Dashboard</a>
+
+        <div class="page-header">
+            <h1>💰 Finances & Cashout</h1>
+            <p>Manage your earnings and request withdrawals through Fair Cashier</p>
+            <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
+                Seller: <strong>{{ seller_email }}</strong>
+            </p>
+        </div>
+
+        <div class="iframe-container">
+            <div id="statusIndicator" class="status-indicator status-loading">
+                Loading...
+            </div>
+
+            <div id="loadingMessage" class="loading">
+                <div class="loading-spinner"></div>
+                <p>Connecting to Fair Cashier payment system...</p>
+            </div>
+
+            <div id="errorMessage" class="error-message" style="display: none;">
+                <h3>⚠️ Connection Error</h3>
+                <p id="errorText">Failed to load Fair Cashier. Please try again.</p>
+                <button class="retry-button" onclick="retryLoad()">Retry</button>
+            </div>
+
+            <iframe 
+                id="financesIframe" 
+                src="{{ iframe_url }}" 
+                style="display:none;"
+                sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
+                allow="payment"
+            ></iframe>
+        </div>
+    </div>
+
+    <script src="{% static 'js/navbar.js' %}"></script>
+    <script>
+        const iframe = document.getElementById('financesIframe');
+        const loadingMessage = document.getElementById('loadingMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        const statusIndicator = document.getElementById('statusIndicator');
+        
+        let loadTimeout;
+        let hasLoaded = false;
+
+        // Listen for messages from iframe
+        window.addEventListener('message', function(event) {
+            // Verify origin
+            const allowedOrigin = '{{ fair_cashier_domain }}';
+            if (event.origin !== allowedOrigin) {
+                console.warn('Message from unexpected origin:', event.origin);
+                return;
+            }
+
+            const data = event.data;
+
+            // Handle different message types
+            if (data.type === 'pin_setup_ready' || data.type === 'pin_login_ready') {
+                console.log('✅ Fair Cashier page ready');
+                hasLoaded = true;
+                clearTimeout(loadTimeout);
+                showIframe();
+            } else if (data.type === 'account_created' || data.type === 'login_success') {
+                console.log('✅ Authentication successful');
+                hasLoaded = true;
+                clearTimeout(loadTimeout);
+                showIframe();
+            } else if (data.type === 'error') {
+                console.error('❌ Error from Fair Cashier:', data.message);
+                showError(data.message || 'An error occurred');
+            }
+        });
+
+        // Handle iframe load event
+        iframe.onload = function() {
+            console.log('📄 Iframe loaded');
+            
+            // Give it a moment for scripts to execute
+            setTimeout(() => {
+                if (!hasLoaded) {
+                    hasLoaded = true;
+                    clearTimeout(loadTimeout);
+                    showIframe();
+                }
+            }, 500);
+        };
+
+        // Handle iframe error
+        iframe.onerror = function() {
+            console.error('❌ Iframe failed to load');
+            showError('Failed to connect to Fair Cashier');
+        };
+
+        // Timeout fallback (15 seconds)
+        loadTimeout = setTimeout(() => {
+            if (!hasLoaded) {
+                console.error('⏱️ Iframe load timeout');
+                showError('Connection timeout. Please check your internet connection.');
+            }
+        }, 15000);
+
+        function showIframe() {
+            loadingMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            iframe.style.display = 'block';
+            statusIndicator.textContent = 'Connected';
+            statusIndicator.className = 'status-indicator status-ready';
+        }
+
+        function showError(message) {
+            loadingMessage.style.display = 'none';
+            iframe.style.display = 'none';
+            errorMessage.style.display = 'block';
+            document.getElementById('errorText').textContent = message;
+            statusIndicator.textContent = 'Error';
+            statusIndicator.className = 'status-indicator status-error';
+        }
+
+        function retryLoad() {
+            hasLoaded = false;
+            errorMessage.style.display = 'none';
+            loadingMessage.style.display = 'block';
+            statusIndicator.textContent = 'Retrying...';
+            statusIndicator.className = 'status-indicator status-loading';
+            
+            // Reload iframe
+            iframe.src = iframe.src;
+            
+            // Reset timeout
+            clearTimeout(loadTimeout);
+            loadTimeout = setTimeout(() => {
+                if (!hasLoaded) {
+                    showError('Connection timeout. Please try again later.');
+                }
+            }, 15000);
+        }
+
+        // Log iframe URL for debugging
+        console.log('🔗 Fair Cashier URL:', '{{ iframe_url }}');
+    </script>
+</body>
+</html>

@@ -13,7 +13,7 @@ from django.utils import timezone
 from phonenumber_field.phonenumber import to_python
 from .models import (
     Users, Product, Category, Cart, CartItem,
-    Wishlist, Order, OrderItem, SellerPayment, CashOut
+    Wishlist, Order, OrderItem,
 )
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -1217,9 +1217,6 @@ def process_checkout(request):
                 status='pending'
             )
 
-            # Group items by seller for payment distribution
-            seller_totals = {}
-
             # Create order items
             for item in cart.items.all():
                 order_item = OrderItem.objects.create(
@@ -1235,24 +1232,6 @@ def process_checkout(request):
                 product = item.product
                 product.stock_quantity -= item.quantity
                 product.save()
-
-                # Track seller totals
-                seller_id = item.product.seller.id
-                if seller_id not in seller_totals:
-                    seller_totals[seller_id] = {
-                        'seller': item.product.seller,
-                        'amount': Decimal('0.00')
-                    }
-                seller_totals[seller_id]['amount'] += item.subtotal
-
-            # Create seller payment records
-            for seller_data in seller_totals.values():
-                SellerPayment.objects.create(
-                    order=order,
-                    seller=seller_data['seller'],
-                    amount=seller_data['amount'],
-                    status='completed'
-                )
 
             # Clear cart
             cart.items.all().delete()
@@ -1271,54 +1250,18 @@ def process_checkout(request):
 # Seller Views
 @login_required(login_url='login_user')
 def seller_dashboard(request):
+    """Display seller's main dashboard page"""
     if request.user.role != 'seller':
         return redirect('home')
     return render(request, 'seller_dashboard.html')
 
 
 @login_required(login_url='login_user')
-@api_view(['GET'])
-def get_seller_sales(request):
-    try:
-        if request.user.role != 'seller':
-            return Response({'error': 'Access denied'}, status=403)
-
-        # Get all payments for this seller
-        payments = SellerPayment.objects.filter(
-            seller=request.user
-        ).select_related('order', 'order__buyer')
-
-        sales_data = []
-        total_revenue = Decimal('0.00')
-
-        for payment in payments:
-            sales_data.append({
-                'order_number': payment.order.order_number,
-                'buyer_email': payment.order.buyer.email,
-                'amount': str(payment.amount),
-                'status': payment.status,
-                'status_display': payment.get_status_display(),
-                'created_at': payment.created_at.strftime('%Y-%m-%d %H:%M:%S')
-            })
-
-            if payment.status == 'completed':
-                total_revenue += payment.amount
-
-        # Get sales statistics
-        stats = {
-            'total_sales': payments.count(),
-            'total_revenue': str(total_revenue),
-            'pending_payments': payments.filter(status='pending').count(),
-            'completed_payments': payments.filter(status='completed').count()
-        }
-
-        return Response({
-            'sales': sales_data,
-            'statistics': stats
-        })
-    except Exception as e:
-        logger.error(f"Error fetching seller sales: {str(e)}")
-        return Response({'error': str(e)}, status=500)
+def seller_sales(request):
+    """Display seller's sales page"""
+    if request.user.role != 'seller':
+        return redirect('home')
+    return render(request, 'seller_sales.html')
 
 
 @login_required(login_url='login_user')
@@ -1352,7 +1295,6 @@ def get_seller_products(request):
         return Response({'error': str(e)}, status=500)
 
 # Seller Product Management Views
-
 
 @login_required(login_url='login_user')
 def seller_products(request):
@@ -1620,144 +1562,126 @@ def delete_product(request, product_id):
         return Response({'error': str(e)}, status=500)
 
 
-# Seller Cash-out Views
-
-@login_required(login_url='login_user')
-def seller_cashout(request):
-    """Display seller's cash-out page"""
-    if request.user.role != 'seller':
-        return redirect('home')
-    return render(request, 'seller_cashout.html')
-
-
 @login_required(login_url='login_user')
 @api_view(['GET'])
-def get_seller_balance(request):
-    """Get seller's available balance"""
+def get_seller_dashboard_stats(request):
+    """Get seller dashboard statistics from e-commerce database"""
     try:
         if request.user.role != 'seller':
             return Response({'error': 'Access denied'}, status=403)
 
-        available_balance = request.user.available_balance
+        # Total products
+        total_products = Product.objects.filter(seller=request.user).count()
 
-        # Get total earned
-        total_earned = SellerPayment.objects.filter(
-            seller=request.user,
-            status='completed'
-        ).aggregate(total=models.Sum('amount'))['total'] or Decimal('0.00')
+        # Total orders (unique orders containing seller's items)
+        total_orders = OrderItem.objects.filter(
+            seller=request.user
+        ).values('order').distinct().count()
 
-        # Get total withdrawn
-        total_withdrawn = CashOut.objects.filter(
+        # Total revenue
+        total_revenue = OrderItem.objects.filter(
             seller=request.user,
-            status='completed'
-        ).aggregate(total=models.Sum('amount'))['total'] or Decimal('0.00')
+            payment_status='paid'
+        ).aggregate(total=models.Sum('subtotal'))['total'] or Decimal('0.00')
 
-        # Get pending cashouts
-        pending_cashouts = CashOut.objects.filter(
+        # Pending payments count
+        pending_count = OrderItem.objects.filter(
             seller=request.user,
-            status__in=['pending', 'processing']
-        ).aggregate(total=models.Sum('amount'))['total'] or Decimal('0.00')
+            payment_status='pending'
+        ).count()
+
+        # Low stock items (stock < 10)
+        low_stock_count = Product.objects.filter(
+            seller=request.user,
+            stock_quantity__lt=10,
+            is_active=True
+        ).count()
 
         return Response({
-            'available_balance': str(available_balance),
-            'total_earned': str(total_earned),
-            'total_withdrawn': str(total_withdrawn),
-            'pending_cashouts': str(pending_cashouts)
+            'total_products': total_products,
+            'total_orders': total_orders,
+            'total_revenue': str(total_revenue),
+            'pending_count': pending_count,
+            'low_stock_count': low_stock_count
         })
 
     except Exception as e:
-        logger.error(f"Error fetching seller balance: {str(e)}")
-        return Response({'error': str(e)}, status=500)
-
-
-@login_required(login_url='login_user')
-@api_view(['POST'])
-def request_cashout(request):
-    """Request a cash-out"""
-    try:
-        if request.user.role != 'seller':
-            return Response({'error': 'Access denied'}, status=403)
-
-        amount = Decimal(request.data.get('amount', '0'))
-        payment_method = request.data.get('payment_method', 'bank_transfer')
-        payment_details = request.data.get('payment_details', {})
-
-        # Validation
-        if amount <= 0:
-            return Response({'error': 'Invalid amount'}, status=400)
-
-        # Check available balance
-        available_balance = request.user.available_balance
-        if amount > available_balance:
-            return Response({
-                'error': f'Insufficient balance. Available: ${available_balance}'
-            }, status=400)
-
-        # Minimum cashout amount
-        if amount < Decimal('10.00'):
-            return Response({
-                'error': 'Minimum cash-out amount is $10.00'
-            }, status=400)
-
-        # Create cashout request
-        cashout = CashOut.objects.create(
-            seller=request.user,
-            amount=amount,
-            payment_method=payment_method,
-            payment_details=payment_details,
-            status='pending'
-        )
-
-        logger.info(
-            f"Cashout requested: {cashout.cashout_number} by {request.user.email} for ${amount}")
-
-        return Response({
-            'message': 'Cash-out request submitted successfully',
-            'cashout': {
-                'cashout_number': cashout.cashout_number,
-                'amount': str(cashout.amount),
-                'processing_fee': str(cashout.processing_fee),
-                'net_amount': str(cashout.net_amount),
-                'status': cashout.status
-            }
-        }, status=201)
-
-    except Exception as e:
-        logger.error(f"Error requesting cashout: {str(e)}")
+        logger.error(f"Error fetching seller stats: {str(e)}")
         return Response({'error': str(e)}, status=500)
 
 
 @login_required(login_url='login_user')
 @api_view(['GET'])
-def get_cashout_history(request):
-    """Get seller's cash-out history"""
+def get_seller_sales(request):
+    """Get all sales (order items) for this seller"""
     try:
         if request.user.role != 'seller':
             return Response({'error': 'Access denied'}, status=403)
 
-        cashouts = CashOut.objects.filter(
+        # Get all order items for this seller
+        order_items = OrderItem.objects.filter(
             seller=request.user
-        ).order_by('-created_at')
+        ).select_related('order', 'order__buyer', 'product').order_by('-order__created_at')
 
-        cashouts_data = [{
-            'id': co.id,
-            'cashout_number': co.cashout_number,
-            'amount': str(co.amount),
-            'processing_fee': str(co.processing_fee),
-            'net_amount': str(co.net_amount),
-            'payment_method': co.payment_method,
-            'status': co.status,
-            'status_display': co.get_status_display(),
-            'created_at': co.created_at.strftime('%Y-%m-%d %H:%M:%S'),
-            'completed_at': co.completed_at.strftime('%Y-%m-%d %H:%M:%S') if co.completed_at else None
-        } for co in cashouts]
+        sales_data = []
+        for item in order_items:
+            sales_data.append({
+                'id': item.id,
+                'order_id': item.order.id,
+                'order_number': item.order.order_number,
+                'buyer_email': item.order.buyer.email,
+                'product_name': item.product.name,
+                'quantity': item.quantity,
+                'price': str(item.price),
+                'subtotal': str(item.subtotal),
+                'payment_method': item.payment_method,
+                'payment_method_display': item.get_payment_method_display(),
+                'payment_status': item.payment_status,
+                'payment_status_display': item.get_payment_status_display(),
+                'payment_options': item.payment_options,
+                'can_pay_online': item.can_pay_online,
+                'created_at': item.order.created_at.strftime('%Y-%m-%d %H:%M:%S')
+            })
 
-        return Response({'cashouts': cashouts_data})
+        return Response({'sales': sales_data})
 
     except Exception as e:
-        logger.error(f"Error fetching cashout history: {str(e)}")
+        logger.error(f"Error fetching seller sales: {str(e)}")
         return Response({'error': str(e)}, status=500)
 
+
+@login_required(login_url='login_user')
+@api_view(['GET'])
+def get_seller_recent_sales(request):
+    """Get recent sales (last 10) for dashboard"""
+    try:
+        if request.user.role != 'seller':
+            return Response({'error': 'Access denied'}, status=403)
+
+        # Get recent 10 order items
+        order_items = OrderItem.objects.filter(
+            seller=request.user
+        ).select_related('order', 'order__buyer', 'product').order_by('-order__created_at')[:10]
+
+        sales_data = []
+        for item in order_items:
+            sales_data.append({
+                'order_number': item.order.order_number,
+                'product_name': item.product.name,
+                'quantity': item.quantity,
+                'subtotal': str(item.subtotal),
+                'payment_method': item.payment_method,
+                'payment_method_display': item.get_payment_method_display(),
+                'payment_status': item.payment_status,
+                'payment_status_display': item.get_payment_status_display(),
+                'created_at': item.order.created_at.strftime('%Y-%m-%d %H:%M:%S')
+            })
+
+        return Response({'sales': sales_data})
+
+    except Exception as e:
+        logger.error(f"Error fetching recent sales: {str(e)}")
+        return Response({'error': str(e)}, status=500)
 
 @login_required(login_url='login_user')
 @api_view(['POST'])

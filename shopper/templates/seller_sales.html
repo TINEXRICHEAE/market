@@ -1,0 +1,279 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Sales</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .page-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .back-button {
+            background: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            display: inline-block;
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background: #f0f0f0;
+        }
+
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 1rem;
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #666;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            padding: 0.35rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-paid {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-failed {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        .payment-online {
+            background: #e7f3ff;
+            color: #004085;
+        }
+
+        .payment-cash {
+            background: #f8f9fa;
+            color: #495057;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
+</head>
+<body>
+    {% include "navbar_base.html" %}
+
+    <div class="container">
+        <a href="/seller/dashboard/" class="back-button">← Back to Dashboard</a>
+
+        <div class="page-header">
+            <h1>📋 My Sales</h1>
+            <p>Track all orders for your products</p>
+        </div>
+
+        <div class="section">
+            <div class="filters">
+                <select class="filter-select" id="paymentMethodFilter">
+                    <option value="">All Payment Methods</option>
+                    <option value="online">Online Payment</option>
+                    <option value="cash">Cash on Delivery</option>
+                </select>
+                <select class="filter-select" id="paymentStatusFilter">
+                    <option value="">All Statuses</option>
+                    <option value="paid">Paid</option>
+                    <option value="pending">Pending</option>
+                    <option value="failed">Failed</option>
+                </select>
+            </div>
+
+            <div id="salesContainer">
+                <div class="loading">Loading sales...</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/navbar.js' %}"></script>
+    <script>
+        let allSales = [];
+
+        async function loadSales() {
+            try {
+                const response = await fetch('/api/seller/sales/');
+                const data = await response.json();
+                allSales = data.sales;
+                displaySales(allSales);
+            } catch (error) {
+                console.error('Failed to load sales:', error);
+            }
+        }
+
+        function displaySales(sales) {
+            const container = document.getElementById('salesContainer');
+            
+            if (!sales || sales.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📋</div>
+                        <p>No sales found</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order Number</th>
+                                <th>Buyer</th>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Amount</th>
+                                <th>Payment Method</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${sales.map(sale => `
+                                <tr>
+                                    <td>${sale.order_number}</td>
+                                    <td>${sale.buyer_email}</td>
+                                    <td>${sale.product_name}</td>
+                                    <td>${sale.quantity}</td>
+                                    <td>$${sale.subtotal}</td>
+                                    <td><span class="status-badge payment-${sale.payment_method}">${sale.payment_method_display}</span></td>
+                                    <td><span class="status-badge status-${sale.payment_status}">${sale.payment_status_display}</span></td>
+                                    <td>${new Date(sale.created_at).toLocaleDateString()}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        function filterSales() {
+            const paymentMethod = document.getElementById('paymentMethodFilter').value;
+            const paymentStatus = document.getElementById('paymentStatusFilter').value;
+
+            let filtered = allSales;
+
+            if (paymentMethod) {
+                filtered = filtered.filter(s => s.payment_method === paymentMethod);
+            }
+
+            if (paymentStatus) {
+                filtered = filtered.filter(s => s.payment_status === paymentStatus);
+            }
+
+            displaySales(filtered);
+        }
+
+        document.getElementById('paymentMethodFilter').addEventListener('change', filterSales);
+        document.getElementById('paymentStatusFilter').addEventListener('change', filterSales);
+
+        // Initialize
+        (async function init() {
+            await getCSRFToken();
+            await loadSales();
+        })();
+    </script>
+</body>
+</html>

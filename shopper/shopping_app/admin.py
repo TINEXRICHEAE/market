@@ -13,7 +13,7 @@ from guardian.admin import GuardedModelAdmin
 from guardian.shortcuts import get_objects_for_user
 from .models import (
     Users, Group, Category, Product, Cart, CartItem,
-    Wishlist, Order, OrderItem, SellerPayment, CashOut
+    Wishlist, Order, OrderItem
 )
 
 
@@ -279,23 +279,6 @@ class OrderAdmin(admin.ModelAdmin):
     readonly_fields = ('order_number', 'created_at', 'updated_at')
     inlines = [OrderItemInline]
 
-
-@admin.register(SellerPayment)
-class SellerPaymentAdmin(admin.ModelAdmin):
-    list_display = ('order', 'seller', 'amount', 'status', 'created_at')
-    list_filter = ('status', 'created_at')
-    search_fields = ('order__order_number', 'seller__email')
-    readonly_fields = ('created_at', 'updated_at')
-
-
-@admin.register(CashOut)
-class CashOutAdmin(admin.ModelAdmin):
-    list_display = ('cashout_number', 'seller', 'amount',
-                    'net_amount', 'status', 'created_at')
-    list_filter = ('status', 'created_at')
-    search_fields = ('cashout_number', 'seller__email')
-    readonly_fields = ('cashout_number', 'processing_fee',
-                       'net_amount', 'created_at', 'updated_at')
 
 
 # Register models with enhanced admin
