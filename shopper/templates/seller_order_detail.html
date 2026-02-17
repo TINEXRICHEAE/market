@@ -1,0 +1,263 @@
+<!-- ═══════════════════════════════════════════════════════════════════════
+     BATCH 5B: TEMPLATE — seller_order_detail.html
+     Place in: templates/seller_order_detail.html
+     ═══════════════════════════════════════════════════════════════════════ -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Order Detail — Seller{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 py-6">
+    <a href="/seller/orders/" class="text-blue-600 hover:underline text-sm mb-4 inline-block">← Back to Orders</a>
+
+    <!-- Order Header -->
+    <div id="orderHeader" class="bg-white border rounded-lg p-6 mb-6 shadow-sm">
+        <div class="text-center py-4 text-gray-500">Loading order details...</div>
+    </div>
+
+    <!-- Order Items with Tracking Controls -->
+    <div id="orderItems" class="space-y-4"></div>
+
+    <!-- Bulk Actions -->
+    <div id="bulkActions" class="hidden bg-white border rounded-lg p-4 mt-6 shadow-sm">
+        <h3 class="font-bold text-sm mb-3">Bulk Update Selected Items</h3>
+        <div class="flex flex-wrap gap-3 items-end">
+            <div>
+                <label class="text-xs text-gray-500 block mb-1">New Status</label>
+                <select id="bulkStatus" class="border rounded px-3 py-2 text-sm">
+                    <option value="reviewed">Reviewed</option>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="packed">Packed</option>
+                    <option value="dispatched">Dispatched</option>
+                    <option value="in_transit">In Transit</option>
+                    <option value="out_for_delivery">Out for Delivery</option>
+                    <option value="delivered_by_seller">Mark Delivered</option>
+                </select>
+            </div>
+            <div>
+                <label class="text-xs text-gray-500 block mb-1">Tracking #</label>
+                <input id="bulkTracking" type="text" placeholder="TRK-..." class="border rounded px-3 py-2 text-sm">
+            </div>
+            <div>
+                <label class="text-xs text-gray-500 block mb-1">Notes</label>
+                <input id="bulkNotes" type="text" placeholder="Optional notes" class="border rounded px-3 py-2 text-sm">
+            </div>
+            <button onclick="bulkUpdate()" class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700">
+                Update Selected
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const orderId = '{{ order_id }}';
+let orderData = null;
+let selectedItems = new Set();
+
+async function childInit() {
+    await loadOrderDetail();
+}
+
+async function loadOrderDetail() {
+    try {
+        const resp = await fetch(`/api/seller/order/${orderId}/`);
+        const data = await resp.json();
+        orderData = data;
+        renderOrderHeader(data.order);
+        renderOrderItems(data.items);
+    } catch (err) {
+        document.getElementById('orderHeader').innerHTML =
+            '<div class="text-center py-4 text-red-500">Failed to load order.</div>';
+    }
+}
+
+function renderOrderHeader(order) {
+    document.getElementById('orderHeader').innerHTML = `
+        <div class="flex flex-wrap justify-between items-start gap-4">
+            <div>
+                <h1 class="text-xl font-bold mb-1">${order.order_number}</h1>
+                <p class="text-sm text-gray-500 mt-2">Placed: ${order.created_at}</p>
+            </div>
+            <div class="text-right">
+                <p class="text-sm"><strong>Buyer:</strong> ${order.buyer_email}</p>
+                ${order.buyer_phone ? `<p class="text-sm">📱 <a href="tel:${order.buyer_phone}" class="text-blue-600">${order.buyer_phone}</a></p>` : '<p class="text-xs text-gray-400">No phone provided</p>'}
+            </div>
+        </div>
+    `;
+}
+
+function renderOrderItems(items) {
+    const container = document.getElementById('orderItems');
+    container.innerHTML = items.map(item => `
+        <div class="bg-white border rounded-lg shadow-sm overflow-hidden" id="item-${item.item_id}">
+            <div class="p-4 border-b bg-gray-50 flex items-center gap-3">
+                <input type="checkbox" class="item-checkbox" value="${item.item_id}"
+                       onchange="toggleItemSelection(${item.item_id})"
+                       ${item.tracking_status === 'delivered' || item.tracking_status === 'disputed' ? 'disabled' : ''}>
+                <div class="flex-1">
+                    <span class="font-bold text-sm">${item.product_name}</span>
+                    <span class="text-xs text-gray-500 ml-2">×${item.quantity}</span>
+                </div>
+                <span class="font-bold text-sm">${item.subtotal} UGX</span>
+            </div>
+
+            <div class="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Payment Info -->
+                <div>
+                    <p class="text-xs text-gray-500 uppercase font-bold mb-1">Payment</p>
+                    <p class="text-sm">${item.payment_method_display}</p>
+                    <span class="text-xs px-2 py-0.5 rounded ${item.payment_status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}">
+                        ${item.payment_status_display}
+                    </span>
+                </div>
+
+                <!-- Tracking Status -->
+                <div>
+                    <p class="text-xs text-gray-500 uppercase font-bold mb-1">Tracking Status</p>
+                    <span class="text-xs px-2 py-1 rounded font-bold ${getTrackingColor(item.tracking_status)}">
+                        ${item.tracking_status_display}
+                    </span>
+                    ${item.tracking_number ? `<p class="text-xs text-gray-500 mt-1">📋 ${item.tracking_number}</p>` : ''}
+                    ${item.dispatch_date ? `<p class="text-xs text-gray-500">Dispatched: ${item.dispatch_date}</p>` : ''}
+                    ${item.estimated_delivery ? `<p class="text-xs text-gray-500">Est. Delivery: ${item.estimated_delivery}</p>` : ''}
+                </div>
+
+                <!-- Update Status (per item) -->
+                <div>
+                    ${item.tracking_status !== 'delivered' && item.tracking_status !== 'disputed' ? `
+                    <p class="text-xs text-gray-500 uppercase font-bold mb-1">Update Status</p>
+                    <select id="status-${item.item_id}" class="border rounded px-2 py-1 text-xs w-full mb-2">
+                        <option value="reviewed" ${item.tracking_status === 'reviewed' ? 'selected' : ''}>Reviewed</option>
+                        <option value="confirmed" ${item.tracking_status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
+                        <option value="packed" ${item.tracking_status === 'packed' ? 'selected' : ''}>Packed</option>
+                        <option value="dispatched" ${item.tracking_status === 'dispatched' ? 'selected' : ''}>Dispatched</option>
+                        <option value="in_transit" ${item.tracking_status === 'in_transit' ? 'selected' : ''}>In Transit</option>
+                        <option value="out_for_delivery" ${item.tracking_status === 'out_for_delivery' ? 'selected' : ''}>Out for Delivery</option>
+                        <option value="delivered_by_seller" ${item.tracking_status === 'delivered_by_seller' ? 'selected' : ''}>Mark Delivered</option>
+                    </select>
+                    <button onclick="updateSingleItem(${item.item_id})"
+                            class="bg-blue-600 text-white px-3 py-1 rounded text-xs hover:bg-blue-700 w-full">
+                        Update
+                    </button>
+                    ` : `
+                    <p class="text-xs text-gray-400 italic">No further updates available</p>
+                    `}
+                </div>
+            </div>
+
+            <!-- Dispute Section -->
+            ${item.has_dispute && item.dispute ? `
+            <div class="border-t bg-red-50 p-4">
+                <p class="text-xs font-bold text-red-700 uppercase mb-1">⚠️ Dispute Filed</p>
+                <p class="text-sm"><strong>Complaint:</strong> ${item.dispute.complaint_type}</p>
+                <p class="text-sm text-gray-600">${item.dispute.description || 'No description'}</p>
+                <p class="text-xs mt-1">
+                    Status: <span class="font-bold">${item.dispute.status_display}</span>
+                    ${item.dispute.payment_app_status ? ` | Payment App: <span class="font-bold">${item.dispute.payment_app_status}</span>` : ''}
+                </p>
+                ${item.dispute.admin_notes ? `<p class="text-xs text-gray-500 mt-1">Admin: ${item.dispute.admin_notes}</p>` : ''}
+                ${item.dispute.refund_amount ? `<p class="text-xs text-green-700 mt-1">Refund: ${item.dispute.refund_amount} UGX</p>` : ''}
+            </div>
+            ` : ''}
+
+            <!-- Tracking History -->
+            ${item.tracking_history && item.tracking_history.length > 0 ? `
+            <div class="border-t p-4">
+                <details>
+                    <summary class="text-xs font-bold text-gray-500 cursor-pointer">📜 Tracking History (${item.tracking_history.length})</summary>
+                    <div class="mt-2 space-y-1">
+                        ${item.tracking_history.map(h => `
+                            <div class="text-xs border-l-2 border-blue-200 pl-3 py-1">
+                                <span class="font-bold">${h.status}</span>
+                                <span class="text-gray-400 ml-2">${h.created_at}</span>
+                                <span class="text-gray-500 ml-1">(${h.updated_by})</span>
+                                ${h.notes ? `<p class="text-gray-500">${h.notes}</p>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                </details>
+            </div>
+            ` : ''}
+        </div>
+    `).join('');
+}
+
+function toggleItemSelection(itemId) {
+    if (selectedItems.has(itemId)) {
+        selectedItems.delete(itemId);
+    } else {
+        selectedItems.add(itemId);
+    }
+    document.getElementById('bulkActions').classList.toggle('hidden', selectedItems.size === 0);
+}
+
+async function updateSingleItem(itemId) {
+    const status = document.getElementById(`status-${itemId}`).value;
+    try {
+        const resp = await fetch(`/api/seller/order-item/${itemId}/update-tracking/`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
+            body: JSON.stringify({ status })
+        });
+        const data = await resp.json();
+        if (data.success) {
+            showToast(`Item updated to ${status}`);
+            await loadOrderDetail();
+        } else {
+            showToast(data.error || 'Update failed', 'error');
+        }
+    } catch (err) {
+        showToast('Network error', 'error');
+    }
+}
+
+async function bulkUpdate() {
+    const status = document.getElementById('bulkStatus').value;
+    const tracking = document.getElementById('bulkTracking').value;
+    const notes = document.getElementById('bulkNotes').value;
+    const itemIds = Array.from(selectedItems);
+
+    try {
+        const resp = await fetch(`/api/seller/order/${orderId}/bulk-update-tracking/`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
+            body: JSON.stringify({ item_ids: itemIds, status, tracking_number: tracking, notes })
+        });
+        const data = await resp.json();
+        if (data.success) {
+            showToast(data.message);
+            selectedItems.clear();
+            document.getElementById('bulkActions').classList.add('hidden');
+            await loadOrderDetail();
+        } else {
+            showToast(data.error || 'Update failed', 'error');
+        }
+    } catch (err) {
+        showToast('Network error', 'error');
+    }
+}
+
+function getTrackingColor(status) {
+    const colors = {
+        'pending': 'bg-gray-100 text-gray-700', 'reviewed': 'bg-blue-50 text-blue-700',
+        'confirmed': 'bg-blue-100 text-blue-700', 'packed': 'bg-indigo-100 text-indigo-700',
+        'dispatched': 'bg-purple-100 text-purple-700', 'in_transit': 'bg-orange-100 text-orange-700',
+        'out_for_delivery': 'bg-yellow-100 text-yellow-700', 'delivered_by_seller': 'bg-teal-100 text-teal-800',
+        'delivered': 'bg-green-100 text-green-800', 'disputed': 'bg-red-100 text-red-800',
+    };
+    return colors[status] || 'bg-gray-100 text-gray-700';
+}
+
+function showToast(msg, type='success') {
+    const toast = document.getElementById('toast');
+    if (toast) {
+        toast.textContent = msg;
+        toast.className = `toast show ${type === 'error' ? 'error' : 'success'}`;
+        setTimeout(() => toast.className = 'toast', 3000);
+    }
+}
+</script>
+{% endblock %}

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Select Payment Method - Marketplace</title>
     {% load static %}
+     {% load humanize %}
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
     
     <style>
@@ -265,13 +266,13 @@
                         {% for item in seller_data.items %}
                         <div class="item">
                             <span>{{ item.product.name }} (×{{ item.quantity }})</span>
-                            <span>${{ item.subtotal }}</span>
+                            <span>UGX {{ item.subtotal|intcomma }}</span>
                         </div>
                         {% endfor %}
                     </div>
                     
                     <div class="seller-total">
-                        Total: ${{ seller_data.total }}
+                        Total: UGX {{ seller_data.total|intcomma }}
                     </div>
                 </div>
                 {% endfor %}

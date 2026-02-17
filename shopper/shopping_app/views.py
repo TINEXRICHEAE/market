@@ -1191,62 +1191,6 @@ def checkout(request):
     return redirect('payment_selection_page')
 
 
-@login_required(login_url='login_user')
-@api_view(['POST'])
-def process_checkout(request):
-    try:
-        with transaction.atomic():
-            cart = get_object_or_404(Cart, user=request.user)
-
-            if not cart.items.exists():
-                return Response({
-                    'error': 'Cart is empty'
-                }, status=400)
-
-            # Check stock availability
-            for item in cart.items.all():
-                if item.quantity > item.product.stock_quantity:
-                    return Response({
-                        'error': f'Insufficient stock for {item.product.name}'
-                    }, status=400)
-
-            # Create order
-            order = Order.objects.create(
-                buyer=request.user,
-                total_amount=cart.total_price,
-                status='pending'
-            )
-
-            # Create order items
-            for item in cart.items.all():
-                order_item = OrderItem.objects.create(
-                    order=order,
-                    product=item.product,
-                    seller=item.product.seller,
-                    quantity=item.quantity,
-                    price=item.product.price,
-                    subtotal=item.subtotal
-                )
-
-                # Update stock
-                product = item.product
-                product.stock_quantity -= item.quantity
-                product.save()
-
-            # Clear cart
-            cart.items.all().delete()
-
-            return Response({
-                'message': 'Order placed successfully',
-                'order_number': order.order_number,
-                'order_id': order.id,
-                'total_amount': str(order.total_amount)
-            })
-    except Exception as e:
-        logger.error(f"Error processing checkout: {str(e)}")
-        return Response({'error': str(e)}, status=500)
-
-
 # Seller Views
 @login_required(login_url='login_user')
 def seller_dashboard(request):

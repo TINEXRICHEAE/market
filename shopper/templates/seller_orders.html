@@ -1,0 +1,136 @@
+<!-- ═══════════════════════════════════════════════════════════════════════
+     BATCH 5A: TEMPLATE — seller_orders.html
+     Place in: templates/seller_orders.html
+     ═══════════════════════════════════════════════════════════════════════ -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Orders — Seller Dashboard{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-6">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold">📦 Order Management</h1>
+        <a href="/seller/dashboard/" class="text-blue-600 hover:underline text-sm">← Back to Dashboard</a>
+    </div>
+
+
+    <!-- Orders List -->
+    <div id="ordersContainer">
+        <div class="text-center py-12 text-gray-500">Loading orders...</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let allOrders = [];
+let currentFilter = 'all';
+
+async function childInit() {
+    await loadOrders();
+}
+
+async function loadOrders() {
+    try {
+        const resp = await fetch('/api/seller/orders/', {
+            headers: { 'Authorization': `Bearer ${csrfToken}` }
+        });
+        const data = await resp.json();
+        allOrders = data.orders || [];
+        renderOrders();
+    } catch (err) {
+        document.getElementById('ordersContainer').innerHTML =
+            '<div class="text-center py-12 text-red-500">Failed to load orders.</div>';
+    }
+}
+
+
+
+function renderOrders() {
+    const container = document.getElementById('ordersContainer');
+    let orders = allOrders;
+
+    if (currentFilter !== 'all') {
+        orders = orders.filter(o => o.order_status === currentFilter);
+    }
+
+    if (orders.length === 0) {
+        container.innerHTML = '<div class="text-center py-12 text-gray-500">No orders found.</div>';
+        return;
+    }
+
+    container.innerHTML = orders.map(order => `
+        <div class="bg-white border rounded-lg mb-4 shadow-sm overflow-hidden">
+            <div class="p-4 border-b bg-gray-50 flex flex-wrap justify-between items-center gap-2">
+                <div>
+                    <span class="font-bold text-sm">${order.order_number}</span>
+                </div>
+                <div class="text-xs text-gray-500">
+                    <span>Buyer: <strong>${order.buyer_email}</strong></span>
+                    ${order.buyer_phone ? `<span class="ml-2">📱 ${order.buyer_phone}</span>` : ''}
+                    <span class="ml-2">${order.created_at}</span>
+                </div>
+            </div>
+            <div class="p-4">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead><tr class="text-left text-xs text-gray-500 border-b">
+                            <th class="pb-2">Product</th>
+                            <th class="pb-2">Qty</th>
+                            <th class="pb-2">Subtotal</th>
+                            <th class="pb-2">Payment</th>
+                            <th class="pb-2">Tracking</th>
+                            <th class="pb-2">Dispute</th>
+                        </tr></thead>
+                        <tbody>
+                            ${order.items.map(item => `
+                                <tr class="border-b last:border-0">
+                                    <td class="py-2 font-medium">${item.product_name}</td>
+                                    <td class="py-2">${item.quantity}</td>
+                                    <td class="py-2">${item.subtotal} UGX</td>
+                                    <td class="py-2">
+                                        <span class="text-xs">${item.payment_method_display}</span><br>
+                                        <span class="text-xs ${item.payment_status === 'paid' ? 'text-green-600' : 'text-yellow-600'}">${item.payment_status_display}</span>
+                                    </td>
+                                    <td class="py-2">
+                                        <span class="text-xs px-2 py-1 rounded ${getTrackingColor(item.tracking_status)}">${item.tracking_status_display}</span>
+                                    </td>
+                                    <td class="py-2">
+                                        ${item.has_dispute ? '<span class="text-xs text-red-600 font-bold">⚠️ Dispute</span>' : '<span class="text-xs text-green-600">✓ Clear</span>'}
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-3 flex justify-between items-center">
+                    <span class="font-bold text-sm">Total: ${order.total_amount} UGX</span>
+                    <a href="/seller/order/${order.order_id}/" class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700">
+                        View & Manage →
+                    </a>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+
+function getTrackingColor(status) {
+    const colors = {
+        'pending': 'bg-gray-100 text-gray-700',
+        'reviewed': 'bg-blue-50 text-blue-700',
+        'confirmed': 'bg-blue-100 text-blue-700',
+        'packed': 'bg-indigo-100 text-indigo-700',
+        'dispatched': 'bg-purple-100 text-purple-700',
+        'in_transit': 'bg-orange-100 text-orange-700',
+        'out_for_delivery': 'bg-yellow-100 text-yellow-700',
+        'delivered_by_seller': 'bg-teal-100 text-teal-800',
+        'delivered': 'bg-green-100 text-green-800',
+        'disputed': 'bg-red-100 text-red-800',
+        'cancelled': 'bg-gray-200 text-gray-600',
+    };
+    return colors[status] || 'bg-gray-100 text-gray-700';
+}
+</script>
+{% endblock %}

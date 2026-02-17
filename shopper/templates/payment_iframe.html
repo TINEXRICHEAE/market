@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Complete Payment - Marketplace</title>
     {% load static %}
+    {% load humanize %}
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
     
     <style>
@@ -308,7 +309,7 @@
         <div class="payment-header">
             <h2>🔒 Secure Payment</h2>
             <div class="order-info">Order: {{ order_number }}</div>
-            <div class="amount">{{ amount }} UGX</div>
+            <div class="amount">UGX {{ amount|floatformat:0|intcomma }}</div>
         </div>
         
         <!-- Payment Iframe -->

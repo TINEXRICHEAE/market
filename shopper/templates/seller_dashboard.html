@@ -392,7 +392,7 @@
                 <div class="stat-card">
                     <div class="stat-icon">💰</div>
                     <div class="stat-label">Total Revenue</div>
-                    <div class="stat-value">$${data.total_revenue || '0.00'}</div>
+                    <div class="stat-value">UGX ${Number(data.total_revenue || 0).toLocaleString()}</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">⏳</div>
@@ -450,7 +450,7 @@
                                     <td>${sale.order_number}</td>
                                     <td>${sale.product_name}</td>
                                     <td>${sale.quantity}</td>
-                                    <td>$${sale.subtotal}</td>
+                                    <td>UGX ${Number(sale.subtotal).toLocaleString()}</td>
                                     <td><span class="status-badge payment-${sale.payment_method}">${sale.payment_method_display}</span></td>
                                     <td><span class="status-badge status-${sale.payment_status}">${sale.payment_status_display}</span></td>
                                     <td>${new Date(sale.created_at).toLocaleDateString()}</td>
@@ -494,7 +494,7 @@
                                  alt="${product.name}" 
                                  class="product-image">
                             <div class="product-name">${product.name}</div>
-                            <div class="product-price">$${product.price}</div>
+                            <div class="product-price">UGX ${Number(product.price).toLocaleString()}</div>
                             <div class="product-stock">
                                 Stock: ${product.stock_quantity} 
                                 ${product.in_stock ? '✅' : '❌'}

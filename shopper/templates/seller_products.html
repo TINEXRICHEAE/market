@@ -370,7 +370,7 @@
                             <div class="product-body">
                                 <div class="product-name">${product.name}</div>
                                 <div class="product-description">${product.description}</div>
-                                <div class="product-price">$${product.price}</div>
+                                <div class="product-price">UGX ${Number(product.price).toLocaleString()}</div>
                                 <div class="product-stock">
                                     Stock: ${product.stock_quantity} ${product.in_stock ? '✅' : '❌'}
                                 </div>

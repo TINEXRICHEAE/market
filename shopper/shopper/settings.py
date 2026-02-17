@@ -90,6 +90,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'phonenumber_field',
     'guardian',
+    'django.contrib.humanize',
     # Your apps...
     'shopping_app',
 ]

@@ -395,7 +395,7 @@
                                 <div class="item-details">
                                     <div class="item-name">${item.product_name}</div>
                                     <div class="item-seller">Sold by: ${item.seller_email}</div>
-                                    <div class="item-price">$${item.product_price}</div>
+                                    <div class="item-price">UGX ${Number(item.product_price).toLocaleString()}</div>
                                     ${!item.in_stock ? '<div style="color: #ff4757; font-weight: 600;">Out of Stock</div>' : ''}
                                 </div>
                                 
@@ -406,7 +406,7 @@
                                         <button class="qty-btn" onclick="updateQuantity(${item.id}, ${item.quantity + 1})" 
                                                 ${item.quantity >= item.stock_quantity ? 'disabled' : ''}>+</button>
                                     </div>
-                                    <div class="item-subtotal">$${item.subtotal}</div>
+                                    <div class="item-subtotal">UGX ${Number(item.subtotal).toLocaleString()}</div>
                                     <button class="remove-btn" onclick="removeItem(${item.id})">Remove</button>
                                 </div>
                             </div>
@@ -417,7 +417,7 @@
                         <div class="summary-title">Order Summary</div>
                         <div class="summary-row">
                             <span class="summary-label">Items (${data.total_items})</span>
-                            <span class="summary-value">$${data.total_price}</span>
+                            <span class="summary-value">UGX ${Number(data.total_price).toLocaleString()}</span>
                         </div>
                         <div class="summary-row">
                             <span class="summary-label">Shipping</span>
@@ -425,7 +425,7 @@
                         </div>
                         <div class="summary-row">
                             <span class="summary-label">Total</span>
-                            <span class="summary-value total-value">$${data.total_price}</span>
+                            <span class="summary-value total-value">UGX ${Number(data.total_price).toLocaleString()}</span>
                         </div>
                         <button class="btn btn-primary" onclick="proceedToCheckout()">
                             Proceed to Checkout

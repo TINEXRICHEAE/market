@@ -1,0 +1,260 @@
+<!-- ═══════════════════════════════════════════════════════════════════════
+     BATCH 5D: TEMPLATE — delivery_confirmation.html
+     Place in: templates/delivery_confirmation.html
+
+     This is the critical page where the buyer reviews items marked as
+     delivered by the seller. Each item has a pre-ticked checkbox (confirmed).
+     Unchecking triggers the dispute form for that item.
+     ═══════════════════════════════════════════════════════════════════════ -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Confirm Delivery{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-6">
+    <a href="/order/{{ order_id }}/tracking/" class="text-blue-600 hover:underline text-sm mb-4 inline-block">← Back to Order Tracking</a>
+
+    <div class="bg-white border rounded-lg p-6 mb-6 shadow-sm">
+        <div class="flex items-center gap-3 mb-2">
+            <span class="text-3xl">📦✅</span>
+            <div>
+                <h1 class="text-xl font-bold">Confirm Delivery</h1>
+                <p class="text-sm text-gray-500">Your seller has marked the following items as delivered. Please review each item.</p>
+            </div>
+        </div>
+        <div class="bg-blue-50 border border-blue-200 rounded p-3 text-xs text-blue-700 mt-3">
+            <strong>How it works:</strong> Items are pre-checked meaning you confirm you received them with no issue.
+            If you have a problem with any item, <strong>uncheck its box</strong> and select a complaint reason.
+        </div>
+    </div>
+
+    <!-- Items List -->
+    <div id="itemsContainer">
+        <div class="text-center py-8 text-gray-500">Loading items...</div>
+    </div>
+
+    <!-- Submit Button -->
+    <div id="submitSection" class="hidden mt-6">
+        <button id="submitBtn" onclick="submitConfirmation()"
+                class="w-full bg-green-600 text-white py-4 rounded-lg font-bold text-lg hover:bg-green-700 transition-colors">
+            ✅ Submit Delivery Confirmation
+        </button>
+        <p class="text-xs text-gray-500 text-center mt-2">
+            This action is final. Disputed items will be reviewed by the platform admin.
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const orderId = '{{ order_id }}';
+let deliveryItems = [];
+
+const COMPLAINT_OPTIONS = [
+    { value: 'not_as_ordered', label: 'Not the specified item by order' },
+    { value: 'damaged', label: 'Item is damaged' },
+    { value: 'wrong_details', label: 'Wrong details/measurements' },
+    { value: 'wrong_quantity', label: 'Wrong quantity received' },
+    { value: 'inconsistent_payment', label: 'Inconsistent payment status with delivery' },
+    { value: 'suspicious_seller', label: 'Suspicious seller/delivery person' },
+    { value: 'counterfeit', label: 'Suspected counterfeit product' },
+    { value: 'missing_parts', label: 'Missing parts or accessories' },
+    { value: 'wrong_color_size', label: 'Wrong color or size' },
+    { value: 'expired_product', label: 'Product expired or near expiry' },
+    { value: 'other', label: 'Other (specify below)' },
+];
+
+async function childInit() {
+    await loadItems();
+}
+
+async function loadItems() {
+    try {
+        const resp = await fetch(`/api/order/${orderId}/confirmation-items/`);
+        const data = await resp.json();
+        deliveryItems = data.items || [];
+
+        if (deliveryItems.length === 0) {
+            document.getElementById('itemsContainer').innerHTML =
+                '<div class="text-center py-8 text-gray-500">No items pending confirmation.</div>';
+            return;
+        }
+
+        renderItems();
+        document.getElementById('submitSection').classList.remove('hidden');
+    } catch (err) {
+        document.getElementById('itemsContainer').innerHTML =
+            '<div class="text-center py-8 text-red-500">Failed to load items.</div>';
+    }
+}
+
+function renderItems() {
+    const container = document.getElementById('itemsContainer');
+    container.innerHTML = deliveryItems.map(item => `
+        <div class="bg-white border rounded-lg mb-4 shadow-sm overflow-hidden" id="item-card-${item.item_id}">
+            <div class="p-4 flex items-start gap-4">
+                <!-- Confirmation Checkbox -->
+                <div class="pt-1">
+                    <input type="checkbox" id="confirm-${item.item_id}" checked
+                           class="w-5 h-5 text-green-600 rounded cursor-pointer"
+                           onchange="toggleItemConfirmation(${item.item_id})">
+                </div>
+
+                <!-- Product Info -->
+                <div class="flex items-start gap-3 flex-1">
+                    ${item.product_image ? `<img src="${item.product_image}" class="w-14 h-14 rounded object-cover flex-shrink-0" alt="${item.product_name}">` : ''}
+                    <div class="flex-1">
+                        <h3 class="font-bold text-sm">${item.product_name}</h3>
+                        <p class="text-xs text-gray-500">Qty: ${item.quantity} | ${item.subtotal} UGX</p>
+                        <p class="text-xs text-gray-500">Seller: ${item.seller_email}</p>
+                        <p class="text-xs">
+                            Payment: ${item.payment_method_display}
+                            <span class="${item.payment_status === 'paid' ? 'text-green-600' : 'text-yellow-600'}">(${item.payment_status})</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Status Indicator -->
+                <div id="status-${item.item_id}" class="flex-shrink-0 text-right">
+                    <span class="text-xs px-2 py-1 rounded bg-green-100 text-green-800 font-bold">
+                        ✅ Confirmed
+                    </span>
+                </div>
+            </div>
+
+            <!-- Dispute Form (hidden by default, shown when unchecked) -->
+            <div id="dispute-form-${item.item_id}" class="hidden border-t bg-red-50 p-4">
+                <p class="text-sm font-bold text-red-700 mb-3">⚠️ Report a Problem</p>
+
+                <div class="mb-3">
+                    <label class="text-xs font-bold text-gray-600 block mb-1">Select Complaint Type *</label>
+                    <select id="complaint-${item.item_id}" class="w-full border rounded px-3 py-2 text-sm" required
+                            onchange="toggleOtherField(${item.item_id})">
+                        <option value="">— Choose a reason —</option>
+                        ${COMPLAINT_OPTIONS.map(opt => `<option value="${opt.value}">${opt.label}</option>`).join('')}
+                    </select>
+                </div>
+
+                <div class="mb-2">
+                    <label class="text-xs font-bold text-gray-600 block mb-1">Describe the problem (optional)</label>
+                    <textarea id="description-${item.item_id}" rows="3"
+                              class="w-full border rounded px-3 py-2 text-sm"
+                              placeholder="Explain what went wrong..."></textarea>
+                </div>
+
+                ${item.payment_method === 'online' && item.payment_status === 'paid' ? `
+                <div class="bg-blue-50 border border-blue-200 rounded p-2 text-xs text-blue-700 mt-2">
+                    💳 This item was paid online. Your dispute will be forwarded to the payment platform
+                    for review, and funds will be held until the issue is resolved.
+                </div>
+                ` : `
+                <div class="bg-gray-50 border border-gray-200 rounded p-2 text-xs text-gray-600 mt-2">
+                    💵 This item is cash-on-delivery. Your dispute will be handled by the platform admin.
+                </div>
+                `}
+            </div>
+        </div>
+    `).join('');
+}
+
+function toggleItemConfirmation(itemId) {
+    const checkbox = document.getElementById(`confirm-${itemId}`);
+    const disputeForm = document.getElementById(`dispute-form-${itemId}`);
+    const statusEl = document.getElementById(`status-${itemId}`);
+    const card = document.getElementById(`item-card-${itemId}`);
+
+    if (checkbox.checked) {
+        // Confirmed — hide dispute form
+        disputeForm.classList.add('hidden');
+        statusEl.innerHTML = '<span class="text-xs px-2 py-1 rounded bg-green-100 text-green-800 font-bold">✅ Confirmed</span>';
+        card.classList.remove('border-red-300');
+    } else {
+        // Disputed — show dispute form
+        disputeForm.classList.remove('hidden');
+        statusEl.innerHTML = '<span class="text-xs px-2 py-1 rounded bg-red-100 text-red-800 font-bold">⚠️ Disputed</span>';
+        card.classList.add('border-red-300');
+    }
+}
+
+function toggleOtherField(itemId) {
+    // Auto-focus on description when "other" is selected
+    const complaint = document.getElementById(`complaint-${itemId}`).value;
+    if (complaint === 'other') {
+        document.getElementById(`description-${itemId}`).focus();
+    }
+}
+
+async function submitConfirmation() {
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Processing...';
+
+    const items = [];
+
+    for (const item of deliveryItems) {
+        const confirmed = document.getElementById(`confirm-${item.item_id}`).checked;
+
+        if (confirmed) {
+            items.push({ item_id: item.item_id, confirmed: true });
+        } else {
+            const complaint = document.getElementById(`complaint-${item.item_id}`).value;
+            const description = document.getElementById(`description-${item.item_id}`).value;
+
+            if (!complaint) {
+                alert(`Please select a complaint reason for "${item.product_name}"`);
+                btn.disabled = false;
+                btn.textContent = '✅ Submit Delivery Confirmation';
+                return;
+            }
+
+            items.push({
+                item_id: item.item_id,
+                confirmed: false,
+                complaint_type: complaint,
+                description: description,
+            });
+        }
+    }
+
+    try {
+        const resp = await fetch(`/api/order/${orderId}/submit-confirmation/`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
+            body: JSON.stringify({ items })
+        });
+        const data = await resp.json();
+
+        if (data.success) {
+            btn.textContent = '✅ Submitted!';
+            btn.classList.remove('bg-green-600');
+            btn.classList.add('bg-gray-400');
+
+            // Show success message
+            const msg = document.createElement('div');
+            msg.className = 'bg-green-50 border border-green-300 rounded-lg p-4 mt-4 text-center';
+            msg.innerHTML = `
+                <p class="font-bold text-green-800 text-lg">Delivery Confirmation Submitted!</p>
+                <p class="text-sm text-green-700 mt-1">
+                    ${data.confirmed_count} item(s) confirmed.
+                    ${data.disputes_created.length > 0 ? `${data.disputes_created.length} dispute(s) filed.` : ''}
+                </p>
+                <a href="/order/${orderId}/tracking/" class="inline-block mt-3 text-blue-600 hover:underline font-bold">
+                    View Order Tracking →
+                </a>
+            `;
+            document.getElementById('submitSection').after(msg);
+        } else {
+            alert(data.error || 'Submission failed.');
+            btn.disabled = false;
+            btn.textContent = '✅ Submit Delivery Confirmation';
+        }
+    } catch (err) {
+        alert('Network error. Please try again.');
+        btn.disabled = false;
+        btn.textContent = '✅ Submit Delivery Confirmation';
+    }
+}
+</script>
+{% endblock %}

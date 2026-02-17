@@ -53,12 +53,12 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.SUCCESS(
                     f'Created category: {cat_data["name"]}'))
 
-        # Create sample products
+        # Create sample products (prices in UGX)
         products_data = [
             {
                 'name': 'Wireless Bluetooth Headphones',
                 'description': 'High-quality wireless headphones with noise cancellation and 30-hour battery life. Perfect for music lovers and professionals.',
-                'price': 79.99,
+                'price': 290000,
                 'stock_quantity': 50,
                 'category': 'Electronics',
                 'image_url': 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500'
@@ -66,7 +66,7 @@ class Command(BaseCommand):
             {
                 'name': 'Smart Watch Pro',
                 'description': 'Feature-packed smartwatch with fitness tracking, heart rate monitor, and smartphone notifications.',
-                'price': 299.99,
+                'price': 1100000,
                 'stock_quantity': 30,
                 'category': 'Electronics',
                 'image_url': 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500'
@@ -74,7 +74,7 @@ class Command(BaseCommand):
             {
                 'name': 'Laptop Stand Adjustable',
                 'description': 'Ergonomic aluminum laptop stand with multiple angle adjustments for comfortable working.',
-                'price': 39.99,
+                'price': 145000,
                 'stock_quantity': 100,
                 'category': 'Electronics',
                 'image_url': 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500'
@@ -82,7 +82,7 @@ class Command(BaseCommand):
             {
                 'name': 'Cotton T-Shirt Pack',
                 'description': 'Premium quality 100% cotton t-shirts in various colors. Pack of 3. Comfortable and durable.',
-                'price': 29.99,
+                'price': 110000,
                 'stock_quantity': 200,
                 'category': 'Clothing',
                 'image_url': 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500'
@@ -90,7 +90,7 @@ class Command(BaseCommand):
             {
                 'name': 'Denim Jeans Classic',
                 'description': 'Classic fit denim jeans with modern styling. Available in multiple sizes.',
-                'price': 59.99,
+                'price': 220000,
                 'stock_quantity': 75,
                 'category': 'Clothing',
                 'image_url': 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=500'
@@ -98,7 +98,7 @@ class Command(BaseCommand):
             {
                 'name': 'Winter Jacket',
                 'description': 'Warm and stylish winter jacket with water-resistant outer layer. Perfect for cold weather.',
-                'price': 129.99,
+                'price': 475000,
                 'stock_quantity': 40,
                 'category': 'Clothing',
                 'image_url': 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500'
@@ -106,7 +106,7 @@ class Command(BaseCommand):
             {
                 'name': 'Indoor Plant Collection',
                 'description': 'Set of 3 easy-care indoor plants including pots. Brings life to any room.',
-                'price': 45.00,
+                'price': 165000,
                 'stock_quantity': 60,
                 'category': 'Home & Garden',
                 'image_url': 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=500'
@@ -114,7 +114,7 @@ class Command(BaseCommand):
             {
                 'name': 'LED Desk Lamp',
                 'description': 'Modern LED desk lamp with adjustable brightness and color temperature. USB charging port included.',
-                'price': 34.99,
+                'price': 128000,
                 'stock_quantity': 80,
                 'category': 'Home & Garden',
                 'image_url': 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500'
@@ -122,7 +122,7 @@ class Command(BaseCommand):
             {
                 'name': 'Kitchen Knife Set',
                 'description': 'Professional 8-piece kitchen knife set with wooden block. Made from high-carbon stainless steel.',
-                'price': 89.99,
+                'price': 330000,
                 'stock_quantity': 45,
                 'category': 'Home & Garden',
                 'image_url': 'https://images.unsplash.com/photo-1593618998160-e34014e67546?w=500'
@@ -130,7 +130,7 @@ class Command(BaseCommand):
             {
                 'name': 'Programming in Python',
                 'description': 'Comprehensive guide to Python programming. Perfect for beginners and intermediate learners.',
-                'price': 39.99,
+                'price': 145000,
                 'stock_quantity': 120,
                 'category': 'Books',
                 'image_url': 'https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=500'
@@ -138,7 +138,7 @@ class Command(BaseCommand):
             {
                 'name': 'The Art of Web Design',
                 'description': 'Learn modern web design principles and best practices. Includes case studies and examples.',
-                'price': 44.99,
+                'price': 165000,
                 'stock_quantity': 90,
                 'category': 'Books',
                 'image_url': 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=500'
@@ -146,7 +146,7 @@ class Command(BaseCommand):
             {
                 'name': 'Yoga Mat Premium',
                 'description': 'Extra thick yoga mat with carrying strap. Non-slip surface for safe practice.',
-                'price': 29.99,
+                'price': 110000,
                 'stock_quantity': 150,
                 'category': 'Sports',
                 'image_url': 'https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=500'
@@ -154,7 +154,7 @@ class Command(BaseCommand):
             {
                 'name': 'Resistance Bands Set',
                 'description': 'Set of 5 resistance bands with different resistance levels. Perfect for home workouts.',
-                'price': 24.99,
+                'price': 90000,
                 'stock_quantity': 200,
                 'category': 'Sports',
                 'image_url': 'https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=500'
@@ -162,7 +162,7 @@ class Command(BaseCommand):
             {
                 'name': 'Basketball Official Size',
                 'description': 'Official size and weight basketball. Suitable for indoor and outdoor use.',
-                'price': 34.99,
+                'price': 128000,
                 'stock_quantity': 85,
                 'category': 'Sports',
                 'image_url': 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=500'
@@ -170,7 +170,7 @@ class Command(BaseCommand):
             {
                 'name': 'Running Shoes Pro',
                 'description': 'Lightweight running shoes with advanced cushioning technology. Available in multiple sizes.',
-                'price': 119.99,
+                'price': 435000,
                 'stock_quantity': 65,
                 'category': 'Sports',
                 'image_url': 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500'

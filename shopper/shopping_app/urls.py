@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 from shopping_app.proxy_urls import proxy_urlpatterns
 from shopping_app.seller_proxy_urls import seller_proxy_urlpatterns
+from shopping_app.order_urls import order_urlpatterns
 
 urlpatterns = [
     # === User Authentication ===
@@ -50,7 +51,6 @@ urlpatterns = [
     path('api/orders/<int:order_id>/',
          views.get_order_detail, name='get_order_detail'),
     path('checkout/', views.checkout, name='checkout'),
-    path('api/checkout/process/', views.process_checkout, name='process_checkout'),
 
     # === Seller Dashboard (Non-API) ===
     path('seller/dashboard/', views.seller_dashboard, name='seller_dashboard'),
@@ -97,4 +97,4 @@ urlpatterns = [
      path('api/orders/<int:order_id>/pay-selected-items/', 
      views.retry_selected_items_payment, 
      name='retry_selected_items_payment'),
-] + proxy_urlpatterns + seller_proxy_urlpatterns
+] + proxy_urlpatterns + seller_proxy_urlpatterns  + order_urlpatterns

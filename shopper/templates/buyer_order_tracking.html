@@ -1,0 +1,159 @@
+<!-- ═══════════════════════════════════════════════════════════════════════
+     BATCH 5C: TEMPLATE — buyer_order_tracking.html
+     Place in: templates/buyer_order_tracking.html
+     ═══════════════════════════════════════════════════════════════════════ -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Order Tracking{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 py-6">
+    <a href="/orders/" class="text-blue-600 hover:underline text-sm mb-4 inline-block">← Back to My Orders</a>
+
+    <!-- Order Summary -->
+    <div id="orderSummary" class="bg-white border rounded-lg p-6 mb-6 shadow-sm">
+        <div class="text-center py-4 text-gray-500">Loading order tracking...</div>
+    </div>
+
+    <!-- Delivery Confirmation Banner -->
+    <div id="confirmationBanner" class="hidden bg-yellow-50 border-2 border-yellow-400 rounded-lg p-4 mb-6">
+        <div class="flex items-center gap-3">
+            <span class="text-3xl">📦</span>
+            <div class="flex-1">
+                <p class="font-bold text-yellow-800">Items marked as delivered!</p>
+                <p class="text-sm text-yellow-700">Your seller has marked item(s) as delivered. Please review and confirm.</p>
+            </div>
+            <a id="confirmBtn" href="#" class="bg-yellow-500 text-white px-4 py-2 rounded font-bold text-sm hover:bg-yellow-600">
+                Review & Confirm →
+            </a>
+        </div>
+    </div>
+
+    <!-- Items grouped by seller -->
+    <div id="sellersContainer" class="space-y-6"></div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/delivery_notifications.js' %}"></script>
+<script>
+const orderId = '{{ order_id }}';
+
+async function childInit() {
+    await loadTracking();
+}
+
+async function loadTracking() {
+    try {
+        const resp = await fetch(`/api/order/${orderId}/tracking/`);
+        const data = await resp.json();
+        renderOrderSummary(data.order);
+        renderSellers(data.sellers);
+
+        if (data.has_pending_confirmation && data.items_awaiting_confirmation.length > 0) {
+            const banner = document.getElementById('confirmationBanner');
+            banner.classList.remove('hidden');
+            document.getElementById('confirmBtn').href = `/order/${orderId}/confirm-delivery/`;
+        }
+    } catch (err) {
+        document.getElementById('orderSummary').innerHTML =
+            '<div class="text-center py-4 text-red-500">Failed to load tracking data.</div>';
+    }
+}
+
+function renderOrderSummary(order) {
+    document.getElementById('orderSummary').innerHTML = `
+        <div class="flex flex-wrap justify-between items-start gap-4">
+            <div>
+                <h1 class="text-xl font-bold mb-1">${order.order_number}</h1>
+            </div>
+            <div class="text-right">
+                <p class="font-bold">${order.total_amount} UGX</p>
+                <p class="text-xs text-gray-500">Placed: ${order.created_at}</p>
+            </div>
+        </div>
+    `;
+}
+
+function renderSellers(sellers) {
+    const container = document.getElementById('sellersContainer');
+    container.innerHTML = sellers.map(seller => `
+        <div class="bg-white border rounded-lg shadow-sm overflow-hidden">
+            <div class="p-4 bg-gray-50 border-b">
+                <p class="font-bold text-sm">🏪 Seller: ${seller.seller_email}</p>
+                ${seller.seller_phone ? `<p class="text-xs text-gray-500">📱 ${seller.seller_phone}</p>` : ''}
+            </div>
+
+            <div class="divide-y">
+                ${seller.items.map(item => `
+                    <div class="p-4">
+                        <div class="flex items-start gap-4">
+                            ${item.product_image ? `<img src="${item.product_image}" class="w-16 h-16 rounded object-cover flex-shrink-0" alt="${item.product_name}">` : ''}
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-bold text-sm">${item.product_name}</h3>
+                                <p class="text-xs text-gray-500">Qty: ${item.quantity} | ${item.subtotal} UGX</p>
+                                <p class="text-xs">
+                                    Payment: ${item.payment_method_display}
+                                    <span class="${item.payment_status === 'paid' ? 'text-green-600' : 'text-yellow-600'}">(${item.payment_status_display})</span>
+                                </p>
+                            </div>
+                            <div class="text-right flex-shrink-0">
+                                <span class="text-xs px-2 py-1 rounded font-bold ${getTrackingColor(item.tracking_status)}">
+                                    ${item.tracking_status_display}
+                                </span>
+                                ${item.tracking_number ? `<p class="text-xs text-gray-500 mt-1">📋 ${item.tracking_number}</p>` : ''}
+                                ${item.estimated_delivery ? `<p class="text-xs text-gray-500">Est: ${item.estimated_delivery}</p>` : ''}
+                            </div>
+                        </div>
+
+                        <!-- Tracking Timeline -->
+                        ${item.tracking_history && item.tracking_history.length > 0 ? `
+                        <div class="mt-3 ml-4">
+                            <details>
+                                <summary class="text-xs font-bold text-gray-500 cursor-pointer">📜 Tracking History</summary>
+                                <div class="mt-2 border-l-2 border-blue-200 pl-4 space-y-2">
+                                    ${item.tracking_history.map(h => `
+                                        <div class="text-xs">
+                                            <span class="font-bold capitalize">${h.status.replace(/_/g, ' ')}</span>
+                                            <span class="text-gray-400 ml-1">${h.created_at}</span>
+                                            ${h.notes ? `<p class="text-gray-500">${h.notes}</p>` : ''}
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </details>
+                        </div>
+                        ` : ''}
+
+                        <!-- Dispute Info -->
+                        ${item.has_dispute && item.dispute ? `
+                        <div class="mt-3 bg-red-50 border border-red-200 rounded p-3">
+                            <p class="text-xs font-bold text-red-700">⚠️ Dispute: ${item.dispute.complaint_type}</p>
+                            <p class="text-xs text-gray-600">${item.dispute.description || ''}</p>
+                            <div class="flex flex-wrap gap-3 mt-1 text-xs">
+                                <span>Status: <strong>${item.dispute.status_display}</strong></span>
+                                ${item.dispute.payment_app_status ? `<span>Payment App: <strong>${item.dispute.payment_app_status}</strong></span>` : ''}
+                                ${item.dispute.refund_amount ? `<span class="text-green-700">Refund: ${item.dispute.refund_amount} UGX</span>` : ''}
+                            </div>
+                            ${item.dispute.admin_notes ? `<p class="text-xs text-gray-500 mt-1 italic">${item.dispute.admin_notes}</p>` : ''}
+                        </div>
+                        ` : ''}
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `).join('');
+}
+
+function getTrackingColor(status) {
+    const colors = {
+        'pending': 'bg-gray-100 text-gray-700', 'reviewed': 'bg-blue-50 text-blue-700',
+        'confirmed': 'bg-blue-100 text-blue-700', 'packed': 'bg-indigo-100 text-indigo-700',
+        'dispatched': 'bg-purple-100 text-purple-700', 'in_transit': 'bg-orange-100 text-orange-700',
+        'out_for_delivery': 'bg-yellow-100 text-yellow-700', 'delivered_by_seller': 'bg-teal-100 text-teal-800',
+        'delivered': 'bg-green-100 text-green-800', 'disputed': 'bg-red-100 text-red-800',
+    };
+    return colors[status] || 'bg-gray-100 text-gray-700';
+}
+</script>
+{% endblock %}

@@ -334,10 +334,6 @@
             }
         }
 
-        function getStatusClass(status) {
-            return `status-${status}`;
-        }
-
         function displayOrders(data) {
             const container = document.getElementById('ordersContainer');
             const countEl = document.getElementById('ordersCount');
@@ -363,7 +359,6 @@
                         <div class="order-card">
                             <div class="order-header">
                                 <span class="order-number">${order.order_number}</span>
-                                <span class="order-status ${getStatusClass(order.status)}">${order.status_display}</span>
                             </div>
                             
                             <div class="order-info">
@@ -373,7 +368,7 @@
                                 </div>
                                 <div class="info-item">
                                     <span class="info-label">Total Amount</span>
-                                    <span class="info-value">$${order.total_amount}</span>
+                                    <span class="info-value">UGX ${Number(order.total_amount).toLocaleString()}</span>
                                 </div>
                                 <div class="info-item">
                                     <span class="info-label">Items</span>
@@ -386,14 +381,14 @@
                                 ${order.items.slice(0, 3).map(item => `
                                     <div class="item-preview">
                                         <span class="item-name">${item.product_name}</span>
-                                        <span class="item-details">${item.quantity} × $${item.price}</span>
+                                        <span class="item-details">${item.quantity} × UGX ${Number(item.price).toLocaleString()}</span>
                                     </div>
                                 `).join('')}
                                 ${order.items.length > 3 ? `<div style="text-align: center; color: #666; margin-top: 0.5rem;">+ ${order.items.length - 3} more item${order.items.length - 3 !== 1 ? 's' : ''}</div>` : ''}
                             </div>
 
                             <div class="order-footer">
-                                <span class="order-total">Total: $${order.total_amount}</span>
+                                <span class="order-total">Total: UGX ${Number(order.total_amount).toLocaleString()}</span>
                                 <a href="/orders/${order.id}/" class="btn btn-primary">View Details</a>
                             </div>
                         </div>

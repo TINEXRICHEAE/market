@@ -407,6 +407,7 @@
 
     <div class="container">
         <a href="/orders/" class="back-button">← Back to Orders</a>
+        <a href="/order/{{ order_id }}/tracking/" class="back-button">Track →</a>
 
         <div id="orderContainer">
             <div class="loading">Loading order details...</div>
@@ -416,6 +417,7 @@
     <div id="toast" class="toast"></div>
 
     <script src="{% static 'js/navbar.js' %}"></script>
+    <script src="{% static 'js/delivery_notifications.js' %}"></script>
     <script>
         const orderId = "{{ order_id }}";
         let currentOrder = null;
@@ -468,7 +470,6 @@
                                         Payment: ${order.payment_method_display}
                                     </div>
                                 </div>
-                                <span class="order-status ${getStatusClass(order.status)}">${order.status_display}</span>
                             </div>
                             
                             <div class="order-info-grid">
@@ -486,7 +487,7 @@
                                 </div>
                                 <div class="info-item">
                                     <span class="info-label">Total Amount</span>
-                                    <span class="info-value">$${order.total_amount}</span>
+                                    <span class="info-value">UGX ${Number(order.total_amount).toLocaleString()}</span>
                                 </div>
                             </div>
                         </div>
@@ -527,8 +528,8 @@
                                             </div>
                                         </div>
                                         <div class="item-price-section">
-                                            <div class="item-unit-price">$${item.price} each</div>
-                                            <div class="item-subtotal">$${item.subtotal}</div>
+                                            <div class="item-unit-price">UGX ${Number(item.price).toLocaleString()} each</div>
+                                            <div class="item-subtotal">UGX ${Number(item.subtotal).toLocaleString()}</div>
                                         </div>
                                     </div>
                                 `).join('')}
@@ -624,12 +625,12 @@
                                                                     ${item.product_name}
                                                                 </div>
                                                                 <div style="font-size: 0.75rem; color: #666;">
-                                                                    Quantity: ${item.quantity} × $${item.price}
+                                                                    Quantity: ${item.quantity} × UGX ${Number(item.price).toLocaleString()}
                                                                 </div>
                                                             </div>
                                                             <div style="text-align: right; margin-left: 1rem;">
                                                                 <div style="font-size: 0.9rem; font-weight: 700; color: #667eea;">
-                                                                    $${item.subtotal}
+                                                                    UGX ${Number(item.subtotal).toLocaleString()}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -657,7 +658,7 @@
                                                             ✅ Paid Online (${paidOnlineItems.length} item${paidOnlineItems.length !== 1 ? 's' : ''})
                                                         </span>
                                                         <span style="font-weight: 600; color: #0f5132;">
-                                                            $${paidOnlineTotal.toFixed(2)}
+                                                            UGX ${Number(paidOnlineTotal).toLocaleString()}
                                                         </span>
                                                     </div>
                                                 ` : ''}
@@ -668,7 +669,7 @@
                                                             ⏳ Pending Payment (${pendingOnlineItems.length} item${pendingOnlineItems.length !== 1 ? 's' : ''})
                                                         </span>
                                                         <span style="font-weight: 600; color: #856404;">
-                                                            $${pendingOnlineTotal.toFixed(2)}
+                                                            UGX ${Number(pendingOnlineTotal).toLocaleString()}
                                                         </span>
                                                     </div>
                                                 ` : ''}
@@ -679,7 +680,7 @@
                                                             💵 Cash on Delivery (${cashItems.length} item${cashItems.length !== 1 ? 's' : ''})
                                                         </span>
                                                         <span style="font-weight: 600; color: #004085;">
-                                                            $${cashTotal.toFixed(2)}
+                                                            UGX ${Number(cashTotal).toLocaleString()}
                                                         </span>
                                                     </div>
                                                 ` : ''}
@@ -688,7 +689,7 @@
                                         
                                         <div class="seller-payment-summary" style="margin-top: 0.75rem;">
                                             <span style="font-weight: 600;">Total to Seller</span>
-                                            <span style="font-weight: 700; color: #667eea; font-size: 1.1rem;">$${seller.total_amount}</span>
+                                            <span style="font-weight: 700; color: #667eea; font-size: 1.1rem;">UGX ${Number(seller.total_amount).toLocaleString()}</span>
                                         </div>
                                     </div>
                                 `;
@@ -700,7 +701,7 @@
                         <div class="section-title">Order Summary</div>
                         <div class="summary-row">
                             <span class="summary-label">Subtotal</span>
-                            <span class="summary-value">$${order.total_amount}</span>
+                            <span class="summary-value">UGX ${Number(order.total_amount).toLocaleString()}</span>
                         </div>
                         <div class="summary-row">
                             <span class="summary-label">Shipping</span>
@@ -708,18 +709,18 @@
                         </div>
                         <div class="summary-row">
                             <span class="summary-label">Tax</span>
-                            <span class="summary-value">$0.00</span>
+                            <span class="summary-value">UGX 0.00</span>
                         </div>
                         <div class="summary-row">
                             <span class="summary-label">Total</span>
-                            <span class="summary-value total-value">$${order.total_amount}</span>
+                            <span class="summary-value total-value">UGX ${Number(order.total_amount).toLocaleString()}</span>
                         </div>
 
                         ${order.has_unpaid_online ? `
                             <div style="margin-top: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 5px;">
                                 <div style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">Selected for payment:</div>
                                 <div style="font-size: 1.2rem; font-weight: bold; color: #667eea;" id="selectedTotal">
-                                    $${payableItems.reduce((sum, item) => sum + parseFloat(item.subtotal), 0).toFixed(2)}
+                                    UGX ${Number(payableItems.reduce((sum, item) => sum + parseFloat(item.subtotal), 0)).toLocaleString()}
                                 </div>
                                 <div style="font-size: 0.8rem; color: #666; margin-top: 0.25rem;" id="selectedCount">
                                     ${payableItems.length} item${payableItems.length !== 1 ? 's' : ''} selected
@@ -749,7 +750,7 @@
                 total += parseFloat(cb.dataset.amount);
             });
 
-            document.getElementById('selectedTotal').textContent = `$${total.toFixed(2)}`;
+            document.getElementById('selectedTotal').textContent = `UGX ${Number(total).toLocaleString()}`;
             document.getElementById('selectedCount').textContent = 
                 `${checkboxes.length} item${checkboxes.length !== 1 ? 's' : ''} selected`;
             
@@ -791,7 +792,7 @@
                 const data = await response.json();
 
                 if (response.ok && data.success) {
-                    showToast(`Redirecting to payment ($${data.total_amount})...`, 'success');
+                    showToast(`Redirecting to payment (UGX ${Number(data.total_amount).toLocaleString()})...`, 'success');
                     setTimeout(() => {
                         window.location.href = `/payment/process/${data.payment_request_id}/`;
                     }, 500);

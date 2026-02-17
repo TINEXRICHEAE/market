@@ -265,6 +265,8 @@ class Order(models.Model):
     STATUS_CHOICES = (
         ('pending', 'Pending'),
         ('processing', 'Processing'),
+        ('partially_delivered', 'Partially Delivered'),
+        ('delivered', 'Delivered'),
         ('completed', 'Completed'),
         ('cancelled', 'Cancelled'),
     )
@@ -346,6 +348,31 @@ class OrderItem(models.Model):
         default=list,
         help_text="Available payment methods for this item, e.g., ['cash'] or ['cash', 'online']"
     )
+    TRACKING_STATUS_CHOICES = (
+        ('pending', 'Pending Review'),
+        ('reviewed', 'Reviewed'),
+        ('confirmed', 'Confirmed'),
+        ('packed', 'Packed'),
+        ('dispatched', 'Dispatched'),
+        ('in_transit', 'In Transit'),
+        ('out_for_delivery', 'Out for Delivery'),
+        ('delivered_by_seller', 'Marked Delivered'),
+        ('delivered', 'Delivery Confirmed'),
+        ('disputed', 'Disputed'),
+        ('cancelled', 'Cancelled'),
+    )
+    tracking_status = models.CharField(max_length=30, choices=TRACKING_STATUS_CHOICES, default='pending')
+    tracking_number = models.CharField(max_length=100, blank=True, null=True)
+    dispatch_date = models.DateTimeField(null=True, blank=True)
+    estimated_delivery = models.DateTimeField(null=True, blank=True)
+    delivery_marked_at = models.DateTimeField(null=True, blank=True)
+    delivery_confirmed_at = models.DateTimeField(null=True, blank=True)
+    delivery_notes = models.TextField(blank=True, null=True)
+    has_dispute = models.BooleanField(default=False)
+
+    @property
+    def tracking_status_display_verbose(self):
+        return dict(self.TRACKING_STATUS_CHOICES).get(self.tracking_status, self.tracking_status)
 
     class Meta:
         db_table = 'order_items'
@@ -365,3 +392,176 @@ class OrderItem(models.Model):
         """Check if this item supports online payment"""
         return 'online' in self.payment_options
 
+
+# ===================== OrderItemTracking =====================
+
+
+class OrderItemTracking(models.Model):
+    """
+    Tracks the history of status changes for each order item.
+    Provides a granular audit trail for order tracking pages.
+    """
+    order_item = models.ForeignKey(
+        OrderItem,
+        on_delete=models.CASCADE,
+        related_name='tracking_history'
+    )
+    status = models.CharField(max_length=30)
+    notes = models.TextField(blank=True, null=True)
+    updated_by_role = models.CharField(
+        max_length=20,
+        choices=[('seller', 'Seller'), ('buyer', 'Buyer'), ('system', 'System'), ('admin', 'Admin')],
+        default='system'
+    )
+    updated_by = models.ForeignKey(
+        Users,
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        related_name='tracking_updates'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'order_item_tracking'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Tracking({self.order_item.id}: {self.status} at {self.created_at})"
+
+
+
+# ===================== DeliveryConfirmation =====================
+
+
+class DeliveryConfirmation(models.Model):
+    """
+    Buyer's delivery confirmation/approval for an order.
+    One record per order when seller marks items as delivered.
+    Contains per-item approval/dispute data.
+    """
+    order = models.ForeignKey(
+        Order,
+        on_delete=models.CASCADE,
+        related_name='delivery_confirmations'
+    )
+    buyer = models.ForeignKey(
+        Users,
+        on_delete=models.CASCADE,
+        related_name='delivery_confirmations'
+    )
+    is_submitted = models.BooleanField(default=False)
+    submitted_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'delivery_confirmations'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"DeliveryConfirmation(Order {self.order.order_number}, Buyer {self.buyer.email})"
+
+
+
+# ===================== OrderDispute =====================
+
+
+class OrderDispute(models.Model):
+    """
+    Dispute on a specific order item within the shopping app.
+    If the item was paid online (payment_method='online', payment_status='paid'),
+    the dispute is forwarded to the payment app (Fair Cashier).
+    If it's cash-on-delivery, the dispute stays local for the shopping app admin.
+    """
+    COMPLAINT_CHOICES = (
+        ('not_as_ordered', 'Not the specified item by order'),
+        ('damaged', 'Item is damaged'),
+        ('wrong_details', 'Wrong details/measurements'),
+        ('wrong_quantity', 'Wrong quantity received'),
+        ('inconsistent_payment', 'Inconsistent payment status with delivery'),
+        ('suspicious_seller', 'Suspicious seller/delivery person'),
+        ('counterfeit', 'Suspected counterfeit product'),
+        ('missing_parts', 'Missing parts or accessories'),
+        ('wrong_color_size', 'Wrong color or size'),
+        ('expired_product', 'Product expired or near expiry'),
+        ('other', 'Other'),
+    )
+
+    STATUS_CHOICES = (
+        ('submitted', 'Submitted'),
+        ('under_review', 'Under Review'),
+        ('escalated', 'Escalated to Admin'),
+        ('resolved_with_refund', 'Resolved With Refund'),
+        ('resolved_without_refund', 'Resolved Without Refund'),
+    )
+
+    dispute_id = models.AutoField(primary_key=True)
+    order_item = models.OneToOneField(
+        OrderItem,
+        on_delete=models.CASCADE,
+        related_name='dispute'
+    )
+    order = models.ForeignKey(
+        Order,
+        on_delete=models.CASCADE,
+        related_name='disputes'
+    )
+    buyer = models.ForeignKey(
+        Users,
+        on_delete=models.CASCADE,
+        related_name='shopping_disputes_filed'
+    )
+    seller = models.ForeignKey(
+        Users,
+        on_delete=models.CASCADE,
+        related_name='shopping_disputes_received'
+    )
+    complaint_type = models.CharField(max_length=30, choices=COMPLAINT_CHOICES)
+    description = models.TextField(blank=True, null=True)
+    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='submitted')
+
+    # Payment app integration
+    is_online_payment = models.BooleanField(default=False)
+    payment_app_dispute_id = models.IntegerField(
+        null=True, blank=True,
+        help_text="Dispute ID in the payment app (Fair Cashier)"
+    )
+    payment_app_status = models.CharField(
+        max_length=30, blank=True, null=True,
+        help_text="Synced status from payment app"
+    )
+    refund_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    refund_processed_at = models.DateTimeField(null=True, blank=True)
+
+    # Resolution
+    admin_notes = models.TextField(blank=True, null=True)
+    resolved_by = models.ForeignKey(
+        Users,
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        related_name='shopping_disputes_resolved'
+    )
+    resolved_at = models.DateTimeField(null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'order_disputes'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"OrderDispute(#{self.dispute_id}, Item {self.order_item.id}, {self.get_status_display()})"
+
+    @property
+    def is_resolved(self):
+        return self.status in ('resolved_with_refund', 'resolved_without_refund')
+
+    @property
+    def needs_payment_app(self):
+        """Whether this dispute should be forwarded to the payment app."""
+        return (
+            self.order_item.payment_method == 'online'
+            and self.order_item.payment_status == 'paid'
+        )
+    

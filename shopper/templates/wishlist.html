@@ -287,30 +287,8 @@
 
     <div id="toast" class="toast"></div>
 
+    <script src="{% static 'js/navbar.js' %}"></script>
     <script>
-        let csrfToken = '';
-
-        async function getCSRFToken() {
-            try {
-                const response = await fetch('/api/csrf/');
-                const data = await response.json();
-                csrfToken = data.csrfToken;
-            } catch (error) {
-                console.error('Failed to get CSRF token:', error);
-            }
-        }
-
-        async function logout(e) {
-            e.preventDefault();
-            const response = await fetch('/logout_user/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken
-                }
-            });
-            if (response.ok) window.location.href = '/login_user/';
-        }
 
         async function loadWishlist() {
             try {
@@ -357,7 +335,7 @@
                                 <h3 class="product-name" onclick="window.location.href='/products/${item.product_id}/'">${item.product_name}</h3>
                                 <p class="product-description">${item.product_description}</p>
                                 <div class="product-footer">
-                                    <span class="product-price">$${item.product_price}</span>
+                                    <span class="product-price">UGX ${Number(item.product_price).toLocaleString()}</span>
                                     <button class="btn btn-primary" 
                                             onclick="addToCart(${item.product_id})"
                                             ${!item.in_stock ? 'disabled' : ''}>

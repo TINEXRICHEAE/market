@@ -219,7 +219,7 @@
                         <h3 class="product-name">${product.name}</h3>
                         <p class="product-description">${product.description}</p>
                         <div class="product-footer">
-                            <span class="product-price">$${product.price}</span>
+                            <span class="product-price">UGX ${Number(product.price).toLocaleString()}</span>
                             <button class="btn btn-primary" 
                                     onclick="addToCart(event, ${product.id})"
                                     ${!product.in_stock ? 'disabled' : ''}>

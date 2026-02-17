@@ -256,7 +256,7 @@
                     
                     <div class="product-info">
                         <h1 class="product-title">${product.name}</h1>
-                        <div class="product-price">$${product.price}</div>
+                        <div class="product-price">UGX ${Number(product.price).toLocaleString()}</div>
                         
                         <span class="stock-status ${product.in_stock ? 'in-stock' : 'out-of-stock'}">
                             ${product.in_stock ? `${product.stock_quantity} in stock` : 'Out of Stock'}

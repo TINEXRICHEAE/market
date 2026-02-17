@@ -422,13 +422,13 @@
                                     <div class="item-info">
                                         <div class="item-name">${item.product_name}</div>
                                         <div class="item-details">
-                                            Quantity: ${item.quantity} × $${item.product_price}
+                                            Quantity: ${item.quantity} × UGX ${Number(item.product_price).toLocaleString()}
                                         </div>
                                         <div class="item-details">
                                             Seller: ${item.seller_email}
                                         </div>
                                     </div>
-                                    <div class="item-price">$${item.subtotal}</div>
+                                    <div class="item-price">UGX ${Number(item.subtotal).toLocaleString()}</div>
                                 </div>
                             `).join('')}
                         </div>
@@ -445,13 +445,13 @@
                                         <div class="seller-group">
                                             <div class="seller-header">
                                                 <span>📦 ${seller}</span>
-                                                <span>$${sellerTotal.toFixed(2)}</span>
+                                                <span>UGX ${Number(sellerTotal).toLocaleString()}</span>
                                             </div>
                                             <div class="seller-items">
                                                 ${items.map(item => `
                                                     <div class="seller-item">
                                                         <span>${item.product_name} (×${item.quantity})</span>
-                                                        <span>$${item.subtotal}</span>
+                                                        <span>UGX ${Number(item.subtotal).toLocaleString()}</span>
                                                     </div>
                                                 `).join('')}
                                             </div>
@@ -475,7 +475,7 @@
                         <div class="section-title">Order Summary</div>
                         <div class="summary-row">
                             <span class="summary-label">Subtotal (${data.total_items} items)</span>
-                            <span class="summary-value">$${data.total_price}</span>
+                            <span class="summary-value">UGX ${Number(data.total_price).toLocaleString()}</span>
                         </div>
                         <div class="summary-row">
                             <span class="summary-label">Shipping</span>
@@ -487,7 +487,7 @@
                         </div>
                         <div class="summary-row">
                             <span class="summary-label">Total</span>
-                            <span class="summary-value total-value">$${data.total_price}</span>
+                            <span class="summary-value total-value">UGX ${Number(data.total_price).toLocaleString()}</span>
                         </div>
                         <button class="btn btn-primary" onclick="placeOrder()" id="placeOrderBtn">
                             Place Order
@@ -561,7 +561,7 @@
                         Thank you for your purchase. Your order has been placed and payments have been distributed to sellers.
                     </p>
                     <p style="color: #666; margin-bottom: 2rem;">
-                        Total Amount: <strong style="color: #667eea; font-size: 1.3rem;">$${orderData.total_amount}</strong>
+                        Total Amount: <strong style="color: #667eea; font-size: 1.3rem;">UGX ${Number(orderData.total_amount).toLocaleString()}</strong>
                     </p>
                     <button class="btn btn-primary" onclick="window.location.href='/products/'">
                         Continue Shopping

@@ -235,7 +235,7 @@ def payment_callback(request):
                 # Check if all items are paid
                 all_items = order.items.all()
                 all_paid = all(
-                    item.payment_status in ['paid', 'cash']
+                    item.payment_status in ['paid']
                     for item in all_items
                 )
                 
@@ -243,9 +243,6 @@ def payment_callback(request):
                     order.status = 'processing'
                     order.online_payment_status = 'completed'
                     logger.info(f"✅ Order {order.order_number} fully paid")
-                else:
-                    order.online_payment_status = 'partial'
-                    logger.info(f"⚠️ Order {order.order_number} partially paid")
                 
                 order.save()
                 
@@ -348,7 +345,7 @@ def payment_return(request):
                     OrderItem.objects.filter(
                         id__in=online_item_ids,
                         order=order
-                    ).update(payment_status='paid')
+                    ).update(payment_status='paid', payment_method='online')
                 
                 logger.info(f"✅ Payment successful for order {order_number}")
                 logger.info(f"✅ Updated {len(online_item_ids)} order items to 'paid' status")
