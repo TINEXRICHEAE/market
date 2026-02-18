@@ -244,6 +244,13 @@ def update_order_item_tracking(request, item_id):
                 order_item.dispatch_date = timezone.now()
             if new_status == 'delivered_by_seller':
                 order_item.delivery_marked_at = timezone.now()
+                if order_item.payment_method == 'online' and order_item.payment_status != 'paid':
+                    order_item.payment_method = 'cash'
+                    order_item.payment_status = 'paid'
+                    order_item.delivery_notes = (order_item.delivery_notes or '') + \
+                        '\nOnline payment not completed — switched to cash on delivery.'
+                elif order_item.payment_status != 'paid':
+                    order_item.payment_status = 'paid'
             if notes:
                 order_item.delivery_notes = notes
 
@@ -318,6 +325,13 @@ def bulk_update_tracking(request, order_id):
                     item.dispatch_date = timezone.now()
                 if new_status == 'delivered_by_seller':
                     item.delivery_marked_at = timezone.now()
+                    if item.payment_method == 'online' and item.payment_status != 'paid':
+                        item.payment_method = 'cash'
+                        item.payment_status = 'paid'
+                        item.delivery_notes = (item.delivery_notes or '') + \
+                            '\nOnline payment not completed — switched to cash on delivery.'
+                    elif item.payment_status != 'paid':
+                        item.payment_status = 'paid'
                 item.save()
 
                 OrderItemTracking.objects.create(

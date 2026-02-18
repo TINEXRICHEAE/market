@@ -10816,3 +10816,1441 @@ INFO 2026-02-17 23:11:50,353 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 20
 INFO 2026-02-17 23:12:20,356 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
 INFO 2026-02-17 23:12:50,483 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
 INFO 2026-02-17 23:13:20,374 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-17 23:13:50,356 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-17 23:14:20,471 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-17 23:14:50,398 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 13:19:14,988 autoreload Watching for file changes with StatReloader
+INFO 2026-02-18 13:20:51,928 basehttp "GET / HTTP/1.1" 200 26001
+INFO 2026-02-18 13:20:52,099 basehttp "GET /static/css/navbar.css HTTP/1.1" 200 7526
+INFO 2026-02-18 13:20:52,112 basehttp "GET /static/js/navbar.js HTTP/1.1" 200 12821
+INFO 2026-02-18 13:20:52,149 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 13:20:52,446 views User authenticated: False
+INFO 2026-02-18 13:20:52,449 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+WARNING 2026-02-18 13:20:54,672 log Not Found: /favicon.ico
+WARNING 2026-02-18 13:20:54,673 basehttp "GET /favicon.ico HTTP/1.1" 404 16845
+INFO 2026-02-18 13:21:02,701 basehttp "GET /products/ HTTP/1.1" 200 14366
+INFO 2026-02-18 13:21:02,749 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 13:21:02,772 views User authenticated: False
+INFO 2026-02-18 13:21:02,777 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+INFO 2026-02-18 13:21:03,093 basehttp "GET /api/products/ HTTP/1.1" 200 5133
+INFO 2026-02-18 13:21:09,936 basehttp "GET /login_user/ HTTP/1.1" 200 3536
+INFO 2026-02-18 13:21:09,974 basehttp "GET /static/css/login.css HTTP/1.1" 200 3232
+INFO 2026-02-18 13:21:09,978 basehttp "GET /static/js/login-validation.js HTTP/1.1" 200 2795
+WARNING 2026-02-18 13:21:09,978 basehttp "GET /static/js/script.js HTTP/1.1" 404 1896
+INFO 2026-02-18 13:21:10,064 basehttp "GET /static/image/logo.jpg HTTP/1.1" 200 16778
+INFO 2026-02-18 13:21:35,554 basehttp "POST /login_user/ HTTP/1.1" 200 93
+INFO 2026-02-18 13:21:37,765 basehttp "GET /products/15/ HTTP/1.1" 200 18249
+INFO 2026-02-18 13:21:37,854 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 13:21:37,935 views User authenticated: True
+INFO 2026-02-18 13:21:37,953 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 13:21:38,031 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 13:21:38,242 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 13:21:38,331 basehttp "GET /api/products/15/ HTTP/1.1" 200 370
+INFO 2026-02-18 13:21:43,565 basehttp "POST /api/cart/add/ HTTP/1.1" 200 60
+INFO 2026-02-18 13:21:43,642 basehttp "GET /api/cart/ HTTP/1.1" 200 339
+INFO 2026-02-18 13:21:45,065 basehttp "GET /products/ HTTP/1.1" 200 14366
+INFO 2026-02-18 13:21:45,165 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 13:21:45,236 views User authenticated: True
+INFO 2026-02-18 13:21:45,242 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 13:21:45,320 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 13:21:45,409 basehttp "GET /api/cart/ HTTP/1.1" 200 339
+INFO 2026-02-18 13:21:45,553 basehttp "GET /api/products/ HTTP/1.1" 200 5133
+INFO 2026-02-18 13:21:47,487 basehttp "POST /api/cart/add/ HTTP/1.1" 200 60
+INFO 2026-02-18 13:21:47,566 basehttp "GET /api/cart/ HTTP/1.1" 200 615
+INFO 2026-02-18 13:21:48,377 basehttp "POST /api/cart/add/ HTTP/1.1" 200 61
+INFO 2026-02-18 13:21:48,444 basehttp "GET /api/cart/ HTTP/1.1" 200 898
+INFO 2026-02-18 13:21:49,387 basehttp "POST /api/cart/add/ HTTP/1.1" 200 61
+INFO 2026-02-18 13:21:49,476 basehttp "GET /api/cart/ HTTP/1.1" 200 1184
+INFO 2026-02-18 13:21:51,321 basehttp "POST /api/cart/add/ HTTP/1.1" 200 61
+INFO 2026-02-18 13:21:51,398 basehttp "GET /api/cart/ HTTP/1.1" 200 1473
+INFO 2026-02-18 13:21:52,053 basehttp "POST /api/cart/add/ HTTP/1.1" 200 61
+INFO 2026-02-18 13:21:52,142 basehttp "GET /api/cart/ HTTP/1.1" 200 1756
+INFO 2026-02-18 13:21:53,065 basehttp "POST /api/cart/add/ HTTP/1.1" 200 61
+INFO 2026-02-18 13:21:53,143 basehttp "GET /api/cart/ HTTP/1.1" 200 2051
+INFO 2026-02-18 13:21:54,288 basehttp "GET /cart/ HTTP/1.1" 200 21027
+INFO 2026-02-18 13:21:54,420 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 13:21:54,448 basehttp "GET /api/cart/ HTTP/1.1" 200 2051
+INFO 2026-02-18 13:21:54,545 views User authenticated: True
+INFO 2026-02-18 13:21:54,598 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 13:21:54,720 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 13:21:54,842 basehttp "GET /api/cart/ HTTP/1.1" 200 2051
+INFO 2026-02-18 13:22:02,198 basehttp "GET /checkout/ HTTP/1.1" 302 0
+INFO 2026-02-18 13:22:02,565 basehttp "GET /payment/select/ HTTP/1.1" 200 21618
+INFO 2026-02-18 13:22:02,720 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 13:22:02,800 views User authenticated: True
+INFO 2026-02-18 13:22:02,865 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 13:22:03,010 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 13:22:03,234 basehttp "GET /api/cart/ HTTP/1.1" 200 2051
+INFO 2026-02-18 13:23:16,312 basehttp "POST /api/process-payment-selection/ HTTP/1.1" 200 164
+INFO 2026-02-18 13:23:17,101 basehttp "GET /payment/process/19cd676d-fad1-4275-adec-afac400f0735/ HTTP/1.1" 200 21442
+INFO 2026-02-18 13:23:17,824 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 13:23:17,893 views User authenticated: True
+INFO 2026-02-18 13:23:18,079 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 13:23:18,212 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 13:23:18,345 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 13:24:17,778 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 13:25:17,764 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 13:26:10,485 proxy_views 🔙 Payment return: 19cd676d-fad1-4275-adec-afac400f0735 - Status: success
+INFO 2026-02-18 13:26:10,653 proxy_views ✅ Payment successful for order ORD-20260218102315-7E82NG
+INFO 2026-02-18 13:26:10,654 proxy_views ✅ Updated 7 order items to 'paid' status
+INFO 2026-02-18 13:26:10,664 basehttp "GET /payment/return/?request_id=19cd676d-fad1-4275-adec-afac400f0735&status=success HTTP/1.1" 302 0
+INFO 2026-02-18 13:26:10,786 basehttp "GET /orders/25/ HTTP/1.1" 200 41535
+INFO 2026-02-18 13:26:10,876 basehttp "GET /static/js/delivery_notifications.js HTTP/1.1" 200 5302
+INFO 2026-02-18 13:26:10,921 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 13:26:10,981 views User authenticated: True
+INFO 2026-02-18 13:26:10,998 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 13:26:11,077 basehttp "GET /api/orders/25/ HTTP/1.1" 200 4772
+INFO 2026-02-18 13:26:11,089 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 13:26:11,264 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 13:26:11,564 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 13:26:41,532 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 13:27:11,510 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 13:27:41,532 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 13:28:11,487 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 13:28:41,532 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 13:29:11,520 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 13:29:41,498 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 13:30:11,498 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 13:30:41,497 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 13:31:11,486 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 13:31:30,609 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-02-18 13:31:30,634 basehttp "GET /login_user/ HTTP/1.1" 200 3536
+WARNING 2026-02-18 13:31:30,729 basehttp "GET /static/js/script.js HTTP/1.1" 404 1896
+WARNING 2026-02-18 13:31:50,817 log Unauthorized: /login_user/
+WARNING 2026-02-18 13:31:50,818 basehttp "POST /login_user/ HTTP/1.1" 401 38
+INFO 2026-02-18 13:31:59,219 basehttp "POST /login_user/ HTTP/1.1" 200 95
+INFO 2026-02-18 13:32:00,831 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 13:32:04,064 basehttp "GET / HTTP/1.1" 200 26001
+INFO 2026-02-18 13:32:04,198 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 13:32:04,236 views User authenticated: True
+INFO 2026-02-18 13:32:04,264 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 13:32:04,369 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 13:32:14,342 basehttp "GET /seller/orders/ HTTP/1.1" 200 12332
+INFO 2026-02-18 13:32:15,797 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 13:32:15,840 views User authenticated: True
+INFO 2026-02-18 13:32:15,854 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 13:32:15,941 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 13:32:16,075 basehttp "GET /api/seller/orders/ HTTP/1.1" 200 20478
+INFO 2026-02-18 13:32:18,908 basehttp "GET /seller/order/25/ HTTP/1.1" 200 19437
+INFO 2026-02-18 13:32:19,230 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 13:32:19,271 views User authenticated: True
+INFO 2026-02-18 13:32:19,275 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 13:32:19,353 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 13:32:19,519 basehttp "GET /api/seller/order/25/ HTTP/1.1" 200 1310
+INFO 2026-02-18 13:32:26,430 basehttp "POST /api/seller/order-item/107/update-tracking/ HTTP/1.1" 200 93
+INFO 2026-02-18 13:32:26,508 basehttp "GET /api/seller/order/25/ HTTP/1.1" 200 1437
+INFO 2026-02-18 13:32:30,164 basehttp "POST /api/seller/order-item/107/update-tracking/ HTTP/1.1" 200 95
+INFO 2026-02-18 13:32:30,231 basehttp "GET /api/seller/order/25/ HTTP/1.1" 200 1588
+INFO 2026-02-18 13:32:33,542 basehttp "POST /api/seller/order-item/107/update-tracking/ HTTP/1.1" 200 107
+INFO 2026-02-18 13:32:33,608 basehttp "GET /api/seller/order/25/ HTTP/1.1" 200 1748
+INFO 2026-02-18 13:32:37,104 order_views 📦 Delivery confirmation created for order ORD-20260218102315-7E82NG, buyer buyer1@example.com
+INFO 2026-02-18 13:32:37,142 basehttp "POST /api/seller/order-item/107/update-tracking/ HTTP/1.1" 200 113
+INFO 2026-02-18 13:32:37,208 basehttp "GET /api/seller/order/25/ HTTP/1.1" 200 1909
+INFO 2026-02-18 13:32:55,086 basehttp "GET / HTTP/1.1" 200 26001
+INFO 2026-02-18 13:32:55,189 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 13:32:55,297 views User authenticated: True
+INFO 2026-02-18 13:32:55,308 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 13:32:55,397 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 13:32:56,874 basehttp "GET /seller/dashboard/ HTTP/1.1" 200 21911
+INFO 2026-02-18 13:32:57,052 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 13:32:57,093 views User authenticated: True
+INFO 2026-02-18 13:32:57,153 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 13:32:57,221 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 13:32:57,430 basehttp "GET /api/seller/recent-sales/ HTTP/1.1" 200 2809
+INFO 2026-02-18 13:32:57,497 basehttp "GET /api/seller/products/?limit=6 HTTP/1.1" 200 1854
+INFO 2026-02-18 13:32:57,564 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 13:32:57,619 basehttp "GET /api/seller/dashboard-stats/ HTTP/1.1" 200 105
+INFO 2026-02-18 13:33:00,396 seller_proxy_views ✅ Generated seller access token for seller1@example.com
+INFO 2026-02-18 13:33:00,396 seller_proxy_views 📊 Seller finances page loaded for seller1@example.com
+INFO 2026-02-18 13:33:00,453 basehttp "GET /seller/finances/ HTTP/1.1" 200 15523
+INFO 2026-02-18 13:33:00,786 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 13:33:00,836 views User authenticated: True
+INFO 2026-02-18 13:33:00,909 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 13:33:01,036 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 13:36:10,162 seller_proxy_views ✅ Generated seller access token for seller1@example.com
+INFO 2026-02-18 13:36:10,163 seller_proxy_views 📊 Seller finances page loaded for seller1@example.com
+INFO 2026-02-18 13:36:10,197 basehttp "GET /seller/finances/ HTTP/1.1" 200 15523
+INFO 2026-02-18 13:36:10,308 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 13:36:10,432 views User authenticated: True
+INFO 2026-02-18 13:36:10,474 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 13:36:10,575 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 18:56:55,812 autoreload Watching for file changes with StatReloader
+INFO 2026-02-18 19:00:18,385 basehttp "GET / HTTP/1.1" 200 26001
+INFO 2026-02-18 19:00:18,726 basehttp "GET /static/js/navbar.js HTTP/1.1" 200 12821
+INFO 2026-02-18 19:00:18,731 basehttp "GET /static/css/navbar.css HTTP/1.1" 200 7526
+INFO 2026-02-18 19:00:20,053 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 19:00:20,241 views User authenticated: False
+INFO 2026-02-18 19:00:20,246 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+WARNING 2026-02-18 19:00:20,530 log Not Found: /favicon.ico
+WARNING 2026-02-18 19:00:20,531 basehttp "GET /favicon.ico HTTP/1.1" 404 16845
+INFO 2026-02-18 19:00:24,643 basehttp "GET /login_user/ HTTP/1.1" 200 3536
+INFO 2026-02-18 19:00:24,702 basehttp "GET /static/css/login.css HTTP/1.1" 200 3232
+INFO 2026-02-18 19:00:24,714 basehttp "GET /static/js/login-validation.js HTTP/1.1" 200 2795
+WARNING 2026-02-18 19:00:24,788 basehttp "GET /static/js/script.js HTTP/1.1" 404 1896
+INFO 2026-02-18 19:00:24,895 basehttp "GET /static/image/logo.jpg HTTP/1.1" 200 16778
+INFO 2026-02-18 19:00:48,540 basehttp "POST /login_user/ HTTP/1.1" 200 93
+INFO 2026-02-18 19:00:53,374 basehttp "GET / HTTP/1.1" 200 26001
+INFO 2026-02-18 19:00:53,474 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 19:00:53,551 views User authenticated: True
+INFO 2026-02-18 19:00:53,618 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 19:00:53,751 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 19:00:54,285 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 19:00:56,207 basehttp "GET /orders/ HTTP/1.1" 200 17952
+INFO 2026-02-18 19:00:56,298 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 19:00:56,391 views User authenticated: True
+INFO 2026-02-18 19:00:56,429 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 19:00:56,803 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 19:00:56,819 basehttp "GET /api/orders/ HTTP/1.1" 200 8544
+INFO 2026-02-18 19:00:56,987 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 19:00:59,808 basehttp "GET /orders/25/ HTTP/1.1" 200 41535
+INFO 2026-02-18 19:00:59,867 basehttp "GET /static/js/delivery_notifications.js HTTP/1.1" 200 5302
+INFO 2026-02-18 19:00:59,924 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 19:00:59,985 views User authenticated: True
+INFO 2026-02-18 19:00:59,998 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 19:01:00,097 basehttp "GET /api/orders/25/ HTTP/1.1" 200 4770
+INFO 2026-02-18 19:01:00,108 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 19:01:00,517 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 19:01:00,709 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 148
+INFO 2026-02-18 19:01:03,741 basehttp "GET /order/25/confirm-delivery/ HTTP/1.1" 200 18267
+INFO 2026-02-18 19:01:04,714 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 19:01:04,862 views User authenticated: True
+INFO 2026-02-18 19:01:04,921 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 19:01:05,075 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 19:01:05,253 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 19:01:05,342 basehttp "GET /api/order/25/confirmation-items/ HTTP/1.1" 200 391
+INFO 2026-02-18 19:01:31,162 order_views ✅ Dispute #10 forwarded to payment app → Payment dispute #10
+INFO 2026-02-18 19:01:31,312 basehttp "POST /api/order/25/submit-confirmation/ HTTP/1.1" 200 109
+INFO 2026-02-18 19:01:38,101 basehttp "GET /order/25/tracking/ HTTP/1.1" 200 14689
+INFO 2026-02-18 19:01:38,446 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 19:01:38,478 views User authenticated: True
+INFO 2026-02-18 19:01:38,490 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 19:01:38,568 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 19:01:38,668 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 19:01:38,835 basehttp "GET /api/order/25/tracking/ HTTP/1.1" 200 5037
+INFO 2026-02-18 19:01:38,935 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:02:08,960 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:02:38,963 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:03:08,933 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:03:38,936 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:04:09,009 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:04:38,943 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:05:08,936 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:05:39,072 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:06:08,981 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:06:39,182 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:07:08,949 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:07:38,941 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:08:08,945 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:08:38,981 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:09:08,940 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:09:38,944 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:10:08,959 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:10:38,917 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:11:08,943 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:11:38,936 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:12:08,950 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:12:38,943 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:13:08,946 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:13:38,939 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:14:08,953 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:14:38,934 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:15:08,982 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:15:38,918 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:16:09,011 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:16:38,980 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:17:08,929 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:17:39,055 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:18:08,935 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:18:38,927 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:19:08,931 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:19:38,934 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:20:08,926 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:20:38,930 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:21:08,933 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:21:38,948 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:22:08,940 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:22:38,943 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:23:08,936 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:23:38,962 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:24:09,020 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:24:38,923 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:25:08,955 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:25:38,963 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:26:09,445 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:26:38,936 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:27:08,928 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:27:38,932 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:28:08,935 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:28:38,972 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:29:08,964 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:29:38,933 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:30:08,937 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:30:38,918 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:31:08,975 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:31:38,936 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:32:08,961 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:32:38,942 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:33:08,934 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:33:38,926 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:34:08,918 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:34:38,967 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:35:08,936 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:35:38,939 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:36:08,943 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:36:38,946 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:37:08,927 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:37:38,942 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:38:08,922 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:38:38,926 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:39:08,952 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:39:38,944 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:40:08,950 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:40:38,941 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:41:08,924 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:41:38,930 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:42:08,925 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:42:38,931 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:43:08,947 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:43:38,941 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:44:08,936 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:44:38,941 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:45:08,935 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:45:38,929 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:46:08,923 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:46:38,927 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:47:08,910 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:47:38,914 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:48:08,930 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:48:38,946 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:49:08,940 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:49:38,933 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:50:08,926 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:50:38,953 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:51:08,946 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:51:38,939 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:52:08,932 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:52:38,937 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:53:08,941 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:53:38,934 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:54:08,927 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:54:38,931 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:55:08,924 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:55:38,928 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:56:08,943 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:56:38,936 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:57:08,928 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:57:38,933 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:58:08,936 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:58:38,940 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:59:08,944 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 19:59:38,926 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:00:08,969 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:00:38,933 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:01:08,948 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:01:38,941 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:02:08,934 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:02:38,937 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:03:08,941 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:03:38,934 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:04:08,935 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:04:38,919 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:05:08,934 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:05:38,937 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:06:08,931 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:06:38,956 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:07:08,938 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:07:38,930 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:08:08,934 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:08:38,938 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:09:08,930 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:09:38,934 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:10:08,937 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:10:38,930 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:11:08,964 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:11:38,937 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:12:08,929 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:12:38,933 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:13:08,936 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:13:38,929 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:14:08,964 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:14:38,937 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:15:08,929 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:15:38,955 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:16:08,925 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:16:38,928 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:17:08,943 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:17:38,935 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:18:08,928 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:18:38,953 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:19:08,936 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:19:38,927 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:20:08,942 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:20:38,914 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:21:08,938 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:21:38,932 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:22:08,947 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:22:38,939 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:23:08,944 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:23:38,924 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:24:08,950 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:24:38,931 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:25:08,935 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:25:38,985 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:26:08,943 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:26:38,957 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:27:08,949 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:27:38,931 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:28:08,934 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:28:38,926 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:29:08,943 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:29:38,945 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:30:08,937 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:30:38,941 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:31:08,976 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:31:38,926 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:32:08,929 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:32:38,934 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:33:08,937 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:33:38,941 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:34:08,933 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:34:38,936 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:35:08,928 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:35:38,921 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:36:08,947 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:36:38,955 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:37:08,920 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:37:38,912 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:38:08,945 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:38:38,931 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:39:08,934 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:39:38,938 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:40:08,930 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:40:38,934 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:41:08,938 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:41:38,952 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:42:08,945 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:42:38,937 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:43:08,930 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:43:38,944 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:44:08,936 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:44:38,940 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:45:08,932 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:45:38,925 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:46:08,928 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:46:38,932 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:47:08,947 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:47:38,939 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:48:08,931 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:48:38,935 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:49:08,927 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:49:38,931 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:50:08,923 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:50:38,938 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:51:08,930 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:51:17,787 order_views ✅ Dispute #10 synced from payment app: To Be Decided
+INFO 2026-02-18 20:51:17,788 basehttp "POST /api/webhook/dispute-status/ HTTP/1.1" 200 53
+INFO 2026-02-18 20:51:38,957 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:52:08,938 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+ERROR 2026-02-18 20:52:16,771 order_views Error in dispute sync webhook: value too long for type character varying(30)
+Traceback (most recent call last):
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.StringDataRightTruncation: value too long for type character varying(30)
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/tinex/Desktop/projects/market/market/shopper/shopping_app/order_views.py", line 746, in dispute_status_webhook
+    OrderItemTracking.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        order_item=dispute.order_item,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        updated_by_role='system',
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/query.py", line 660, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/base.py", line 814, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/base.py", line 877, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/base.py", line 1020, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/base.py", line 1061, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/query.py", line 1810, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/sql/compiler.py", line 1822, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.DataError: value too long for type character varying(30)
+
+ERROR 2026-02-18 20:52:16,957 log Internal Server Error: /api/webhook/dispute-status/
+ERROR 2026-02-18 20:52:16,958 basehttp "POST /api/webhook/dispute-status/ HTTP/1.1" 500 60
+INFO 2026-02-18 20:52:38,942 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:53:01,577 order_views ✅ Dispute #10 synced from payment app: To Be Decided
+INFO 2026-02-18 20:53:01,578 basehttp "POST /api/webhook/dispute-status/ HTTP/1.1" 200 53
+INFO 2026-02-18 20:53:08,923 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:53:28,369 order_views ✅ Dispute #10 synced from payment app: To Be Decided
+INFO 2026-02-18 20:53:28,370 basehttp "POST /api/webhook/dispute-status/ HTTP/1.1" 200 53
+INFO 2026-02-18 20:53:38,948 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:54:08,941 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:54:27,232 order_views ✅ Dispute #10 synced from payment app: Refunded
+INFO 2026-02-18 20:54:27,233 basehttp "POST /api/webhook/dispute-status/ HTTP/1.1" 200 53
+INFO 2026-02-18 20:54:38,943 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:55:08,904 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:55:38,918 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+ERROR 2026-02-18 20:56:04,348 order_views Error in dispute sync webhook: value too long for type character varying(30)
+Traceback (most recent call last):
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.StringDataRightTruncation: value too long for type character varying(30)
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/tinex/Desktop/projects/market/market/shopper/shopping_app/order_views.py", line 746, in dispute_status_webhook
+    OrderItemTracking.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        order_item=dispute.order_item,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        updated_by_role='system',
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/query.py", line 660, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/base.py", line 814, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/base.py", line 877, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/base.py", line 1020, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/base.py", line 1061, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/query.py", line 1810, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/sql/compiler.py", line 1822, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.DataError: value too long for type character varying(30)
+
+ERROR 2026-02-18 20:56:04,354 log Internal Server Error: /api/webhook/dispute-status/
+ERROR 2026-02-18 20:56:04,354 basehttp "POST /api/webhook/dispute-status/ HTTP/1.1" 500 60
+INFO 2026-02-18 20:56:08,923 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:56:38,926 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:56:58,389 order_views ✅ Dispute #10 synced from payment app: To Be Decided
+INFO 2026-02-18 20:56:58,390 basehttp "POST /api/webhook/dispute-status/ HTTP/1.1" 200 53
+INFO 2026-02-18 20:57:08,952 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:57:38,933 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:58:08,926 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:58:38,919 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:59:08,933 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 20:59:38,947 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:00:08,929 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:00:38,933 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:01:08,936 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:01:11,536 basehttp "GET /order/25/tracking/ HTTP/1.1" 200 14689
+INFO 2026-02-18 21:01:11,825 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:01:11,863 views User authenticated: True
+INFO 2026-02-18 21:01:11,881 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:01:11,958 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 21:01:12,058 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:01:12,170 basehttp "GET /api/order/25/tracking/ HTTP/1.1" 200 6097
+INFO 2026-02-18 21:01:12,392 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:01:42,385 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:02:12,366 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:02:42,369 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:03:12,361 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:03:43,092 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:03:53,578 order_views ✅ Dispute #10 synced from payment app: Refunded
+INFO 2026-02-18 21:03:53,579 basehttp "POST /api/webhook/dispute-status/ HTTP/1.1" 200 53
+INFO 2026-02-18 21:04:13,092 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:04:19,514 basehttp "GET /order/25/tracking/ HTTP/1.1" 200 14689
+INFO 2026-02-18 21:04:19,814 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:04:19,854 views User authenticated: True
+INFO 2026-02-18 21:04:19,871 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:04:19,959 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 21:04:20,059 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:04:20,159 basehttp "GET /api/order/25/tracking/ HTTP/1.1" 200 6259
+INFO 2026-02-18 21:04:20,326 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:04:44,184 basehttp "GET /orders/ HTTP/1.1" 200 17952
+INFO 2026-02-18 21:04:44,284 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:04:44,361 views User authenticated: True
+INFO 2026-02-18 21:04:44,375 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:04:44,396 basehttp "GET /api/orders/ HTTP/1.1" 200 8544
+INFO 2026-02-18 21:04:44,473 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 21:04:44,562 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:04:47,173 basehttp "GET /orders/20/ HTTP/1.1" 200 41535
+INFO 2026-02-18 21:04:47,276 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:04:47,326 views User authenticated: True
+INFO 2026-02-18 21:04:47,340 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:04:47,351 basehttp "GET /api/orders/20/ HTTP/1.1" 200 5857
+INFO 2026-02-18 21:04:47,440 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 21:04:47,529 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:04:47,751 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:04:52,774 basehttp "GET /order/20/tracking/ HTTP/1.1" 200 14689
+INFO 2026-02-18 21:04:53,052 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:04:53,089 views User authenticated: True
+INFO 2026-02-18 21:04:53,096 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:04:53,185 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 21:04:53,285 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:04:53,396 basehttp "GET /api/order/20/tracking/ HTTP/1.1" 200 7673
+INFO 2026-02-18 21:04:53,630 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:05:09,932 basehttp "GET /orders/ HTTP/1.1" 200 17952
+INFO 2026-02-18 21:05:10,022 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:05:10,104 views User authenticated: True
+INFO 2026-02-18 21:05:10,121 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:05:10,144 basehttp "GET /api/orders/ HTTP/1.1" 200 8544
+INFO 2026-02-18 21:05:10,210 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 21:05:10,298 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:06:10,850 basehttp "GET /orders/25/ HTTP/1.1" 200 41535
+INFO 2026-02-18 21:06:10,951 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:06:10,998 basehttp "GET /api/orders/25/ HTTP/1.1" 200 4770
+INFO 2026-02-18 21:06:11,039 views User authenticated: True
+INFO 2026-02-18 21:06:11,051 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:06:11,128 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 21:06:11,217 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:06:11,450 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:06:13,651 basehttp "GET /order/25/tracking/ HTTP/1.1" 200 14689
+INFO 2026-02-18 21:06:13,928 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:06:13,962 views User authenticated: True
+INFO 2026-02-18 21:06:13,973 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:06:14,062 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 21:06:14,162 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:06:14,273 basehttp "GET /api/order/25/tracking/ HTTP/1.1" 200 6259
+INFO 2026-02-18 21:06:14,462 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:06:24,141 basehttp "GET /orders/ HTTP/1.1" 200 17952
+INFO 2026-02-18 21:06:24,247 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:06:24,304 views User authenticated: True
+INFO 2026-02-18 21:06:24,319 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:06:24,363 basehttp "GET /api/orders/ HTTP/1.1" 200 8544
+INFO 2026-02-18 21:06:24,419 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 21:06:24,520 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:06:32,242 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-02-18 21:06:32,269 basehttp "GET /login_user/ HTTP/1.1" 200 3536
+WARNING 2026-02-18 21:06:32,378 basehttp "GET /static/js/script.js HTTP/1.1" 404 1896
+INFO 2026-02-18 21:07:00,345 basehttp "POST /login_user/ HTTP/1.1" 200 95
+INFO 2026-02-18 21:07:16,936 basehttp "GET / HTTP/1.1" 200 26001
+INFO 2026-02-18 21:07:17,027 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:07:17,100 views User authenticated: True
+INFO 2026-02-18 21:07:17,114 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:07:17,203 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 21:07:19,303 basehttp "GET /seller/orders/ HTTP/1.1" 200 12332
+INFO 2026-02-18 21:07:19,703 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:07:19,743 views User authenticated: True
+INFO 2026-02-18 21:07:19,760 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:07:19,837 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 21:07:20,037 basehttp "GET /api/seller/orders/ HTTP/1.1" 200 21331
+INFO 2026-02-18 21:07:28,371 basehttp "GET /seller/order/25/ HTTP/1.1" 200 19437
+INFO 2026-02-18 21:07:28,660 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:07:28,694 views User authenticated: True
+INFO 2026-02-18 21:07:28,704 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:07:28,803 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 21:07:28,926 basehttp "GET /api/seller/order/25/ HTTP/1.1" 200 1293
+INFO 2026-02-18 21:07:42,307 basehttp "POST /api/seller/order-item/109/update-tracking/ HTTP/1.1" 200 93
+INFO 2026-02-18 21:07:42,396 basehttp "GET /api/seller/order/25/ HTTP/1.1" 200 1420
+INFO 2026-02-18 21:07:47,018 basehttp "POST /api/seller/order-item/109/update-tracking/ HTTP/1.1" 200 95
+INFO 2026-02-18 21:07:47,084 basehttp "GET /api/seller/order/25/ HTTP/1.1" 200 1571
+INFO 2026-02-18 21:07:50,774 basehttp "POST /api/seller/order-item/109/update-tracking/ HTTP/1.1" 200 107
+INFO 2026-02-18 21:07:50,841 basehttp "GET /api/seller/order/25/ HTTP/1.1" 200 1731
+INFO 2026-02-18 21:07:55,061 order_views 📦 Delivery confirmation created for order ORD-20260218102315-7E82NG, buyer buyer1@example.com
+INFO 2026-02-18 21:07:55,219 basehttp "POST /api/seller/order-item/109/update-tracking/ HTTP/1.1" 200 113
+INFO 2026-02-18 21:07:55,342 basehttp "GET /api/seller/order/25/ HTTP/1.1" 200 1894
+INFO 2026-02-18 21:08:03,265 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-02-18 21:08:03,290 basehttp "GET /login_user/ HTTP/1.1" 200 3536
+WARNING 2026-02-18 21:08:03,368 basehttp "GET /static/js/script.js HTTP/1.1" 404 1896
+INFO 2026-02-18 21:08:26,345 basehttp "POST /login_user/ HTTP/1.1" 200 93
+INFO 2026-02-18 21:08:29,990 basehttp "GET / HTTP/1.1" 200 26001
+INFO 2026-02-18 21:08:30,079 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:08:30,153 views User authenticated: True
+INFO 2026-02-18 21:08:30,168 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:08:30,256 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 21:08:30,345 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:08:38,469 basehttp "GET /orders/ HTTP/1.1" 200 17952
+INFO 2026-02-18 21:08:38,570 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:08:38,653 views User authenticated: True
+INFO 2026-02-18 21:08:38,671 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:08:38,679 basehttp "GET /api/orders/ HTTP/1.1" 200 8544
+INFO 2026-02-18 21:08:38,757 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 21:08:38,846 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:08:40,780 basehttp "GET /orders/25/ HTTP/1.1" 200 41535
+INFO 2026-02-18 21:08:40,904 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:08:40,936 basehttp "GET /api/orders/25/ HTTP/1.1" 200 4770
+INFO 2026-02-18 21:08:40,996 views User authenticated: True
+INFO 2026-02-18 21:08:41,002 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:08:41,080 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 21:08:41,169 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:08:41,391 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 148
+INFO 2026-02-18 21:08:45,091 basehttp "GET /order/25/confirm-delivery/ HTTP/1.1" 200 18267
+INFO 2026-02-18 21:08:45,380 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:08:45,417 views User authenticated: True
+INFO 2026-02-18 21:08:45,425 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:08:45,502 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 21:08:45,602 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:08:45,691 basehttp "GET /api/order/25/confirmation-items/ HTTP/1.1" 200 389
+INFO 2026-02-18 21:10:14,928 order_views ✅ Dispute #11 forwarded to payment app → Payment dispute #11
+INFO 2026-02-18 21:10:14,972 basehttp "POST /api/order/25/submit-confirmation/ HTTP/1.1" 200 109
+INFO 2026-02-18 21:10:18,536 basehttp "GET /order/25/tracking/ HTTP/1.1" 200 14689
+INFO 2026-02-18 21:10:18,836 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:10:18,874 views User authenticated: True
+INFO 2026-02-18 21:10:18,881 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:10:18,958 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 21:10:19,058 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:10:19,158 basehttp "GET /api/order/25/tracking/ HTTP/1.1" 200 7210
+INFO 2026-02-18 21:10:19,392 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:10:49,362 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:11:19,366 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:11:49,348 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:12:01,704 order_views ✅ Dispute #11 synced from payment app: To Be Decided
+INFO 2026-02-18 21:12:01,705 basehttp "POST /api/webhook/dispute-status/ HTTP/1.1" 200 53
+INFO 2026-02-18 21:12:07,983 basehttp "GET /order/25/tracking/ HTTP/1.1" 200 14689
+INFO 2026-02-18 21:12:08,273 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:12:08,309 views User authenticated: True
+INFO 2026-02-18 21:12:08,317 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:12:08,429 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 21:12:08,628 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:12:08,761 basehttp "GET /api/order/25/tracking/ HTTP/1.1" 200 7421
+INFO 2026-02-18 21:12:08,775 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:12:38,798 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:13:08,791 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:13:38,794 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:14:08,786 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:14:38,802 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:15:08,797 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:15:38,775 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:16:08,801 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:16:38,793 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:16:49,828 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-02-18 21:16:49,851 basehttp "GET /login_user/ HTTP/1.1" 200 3536
+WARNING 2026-02-18 21:16:49,945 basehttp "GET /static/js/script.js HTTP/1.1" 404 1896
+INFO 2026-02-18 21:18:12,148 basehttp "POST /login_user/ HTTP/1.1" 200 93
+INFO 2026-02-18 21:18:13,761 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:18:23,794 basehttp "GET /products/ HTTP/1.1" 200 14366
+INFO 2026-02-18 21:18:23,883 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:18:23,959 views User authenticated: True
+INFO 2026-02-18 21:18:23,972 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:18:24,049 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:18:24,150 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:18:24,327 basehttp "GET /api/products/ HTTP/1.1" 200 5133
+INFO 2026-02-18 21:18:40,251 basehttp "POST /api/cart/add/ HTTP/1.1" 200 60
+INFO 2026-02-18 21:18:40,318 basehttp "GET /api/cart/ HTTP/1.1" 200 339
+INFO 2026-02-18 21:18:44,063 basehttp "POST /api/cart/add/ HTTP/1.1" 200 60
+INFO 2026-02-18 21:18:44,131 basehttp "GET /api/cart/ HTTP/1.1" 200 625
+INFO 2026-02-18 21:18:48,875 basehttp "POST /api/cart/add/ HTTP/1.1" 200 60
+INFO 2026-02-18 21:18:48,941 basehttp "GET /api/cart/ HTTP/1.1" 200 911
+INFO 2026-02-18 21:18:57,131 basehttp "POST /api/cart/add/ HTTP/1.1" 200 60
+INFO 2026-02-18 21:18:57,198 basehttp "GET /api/cart/ HTTP/1.1" 200 1206
+INFO 2026-02-18 21:19:00,888 basehttp "GET /cart/ HTTP/1.1" 200 21027
+INFO 2026-02-18 21:19:00,992 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:19:01,022 basehttp "GET /api/cart/ HTTP/1.1" 200 1206
+INFO 2026-02-18 21:19:01,092 views User authenticated: True
+INFO 2026-02-18 21:19:01,099 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:19:01,176 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:19:01,276 basehttp "GET /api/cart/ HTTP/1.1" 200 1206
+INFO 2026-02-18 21:19:04,566 basehttp "GET /checkout/ HTTP/1.1" 302 0
+INFO 2026-02-18 21:19:04,810 basehttp "GET /payment/select/ HTTP/1.1" 200 19458
+INFO 2026-02-18 21:19:04,932 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:19:05,007 views User authenticated: True
+INFO 2026-02-18 21:19:05,055 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:19:05,132 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:19:05,244 basehttp "GET /api/cart/ HTTP/1.1" 200 1206
+INFO 2026-02-18 21:19:43,193 basehttp "POST /api/process-payment-selection/ HTTP/1.1" 200 105
+INFO 2026-02-18 21:19:44,283 basehttp "GET /orders/26/ HTTP/1.1" 200 41535
+INFO 2026-02-18 21:19:44,371 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:19:44,426 basehttp "GET /api/orders/26/ HTTP/1.1" 200 2985
+INFO 2026-02-18 21:19:44,459 views User authenticated: True
+INFO 2026-02-18 21:19:44,471 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:19:44,560 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:19:44,648 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:19:44,859 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:20:14,897 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:20:27,900 views ✅ Selective payment created for order ORD-20260218181943-BN8YFN, items: [111, 112]
+INFO 2026-02-18 21:20:27,966 basehttp "POST /api/orders/26/pay-selected-items/ HTTP/1.1" 200 160
+INFO 2026-02-18 21:20:28,610 basehttp "GET /payment/process/9e2e13cd-d05c-49c3-bbca-57f2f6db3dee/ HTTP/1.1" 200 21440
+INFO 2026-02-18 21:20:28,799 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:20:28,841 views User authenticated: True
+INFO 2026-02-18 21:20:28,967 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:20:29,110 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:20:29,232 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:20:56,375 proxy_views 🔙 Payment return: 9e2e13cd-d05c-49c3-bbca-57f2f6db3dee - Status: success
+INFO 2026-02-18 21:20:56,424 proxy_views ✅ Payment successful for order ORD-20260218181943-BN8YFN
+INFO 2026-02-18 21:20:56,424 proxy_views ✅ Updated 2 order items to 'paid' status
+INFO 2026-02-18 21:20:56,436 basehttp "GET /payment/return/?request_id=9e2e13cd-d05c-49c3-bbca-57f2f6db3dee&status=success HTTP/1.1" 302 0
+INFO 2026-02-18 21:20:56,480 basehttp "GET /orders/26/ HTTP/1.1" 200 41535
+INFO 2026-02-18 21:20:56,613 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:20:56,625 basehttp "GET /api/orders/26/ HTTP/1.1" 200 3003
+INFO 2026-02-18 21:20:56,700 views User authenticated: True
+INFO 2026-02-18 21:20:56,713 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:20:56,791 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:20:56,880 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:20:57,102 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:21:20,706 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-02-18 21:21:20,726 basehttp "GET /login_user/ HTTP/1.1" 200 3536
+WARNING 2026-02-18 21:21:20,827 basehttp "GET /static/js/script.js HTTP/1.1" 404 1896
+INFO 2026-02-18 21:21:40,419 basehttp "POST /login_user/ HTTP/1.1" 200 95
+INFO 2026-02-18 21:21:42,031 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:21:44,953 basehttp "GET / HTTP/1.1" 200 26001
+INFO 2026-02-18 21:21:45,053 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:21:45,132 views User authenticated: True
+INFO 2026-02-18 21:21:45,141 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:21:45,230 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 21:21:46,297 basehttp "GET /seller/orders/ HTTP/1.1" 200 12332
+INFO 2026-02-18 21:21:46,775 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:21:46,811 views User authenticated: True
+INFO 2026-02-18 21:21:46,830 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:21:46,920 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 21:21:47,053 basehttp "GET /api/seller/orders/ HTTP/1.1" 200 22036
+INFO 2026-02-18 21:21:50,432 basehttp "GET /seller/order/26/ HTTP/1.1" 200 19437
+INFO 2026-02-18 21:21:50,720 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:21:50,757 views User authenticated: True
+INFO 2026-02-18 21:21:50,768 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:21:50,853 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 21:21:50,965 basehttp "GET /api/seller/order/26/ HTTP/1.1" 200 1848
+INFO 2026-02-18 21:21:58,443 basehttp "POST /api/seller/order-item/112/update-tracking/ HTTP/1.1" 200 87
+INFO 2026-02-18 21:21:58,533 basehttp "GET /api/seller/order/26/ HTTP/1.1" 200 1963
+INFO 2026-02-18 21:22:03,355 basehttp "POST /api/seller/order-item/112/update-tracking/ HTTP/1.1" 200 95
+INFO 2026-02-18 21:22:03,445 basehttp "GET /api/seller/order/26/ HTTP/1.1" 200 2103
+INFO 2026-02-18 21:22:06,949 order_views 📦 Delivery confirmation created for order ORD-20260218181943-BN8YFN, buyer buyer3@example.com
+INFO 2026-02-18 21:22:07,000 basehttp "POST /api/seller/order-item/112/update-tracking/ HTTP/1.1" 200 113
+INFO 2026-02-18 21:22:07,078 basehttp "GET /api/seller/order/26/ HTTP/1.1" 200 2270
+INFO 2026-02-18 21:22:13,367 basehttp "POST /api/seller/order-item/113/update-tracking/ HTTP/1.1" 200 93
+INFO 2026-02-18 21:22:13,445 basehttp "GET /api/seller/order/26/ HTTP/1.1" 200 2397
+INFO 2026-02-18 21:22:17,434 basehttp "POST /api/seller/order-item/113/update-tracking/ HTTP/1.1" 200 95
+INFO 2026-02-18 21:22:17,502 basehttp "GET /api/seller/order/26/ HTTP/1.1" 200 2548
+INFO 2026-02-18 21:22:22,124 basehttp "POST /api/seller/order-item/113/update-tracking/ HTTP/1.1" 200 113
+INFO 2026-02-18 21:22:22,203 basehttp "GET /api/seller/order/26/ HTTP/1.1" 200 2717
+INFO 2026-02-18 21:22:35,381 basehttp "POST /api/seller/order-item/114/update-tracking/ HTTP/1.1" 200 87
+INFO 2026-02-18 21:22:35,460 basehttp "GET /api/seller/order/26/ HTTP/1.1" 200 2832
+INFO 2026-02-18 21:22:40,293 basehttp "POST /api/seller/order-item/114/update-tracking/ HTTP/1.1" 200 107
+INFO 2026-02-18 21:22:40,359 basehttp "GET /api/seller/order/26/ HTTP/1.1" 200 2996
+INFO 2026-02-18 21:22:44,349 basehttp "POST /api/seller/order-item/114/update-tracking/ HTTP/1.1" 200 113
+INFO 2026-02-18 21:22:44,427 basehttp "GET /api/seller/order/26/ HTTP/1.1" 200 3159
+INFO 2026-02-18 21:22:54,239 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-02-18 21:22:54,261 basehttp "GET /login_user/ HTTP/1.1" 200 3536
+WARNING 2026-02-18 21:22:54,339 basehttp "GET /static/js/script.js HTTP/1.1" 404 1896
+INFO 2026-02-18 21:23:10,096 basehttp "POST /login_user/ HTTP/1.1" 200 93
+INFO 2026-02-18 21:23:15,753 basehttp "GET / HTTP/1.1" 200 26001
+INFO 2026-02-18 21:23:15,875 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:23:15,918 views User authenticated: True
+INFO 2026-02-18 21:23:15,930 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:23:16,019 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:23:16,119 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:23:18,180 basehttp "GET /orders/ HTTP/1.1" 200 17952
+INFO 2026-02-18 21:23:18,293 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:23:18,373 views User authenticated: True
+INFO 2026-02-18 21:23:18,405 basehttp "GET /api/orders/ HTTP/1.1" 200 5097
+INFO 2026-02-18 21:23:18,431 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:23:18,508 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:23:18,608 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:23:21,531 basehttp "GET /orders/26/ HTTP/1.1" 200 41535
+INFO 2026-02-18 21:23:21,634 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:23:21,683 views User authenticated: True
+INFO 2026-02-18 21:23:21,686 basehttp "GET /api/orders/26/ HTTP/1.1" 200 3001
+INFO 2026-02-18 21:23:21,698 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:23:21,775 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:23:21,864 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:23:22,143 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 148
+INFO 2026-02-18 21:23:30,287 basehttp "GET /order/26/confirm-delivery/ HTTP/1.1" 200 18267
+INFO 2026-02-18 21:23:30,610 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:23:30,651 views User authenticated: True
+INFO 2026-02-18 21:23:30,666 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:23:30,776 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:23:30,876 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:23:30,965 basehttp "GET /api/order/26/confirmation-items/ HTTP/1.1" 200 1052
+INFO 2026-02-18 21:23:37,422 basehttp "POST /api/order/26/submit-confirmation/ HTTP/1.1" 200 107
+INFO 2026-02-18 21:23:49,156 basehttp "GET /order/26/tracking/ HTTP/1.1" 200 14689
+INFO 2026-02-18 21:23:49,423 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:23:49,459 views User authenticated: True
+INFO 2026-02-18 21:23:49,468 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:23:49,545 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:23:49,645 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:23:49,745 basehttp "GET /api/order/26/tracking/ HTTP/1.1" 200 4166
+INFO 2026-02-18 21:23:49,957 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:24:19,961 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:24:49,976 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:25:19,979 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:25:49,972 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:26:19,964 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:26:49,967 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:27:19,993 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:27:49,963 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:28:20,159 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:28:49,960 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:29:19,952 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:29:49,955 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:30:19,959 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:30:25,970 autoreload /home/tinex/Desktop/projects/market/market/shopper/shopping_app/order_views.py changed, reloading.
+INFO 2026-02-18 21:30:30,748 autoreload Watching for file changes with StatReloader
+INFO 2026-02-18 21:30:37,507 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-02-18 21:30:37,616 basehttp "GET /login_user/ HTTP/1.1" 200 3536
+WARNING 2026-02-18 21:30:37,805 basehttp "GET /static/js/script.js HTTP/1.1" 404 1896
+INFO 2026-02-18 21:31:05,386 basehttp "POST /login_user/ HTTP/1.1" 200 95
+INFO 2026-02-18 21:31:06,998 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:31:08,809 basehttp "GET / HTTP/1.1" 200 26001
+INFO 2026-02-18 21:31:08,910 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:31:08,991 views User authenticated: True
+INFO 2026-02-18 21:31:08,998 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:31:09,087 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 21:31:10,259 basehttp "GET /seller/orders/ HTTP/1.1" 200 12332
+INFO 2026-02-18 21:31:10,688 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:31:10,731 views User authenticated: True
+INFO 2026-02-18 21:31:10,743 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:31:10,887 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 21:31:11,054 basehttp "GET /api/seller/orders/ HTTP/1.1" 200 21648
+INFO 2026-02-18 21:31:15,864 basehttp "GET /seller/order/26/ HTTP/1.1" 200 19437
+INFO 2026-02-18 21:31:16,177 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:31:16,213 views User authenticated: True
+INFO 2026-02-18 21:31:16,221 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:31:16,310 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 21:31:16,443 basehttp "GET /api/seller/order/26/ HTTP/1.1" 200 764
+INFO 2026-02-18 21:31:20,511 basehttp "POST /api/seller/order-item/111/update-tracking/ HTTP/1.1" 200 93
+INFO 2026-02-18 21:31:20,600 basehttp "GET /api/seller/order/26/ HTTP/1.1" 200 891
+INFO 2026-02-18 21:31:23,000 basehttp "POST /api/seller/order-item/111/update-tracking/ HTTP/1.1" 200 95
+INFO 2026-02-18 21:31:23,067 basehttp "GET /api/seller/order/26/ HTTP/1.1" 200 1042
+INFO 2026-02-18 21:31:26,319 order_views 📦 Delivery confirmation created for order ORD-20260218181943-BN8YFN, buyer buyer3@example.com
+INFO 2026-02-18 21:31:26,367 basehttp "POST /api/seller/order-item/111/update-tracking/ HTTP/1.1" 200 113
+INFO 2026-02-18 21:31:26,446 basehttp "GET /api/seller/order/26/ HTTP/1.1" 200 1211
+INFO 2026-02-18 21:31:32,846 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-02-18 21:31:32,867 basehttp "GET /login_user/ HTTP/1.1" 200 3536
+WARNING 2026-02-18 21:31:32,965 basehttp "GET /static/js/script.js HTTP/1.1" 404 1896
+INFO 2026-02-18 21:31:50,681 basehttp "POST /login_user/ HTTP/1.1" 200 93
+INFO 2026-02-18 21:31:54,482 basehttp "GET / HTTP/1.1" 200 26001
+INFO 2026-02-18 21:31:54,582 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:31:54,633 views User authenticated: True
+INFO 2026-02-18 21:31:54,649 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:31:54,726 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:31:54,815 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:31:56,115 basehttp "GET /orders/ HTTP/1.1" 200 17952
+INFO 2026-02-18 21:31:56,240 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:31:56,316 basehttp "GET /api/orders/ HTTP/1.1" 200 5117
+INFO 2026-02-18 21:31:56,413 views User authenticated: True
+INFO 2026-02-18 21:31:56,426 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:31:56,515 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:31:56,616 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:31:59,449 basehttp "GET /orders/26/ HTTP/1.1" 200 41535
+INFO 2026-02-18 21:31:59,552 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:31:59,605 basehttp "GET /api/orders/26/ HTTP/1.1" 200 3021
+INFO 2026-02-18 21:31:59,606 views User authenticated: True
+INFO 2026-02-18 21:31:59,616 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:31:59,704 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:31:59,815 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:32:00,084 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 148
+INFO 2026-02-18 21:32:01,816 basehttp "GET /order/26/confirm-delivery/ HTTP/1.1" 200 18267
+INFO 2026-02-18 21:32:02,274 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:32:02,379 views User authenticated: True
+INFO 2026-02-18 21:32:02,395 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:32:02,449 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:32:02,605 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:32:02,660 basehttp "GET /api/order/26/confirmation-items/ HTTP/1.1" 200 386
+INFO 2026-02-18 21:32:25,996 basehttp "POST /api/order/26/submit-confirmation/ HTTP/1.1" 200 107
+INFO 2026-02-18 21:32:30,020 basehttp "GET /order/26/tracking/ HTTP/1.1" 200 14689
+INFO 2026-02-18 21:32:30,341 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:32:30,381 views User authenticated: True
+INFO 2026-02-18 21:32:30,386 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:32:30,464 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:32:30,564 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:32:30,664 basehttp "GET /api/order/26/tracking/ HTTP/1.1" 200 4714
+INFO 2026-02-18 21:32:30,830 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:32:44,743 basehttp "GET /products/ HTTP/1.1" 200 14366
+INFO 2026-02-18 21:32:44,845 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:32:44,886 views User authenticated: True
+INFO 2026-02-18 21:32:44,899 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:32:44,994 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:32:45,099 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:32:45,222 basehttp "GET /api/products/ HTTP/1.1" 200 5133
+INFO 2026-02-18 21:32:57,023 basehttp "POST /api/cart/add/ HTTP/1.1" 200 60
+INFO 2026-02-18 21:32:57,101 basehttp "GET /api/cart/ HTTP/1.1" 200 344
+INFO 2026-02-18 21:33:00,646 basehttp "GET /cart/ HTTP/1.1" 200 21027
+INFO 2026-02-18 21:33:00,747 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:33:00,769 basehttp "GET /api/cart/ HTTP/1.1" 200 344
+INFO 2026-02-18 21:33:00,806 views User authenticated: True
+INFO 2026-02-18 21:33:00,815 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:33:00,912 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:33:01,013 basehttp "GET /api/cart/ HTTP/1.1" 200 344
+INFO 2026-02-18 21:33:06,635 basehttp "GET /checkout/ HTTP/1.1" 302 0
+INFO 2026-02-18 21:33:06,802 basehttp "GET /payment/select/ HTTP/1.1" 200 17290
+INFO 2026-02-18 21:33:06,924 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:33:06,993 views User authenticated: True
+INFO 2026-02-18 21:33:07,002 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:33:07,102 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:33:07,202 basehttp "GET /api/cart/ HTTP/1.1" 200 344
+INFO 2026-02-18 21:33:10,636 basehttp "POST /api/process-payment-selection/ HTTP/1.1" 200 105
+INFO 2026-02-18 21:33:11,693 basehttp "GET /orders/27/ HTTP/1.1" 200 41535
+INFO 2026-02-18 21:33:11,833 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:33:11,903 basehttp "GET /api/orders/27/ HTTP/1.1" 200 1150
+INFO 2026-02-18 21:33:11,948 views User authenticated: True
+INFO 2026-02-18 21:33:12,019 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:33:12,136 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:33:12,247 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:33:12,381 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:33:19,226 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-02-18 21:33:19,245 basehttp "GET /login_user/ HTTP/1.1" 200 3536
+WARNING 2026-02-18 21:33:19,329 basehttp "GET /static/js/script.js HTTP/1.1" 404 1896
+INFO 2026-02-18 21:34:29,612 basehttp "POST /login_user/ HTTP/1.1" 200 95
+INFO 2026-02-18 21:34:31,212 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:34:33,657 basehttp "GET / HTTP/1.1" 200 26001
+INFO 2026-02-18 21:34:33,746 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:34:33,795 views User authenticated: True
+INFO 2026-02-18 21:34:33,812 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:34:33,902 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 21:34:35,268 basehttp "GET /seller/orders/ HTTP/1.1" 200 12332
+INFO 2026-02-18 21:34:35,547 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:34:35,590 views User authenticated: True
+INFO 2026-02-18 21:34:35,601 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:34:35,690 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 21:34:35,814 basehttp "GET /api/seller/orders/ HTTP/1.1" 200 22733
+INFO 2026-02-18 21:34:38,168 basehttp "GET /seller/order/27/ HTTP/1.1" 200 19437
+INFO 2026-02-18 21:34:38,447 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:34:38,484 views User authenticated: True
+INFO 2026-02-18 21:34:38,491 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:34:38,580 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 21:34:38,691 basehttp "GET /api/seller/order/27/ HTTP/1.1" 200 751
+INFO 2026-02-18 21:34:41,725 basehttp "POST /api/seller/order-item/115/update-tracking/ HTTP/1.1" 200 87
+INFO 2026-02-18 21:34:41,791 basehttp "GET /api/seller/order/27/ HTTP/1.1" 200 866
+INFO 2026-02-18 21:34:44,551 order_views 📦 Delivery confirmation created for order ORD-20260218183310-4PF9KG, buyer buyer3@example.com
+INFO 2026-02-18 21:34:44,603 basehttp "POST /api/seller/order-item/115/update-tracking/ HTTP/1.1" 200 113
+INFO 2026-02-18 21:34:44,669 basehttp "GET /api/seller/order/27/ HTTP/1.1" 200 1043
+INFO 2026-02-18 21:34:47,892 basehttp "POST /api/seller/order-item/115/update-tracking/ HTTP/1.1" 200 113
+INFO 2026-02-18 21:34:47,959 basehttp "GET /api/seller/order/27/ HTTP/1.1" 200 1206
+INFO 2026-02-18 21:35:53,545 autoreload /home/tinex/Desktop/projects/market/market/shopper/shopping_app/order_views.py changed, reloading.
+INFO 2026-02-18 21:35:55,747 autoreload Watching for file changes with StatReloader
+INFO 2026-02-18 21:36:58,487 basehttp "POST /api/seller/order-item/115/update-tracking/ HTTP/1.1" 200 113
+INFO 2026-02-18 21:36:58,543 basehttp "GET /api/seller/order/27/ HTTP/1.1" 200 1363
+INFO 2026-02-18 21:37:10,401 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-02-18 21:37:10,454 basehttp "GET /login_user/ HTTP/1.1" 200 3536
+WARNING 2026-02-18 21:37:10,535 basehttp "GET /static/js/script.js HTTP/1.1" 404 1896
+INFO 2026-02-18 21:37:30,280 basehttp "POST /login_user/ HTTP/1.1" 200 93
+INFO 2026-02-18 21:37:37,259 basehttp "GET / HTTP/1.1" 200 26001
+INFO 2026-02-18 21:37:37,348 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:37:37,405 views User authenticated: True
+INFO 2026-02-18 21:37:37,414 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:37:37,503 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:37:37,603 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:37:38,670 basehttp "GET /orders/ HTTP/1.1" 200 17952
+INFO 2026-02-18 21:37:38,762 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:37:38,837 basehttp "GET /api/orders/ HTTP/1.1" 200 5455
+INFO 2026-02-18 21:37:38,843 views User authenticated: True
+INFO 2026-02-18 21:37:38,859 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:37:38,937 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:37:39,026 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:37:41,549 basehttp "GET /orders/27/ HTTP/1.1" 200 41535
+INFO 2026-02-18 21:37:41,638 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:37:41,650 basehttp "GET /api/orders/27/ HTTP/1.1" 200 1146
+INFO 2026-02-18 21:37:41,724 views User authenticated: True
+INFO 2026-02-18 21:37:41,737 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:37:41,815 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:37:41,904 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:37:42,392 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 148
+INFO 2026-02-18 21:37:43,959 basehttp "GET /order/27/confirm-delivery/ HTTP/1.1" 200 18267
+INFO 2026-02-18 21:37:44,226 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:37:44,259 views User authenticated: True
+INFO 2026-02-18 21:37:44,272 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:37:44,359 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:37:44,459 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:37:44,548 basehttp "GET /api/order/27/confirmation-items/ HTTP/1.1" 200 391
+INFO 2026-02-18 21:37:47,882 basehttp "POST /api/order/27/submit-confirmation/ HTTP/1.1" 200 107
+INFO 2026-02-18 21:37:52,016 basehttp "GET /order/27/tracking/ HTTP/1.1" 200 14689
+INFO 2026-02-18 21:37:52,260 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:37:52,297 views User authenticated: True
+INFO 2026-02-18 21:37:52,305 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:37:52,488 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:37:52,605 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:37:52,705 basehttp "GET /api/order/27/tracking/ HTTP/1.1" 200 1572
+INFO 2026-02-18 21:37:52,783 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:38:22,798 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:38:37,833 basehttp "GET /products/ HTTP/1.1" 200 14366
+INFO 2026-02-18 21:38:37,922 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:38:37,995 views User authenticated: True
+INFO 2026-02-18 21:38:38,000 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:38:38,077 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:38:38,166 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:38:38,300 basehttp "GET /api/products/ HTTP/1.1" 200 5133
+INFO 2026-02-18 21:38:40,378 basehttp "POST /api/cart/add/ HTTP/1.1" 200 59
+INFO 2026-02-18 21:38:40,434 basehttp "GET /api/cart/ HTTP/1.1" 200 343
+INFO 2026-02-18 21:38:42,945 basehttp "GET /cart/ HTTP/1.1" 200 21027
+INFO 2026-02-18 21:38:43,047 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:38:43,056 basehttp "GET /api/cart/ HTTP/1.1" 200 343
+INFO 2026-02-18 21:38:43,122 views User authenticated: True
+INFO 2026-02-18 21:38:43,134 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:38:43,223 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:38:43,311 basehttp "GET /api/cart/ HTTP/1.1" 200 343
+INFO 2026-02-18 21:38:45,034 basehttp "GET /checkout/ HTTP/1.1" 302 0
+INFO 2026-02-18 21:38:45,135 basehttp "GET /payment/select/ HTTP/1.1" 200 17289
+INFO 2026-02-18 21:38:45,269 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:38:45,339 views User authenticated: True
+INFO 2026-02-18 21:38:45,345 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:38:45,434 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:38:45,523 basehttp "GET /api/cart/ HTTP/1.1" 200 343
+INFO 2026-02-18 21:38:47,369 basehttp "POST /api/process-payment-selection/ HTTP/1.1" 200 164
+INFO 2026-02-18 21:38:48,055 basehttp "GET /payment/process/c9ce5033-3912-44ea-9a08-4b5669069b6c/ HTTP/1.1" 200 21439
+INFO 2026-02-18 21:38:48,203 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:38:48,332 views User authenticated: True
+INFO 2026-02-18 21:38:48,370 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:38:48,513 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:38:48,602 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:39:11,982 basehttp "GET /payment/select/ HTTP/1.1" 302 0
+INFO 2026-02-18 21:39:12,026 basehttp "GET /products/ HTTP/1.1" 200 14366
+INFO 2026-02-18 21:39:12,138 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:39:12,210 views User authenticated: True
+INFO 2026-02-18 21:39:12,215 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:39:12,304 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:39:12,393 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:39:12,504 basehttp "GET /api/products/ HTTP/1.1" 200 5133
+INFO 2026-02-18 21:39:16,683 basehttp "GET /orders/ HTTP/1.1" 200 17952
+INFO 2026-02-18 21:39:16,794 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:39:16,840 views User authenticated: True
+INFO 2026-02-18 21:39:16,852 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:39:16,873 basehttp "GET /api/orders/ HTTP/1.1" 200 5807
+INFO 2026-02-18 21:39:17,016 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:39:17,205 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:39:23,250 basehttp "GET /orders/28/ HTTP/1.1" 200 41535
+INFO 2026-02-18 21:39:23,341 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:39:23,372 basehttp "GET /api/orders/28/ HTTP/1.1" 200 1186
+INFO 2026-02-18 21:39:23,437 views User authenticated: True
+INFO 2026-02-18 21:39:23,450 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:39:23,528 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:39:23,617 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:39:23,850 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:39:53,865 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:40:07,333 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-02-18 21:40:07,353 basehttp "GET /login_user/ HTTP/1.1" 200 3536
+WARNING 2026-02-18 21:40:07,428 basehttp "GET /static/js/script.js HTTP/1.1" 404 1896
+INFO 2026-02-18 21:40:31,836 basehttp "POST /login_user/ HTTP/1.1" 200 95
+INFO 2026-02-18 21:40:33,426 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:40:35,336 basehttp "GET / HTTP/1.1" 200 26001
+INFO 2026-02-18 21:40:35,425 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:40:35,467 views User authenticated: True
+INFO 2026-02-18 21:40:35,481 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:40:35,559 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 21:40:36,626 basehttp "GET /seller/orders/ HTTP/1.1" 200 12332
+INFO 2026-02-18 21:40:36,948 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:40:36,984 views User authenticated: True
+INFO 2026-02-18 21:40:36,993 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:40:37,081 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 21:40:37,192 basehttp "GET /api/seller/orders/ HTTP/1.1" 200 23416
+INFO 2026-02-18 21:40:39,226 basehttp "GET /seller/order/28/ HTTP/1.1" 200 19437
+INFO 2026-02-18 21:40:39,481 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:40:39,517 views User authenticated: True
+INFO 2026-02-18 21:40:39,528 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:40:39,604 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 21:40:39,704 basehttp "GET /api/seller/order/28/ HTTP/1.1" 200 750
+INFO 2026-02-18 21:40:42,571 basehttp "POST /api/seller/order-item/116/update-tracking/ HTTP/1.1" 200 91
+INFO 2026-02-18 21:40:42,638 basehttp "GET /api/seller/order/28/ HTTP/1.1" 200 873
+INFO 2026-02-18 21:40:46,672 basehttp "POST /api/seller/order-item/116/update-tracking/ HTTP/1.1" 200 95
+INFO 2026-02-18 21:40:46,738 basehttp "GET /api/seller/order/28/ HTTP/1.1" 200 1025
+INFO 2026-02-18 21:40:49,761 order_views 📦 Delivery confirmation created for order ORD-20260218183847-2BT1J0, buyer buyer3@example.com
+INFO 2026-02-18 21:40:49,817 basehttp "POST /api/seller/order-item/116/update-tracking/ HTTP/1.1" 200 113
+INFO 2026-02-18 21:40:49,883 basehttp "GET /api/seller/order/28/ HTTP/1.1" 200 1192
+INFO 2026-02-18 21:41:08,953 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-02-18 21:41:08,979 basehttp "GET /login_user/ HTTP/1.1" 200 3536
+WARNING 2026-02-18 21:41:09,053 basehttp "GET /static/js/script.js HTTP/1.1" 404 1896
+INFO 2026-02-18 21:41:29,255 basehttp "POST /login_user/ HTTP/1.1" 200 93
+INFO 2026-02-18 21:41:36,500 basehttp "GET / HTTP/1.1" 200 26001
+INFO 2026-02-18 21:41:36,590 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:41:36,664 views User authenticated: True
+INFO 2026-02-18 21:41:36,679 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:41:36,789 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:41:36,878 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:41:38,745 basehttp "GET /orders/ HTTP/1.1" 200 17952
+INFO 2026-02-18 21:41:38,847 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:41:38,898 views User authenticated: True
+INFO 2026-02-18 21:41:38,912 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:41:38,923 basehttp "GET /api/orders/ HTTP/1.1" 200 5811
+INFO 2026-02-18 21:41:39,000 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:41:39,090 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:41:41,057 basehttp "GET /orders/28/ HTTP/1.1" 200 41535
+INFO 2026-02-18 21:41:41,158 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:41:41,178 basehttp "GET /api/orders/28/ HTTP/1.1" 200 1175
+INFO 2026-02-18 21:41:41,240 views User authenticated: True
+INFO 2026-02-18 21:41:41,245 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:41:41,323 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:41:41,412 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:41:41,667 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 148
+INFO 2026-02-18 21:41:43,301 basehttp "GET /order/28/confirm-delivery/ HTTP/1.1" 200 18267
+INFO 2026-02-18 21:41:43,590 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:41:43,623 views User authenticated: True
+INFO 2026-02-18 21:41:43,634 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:41:43,712 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:41:43,812 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:41:43,901 basehttp "GET /api/order/28/confirmation-items/ HTTP/1.1" 200 390
+INFO 2026-02-18 21:41:48,535 basehttp "POST /api/order/28/submit-confirmation/ HTTP/1.1" 200 107
+INFO 2026-02-18 21:41:52,580 basehttp "GET /order/28/tracking/ HTTP/1.1" 200 14689
+INFO 2026-02-18 21:41:52,858 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 21:41:52,895 views User authenticated: True
+INFO 2026-02-18 21:41:52,903 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 21:41:52,991 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 21:41:53,153 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 21:41:53,247 basehttp "GET /api/order/28/tracking/ HTTP/1.1" 200 1400
+INFO 2026-02-18 21:41:53,380 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:42:23,406 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:42:53,399 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:43:23,402 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:43:53,406 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:44:23,412 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:44:53,390 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:45:23,405 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:45:54,208 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:46:23,402 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:46:53,650 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:47:23,409 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 21:47:34,411 autoreload /home/tinex/Desktop/projects/market/market/shopper/shopping_app/order_views.py changed, reloading.
+INFO 2026-02-18 21:47:38,107 autoreload Watching for file changes with StatReloader
+INFO 2026-02-18 21:59:58,728 autoreload /home/tinex/Desktop/projects/market/market/shopper/shopping_app/order_views.py changed, reloading.
+INFO 2026-02-18 21:59:59,581 autoreload Watching for file changes with StatReloader
+INFO 2026-02-18 22:00:21,528 basehttp "GET /products/ HTTP/1.1" 200 14366
+INFO 2026-02-18 22:00:21,606 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 22:00:21,675 views User authenticated: True
+INFO 2026-02-18 22:00:21,683 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 22:00:21,795 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 22:00:21,884 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 22:00:22,006 basehttp "GET /api/products/ HTTP/1.1" 200 5133
+INFO 2026-02-18 22:00:24,417 basehttp "POST /api/cart/add/ HTTP/1.1" 200 60
+INFO 2026-02-18 22:00:24,473 basehttp "GET /api/cart/ HTTP/1.1" 200 346
+INFO 2026-02-18 22:00:27,084 basehttp "GET /cart/ HTTP/1.1" 200 21027
+INFO 2026-02-18 22:00:27,176 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 22:00:27,196 basehttp "GET /api/cart/ HTTP/1.1" 200 346
+INFO 2026-02-18 22:00:27,258 views User authenticated: True
+INFO 2026-02-18 22:00:27,306 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 22:00:27,407 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 22:00:27,495 basehttp "GET /api/cart/ HTTP/1.1" 200 346
+INFO 2026-02-18 22:00:30,274 basehttp "GET /checkout/ HTTP/1.1" 302 0
+INFO 2026-02-18 22:00:30,607 basehttp "GET /payment/select/ HTTP/1.1" 200 17295
+INFO 2026-02-18 22:00:30,970 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 22:00:31,194 views User authenticated: True
+INFO 2026-02-18 22:00:31,209 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 22:00:31,485 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 22:00:31,842 basehttp "GET /api/cart/ HTTP/1.1" 200 346
+INFO 2026-02-18 22:00:34,718 basehttp "POST /api/process-payment-selection/ HTTP/1.1" 200 105
+INFO 2026-02-18 22:00:35,841 basehttp "GET /orders/29/ HTTP/1.1" 200 41535
+INFO 2026-02-18 22:00:35,941 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 22:00:35,954 basehttp "GET /api/orders/29/ HTTP/1.1" 200 1158
+INFO 2026-02-18 22:00:36,036 views User authenticated: True
+INFO 2026-02-18 22:00:36,052 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 22:00:36,130 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-02-18 22:00:36,230 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 22:00:36,418 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 22:00:43,953 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-02-18 22:00:44,001 basehttp "GET /login_user/ HTTP/1.1" 200 3536
+WARNING 2026-02-18 22:00:44,179 basehttp "GET /static/js/script.js HTTP/1.1" 404 1896
+INFO 2026-02-18 22:01:00,565 basehttp "POST /login_user/ HTTP/1.1" 200 95
+INFO 2026-02-18 22:01:04,099 basehttp "GET / HTTP/1.1" 200 26001
+INFO 2026-02-18 22:01:04,177 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 22:01:04,218 views User authenticated: True
+INFO 2026-02-18 22:01:04,232 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 22:01:04,322 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 22:01:05,322 basehttp "GET /seller/orders/ HTTP/1.1" 200 12332
+INFO 2026-02-18 22:01:05,610 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 22:01:05,645 views User authenticated: True
+INFO 2026-02-18 22:01:05,656 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 22:01:05,732 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 22:01:05,910 basehttp "GET /api/seller/orders/ HTTP/1.1" 200 22008
+INFO 2026-02-18 22:01:10,100 basehttp "GET /seller/order/29/ HTTP/1.1" 200 19437
+INFO 2026-02-18 22:01:10,356 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 22:01:10,392 views User authenticated: True
+INFO 2026-02-18 22:01:10,400 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 22:01:10,477 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 22:01:10,588 basehttp "GET /api/seller/order/29/ HTTP/1.1" 200 753
+INFO 2026-02-18 22:01:13,845 basehttp "POST /api/seller/order-item/117/update-tracking/ HTTP/1.1" 200 91
+INFO 2026-02-18 22:01:13,922 basehttp "GET /api/seller/order/29/ HTTP/1.1" 200 876
+INFO 2026-02-18 22:01:16,817 basehttp "POST /api/seller/order-item/117/update-tracking/ HTTP/1.1" 200 87
+INFO 2026-02-18 22:01:16,934 basehttp "GET /api/seller/order/29/ HTTP/1.1" 200 998
+INFO 2026-02-18 22:01:19,601 basehttp "POST /api/seller/order-item/117/update-tracking/ HTTP/1.1" 200 107
+INFO 2026-02-18 22:01:19,667 basehttp "GET /api/seller/order/29/ HTTP/1.1" 200 1162
+INFO 2026-02-18 22:01:22,703 order_views 📦 Delivery confirmation created for order ORD-20260218190034-D806JF, buyer buyer3@example.com
+INFO 2026-02-18 22:01:22,789 basehttp "POST /api/seller/order-item/117/update-tracking/ HTTP/1.1" 200 113
+INFO 2026-02-18 22:01:22,845 basehttp "GET /api/seller/order/29/ HTTP/1.1" 200 1323
+INFO 2026-02-18 22:01:49,180 basehttp "GET /seller/orders/ HTTP/1.1" 200 12332
+INFO 2026-02-18 22:01:49,424 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 22:01:49,464 views User authenticated: True
+INFO 2026-02-18 22:01:49,469 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 22:01:49,547 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 22:01:49,658 basehttp "GET /api/seller/orders/ HTTP/1.1" 200 22020
+INFO 2026-02-18 22:02:07,137 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-02-18 22:02:07,156 basehttp "GET /login_user/ HTTP/1.1" 200 3536
+WARNING 2026-02-18 22:02:07,236 basehttp "GET /static/js/script.js HTTP/1.1" 404 1896
+INFO 2026-02-18 22:02:38,750 basehttp "POST /login_user/ HTTP/1.1" 200 93
+INFO 2026-02-18 22:02:42,483 basehttp "GET /products/ HTTP/1.1" 200 14366
+INFO 2026-02-18 22:02:42,561 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 22:02:42,599 views User authenticated: True
+INFO 2026-02-18 22:02:42,605 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 22:02:42,683 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 22:02:42,772 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 22:02:42,894 basehttp "GET /api/products/ HTTP/1.1" 200 5133
+INFO 2026-02-18 22:02:46,772 basehttp "POST /api/cart/add/ HTTP/1.1" 200 60
+INFO 2026-02-18 22:02:46,828 basehttp "GET /api/cart/ HTTP/1.1" 200 347
+INFO 2026-02-18 22:02:50,095 basehttp "GET /cart/ HTTP/1.1" 200 21027
+INFO 2026-02-18 22:02:50,185 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 22:02:50,217 basehttp "GET /api/cart/ HTTP/1.1" 200 347
+INFO 2026-02-18 22:02:50,235 views User authenticated: True
+INFO 2026-02-18 22:02:50,250 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 22:02:50,339 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 22:02:50,428 basehttp "GET /api/cart/ HTTP/1.1" 200 347
+INFO 2026-02-18 22:02:54,184 basehttp "GET /checkout/ HTTP/1.1" 302 0
+INFO 2026-02-18 22:02:54,284 basehttp "GET /payment/select/ HTTP/1.1" 200 17294
+INFO 2026-02-18 22:02:54,417 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 22:02:54,494 views User authenticated: True
+INFO 2026-02-18 22:02:54,508 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 22:02:54,596 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 22:02:54,684 basehttp "GET /api/cart/ HTTP/1.1" 200 347
+INFO 2026-02-18 22:02:56,951 basehttp "POST /api/process-payment-selection/ HTTP/1.1" 200 164
+INFO 2026-02-18 22:02:57,562 basehttp "GET /payment/process/b7314613-7aeb-4501-886f-9ca930ba7095/ HTTP/1.1" 200 21440
+INFO 2026-02-18 22:02:57,708 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 22:02:57,893 views User authenticated: True
+INFO 2026-02-18 22:02:57,908 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 22:02:57,995 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 22:02:58,188 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 22:03:10,397 basehttp "GET /orders/ HTTP/1.1" 200 17952
+INFO 2026-02-18 22:03:10,498 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 22:03:10,585 basehttp "GET /api/orders/ HTTP/1.1" 200 8902
+INFO 2026-02-18 22:03:10,586 views User authenticated: True
+INFO 2026-02-18 22:03:10,600 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 22:03:10,674 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 22:03:10,763 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 22:03:27,830 basehttp "GET /orders/30/ HTTP/1.1" 200 41535
+INFO 2026-02-18 22:03:27,920 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 22:03:27,953 basehttp "GET /api/orders/30/ HTTP/1.1" 200 1197
+INFO 2026-02-18 22:03:28,014 views User authenticated: True
+INFO 2026-02-18 22:03:28,020 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 22:03:28,097 basehttp "GET /user_profile/ HTTP/1.1" 200 101
+INFO 2026-02-18 22:03:28,186 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-02-18 22:03:28,452 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 22:03:58,443 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 22:04:06,944 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-02-18 22:04:06,965 basehttp "GET /login_user/ HTTP/1.1" 200 3536
+WARNING 2026-02-18 22:04:07,039 basehttp "GET /static/js/script.js HTTP/1.1" 404 1896
+INFO 2026-02-18 22:04:29,200 basehttp "POST /login_user/ HTTP/1.1" 200 95
+INFO 2026-02-18 22:04:30,811 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-02-18 22:04:34,556 basehttp "GET / HTTP/1.1" 200 26001
+INFO 2026-02-18 22:04:34,645 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 22:04:34,686 views User authenticated: True
+INFO 2026-02-18 22:04:34,702 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 22:04:34,789 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 22:04:35,868 basehttp "GET /seller/orders/ HTTP/1.1" 200 12332
+INFO 2026-02-18 22:04:36,147 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 22:04:36,181 views User authenticated: True
+INFO 2026-02-18 22:04:36,189 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 22:04:36,279 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 22:04:36,389 basehttp "GET /api/seller/orders/ HTTP/1.1" 200 24116
+INFO 2026-02-18 22:04:39,022 basehttp "GET /seller/order/30/ HTTP/1.1" 200 19437
+INFO 2026-02-18 22:04:39,289 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-02-18 22:04:39,326 views User authenticated: True
+INFO 2026-02-18 22:04:39,333 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-02-18 22:04:39,411 basehttp "GET /user_profile/ HTTP/1.1" 200 92
+INFO 2026-02-18 22:04:39,523 basehttp "GET /api/seller/order/30/ HTTP/1.1" 200 766
+INFO 2026-02-18 22:04:41,967 basehttp "POST /api/seller/order-item/118/update-tracking/ HTTP/1.1" 200 91
+INFO 2026-02-18 22:04:42,045 basehttp "GET /api/seller/order/30/ HTTP/1.1" 200 889
+INFO 2026-02-18 22:04:44,945 basehttp "POST /api/seller/order-item/118/update-tracking/ HTTP/1.1" 200 93
+INFO 2026-02-18 22:04:45,012 basehttp "GET /api/seller/order/30/ HTTP/1.1" 200 1023
+INFO 2026-02-18 22:04:47,968 basehttp "POST /api/seller/order-item/118/update-tracking/ HTTP/1.1" 200 95
+INFO 2026-02-18 22:04:48,034 basehttp "GET /api/seller/order/30/ HTTP/1.1" 200 1174
+INFO 2026-02-18 22:04:54,111 order_views 📦 Delivery confirmation created for order ORD-20260218190256-58G23R, buyer buyer1@example.com
+INFO 2026-02-18 22:04:54,157 basehttp "POST /api/seller/order-item/118/update-tracking/ HTTP/1.1" 200 113
+INFO 2026-02-18 22:04:54,223 basehttp "GET /api/seller/order/30/ HTTP/1.1" 200 1403
