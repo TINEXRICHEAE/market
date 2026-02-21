@@ -341,7 +341,7 @@ class OrderItem(models.Model):
     )
     payment_status = models.CharField(
         max_length=20,
-        choices=[('pending', 'Pending'), ('paid', 'Paid'), ('failed', 'Failed')],
+        choices=[('pending', 'Pending'), ('paid', 'Paid'), ('failed', 'Failed'), ('deposited', 'Deposited to Wallet')],
         default='pending'
     )
     payment_options = models.JSONField(
@@ -369,6 +369,7 @@ class OrderItem(models.Model):
     delivery_confirmed_at = models.DateTimeField(null=True, blank=True)
     delivery_notes = models.TextField(blank=True, null=True)
     has_dispute = models.BooleanField(default=False)
+    updated_at = models.DateTimeField(auto_now=True)
 
     @property
     def tracking_status_display_verbose(self):

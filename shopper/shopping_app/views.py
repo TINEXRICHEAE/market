@@ -527,9 +527,144 @@ def get_orders(request):
 
 @login_required(login_url='login_user')
 def view_order_detail(request, order_id):
+    get_object_or_404(Order, id=order_id, buyer=request.user)
     return render(request, 'order_detail.html', {'order_id': order_id})
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# complete_deposit_item_proxy
+# ─────────────────────────────────────────────────────────────────────────────
+
+@login_required(login_url='login_user')
+@api_view(['POST'])
+def complete_deposit_item_proxy(request, order_id, order_item_id):
+    """
+    Proxy: buyer completes a pending deposit.
+    Forwards the request to the Fair Cashier payment app.
+
+    POST body: { "pin": "1234" }
+    Response mirrors the payment app response.
+    """
+    try:
+        order = get_object_or_404(Order, id=order_id, buyer=request.user)
+
+        # Verify the item belongs to this order and is actually deposited
+        order_item = get_object_or_404(
+            OrderItem,
+            id=order_item_id,
+            order=order,
+            payment_status='deposited',
+        )
+
+        if not order.fair_cashier_request_id:
+            return Response({'error': 'No payment request linked to this order'}, status=400)
+
+        pin = request.data.get('pin', '')
+        if not pin or len(pin) != 4 or not pin.isdigit():
+            return Response({'error': 'Valid 4-digit PIN required'}, status=400)
+
+        # Forward to payment app
+        payment_app_url = (
+            f"{settings.FAIR_CASHIER_API_URL}"
+            f"/payment/{order.fair_cashier_request_id}"
+            f"/complete-deposit/shopping-item/{order_item_id}/"
+        )
+
+        resp = requests.post(
+            payment_app_url,
+            json={
+                'email': request.user.email,
+                'pin':   pin,
+            },
+            headers={'Content-Type': 'application/json'},
+            timeout=15,
+        )
+
+        data = resp.json()
+
+        if resp.status_code == 200 and data.get('success'):
+            # Optimistically update local status; webhook will also confirm
+            order_item.payment_status = 'paid'
+            order_item.save(update_fields=['payment_status', 'updated_at'])
+            logger.info(
+                f"✅ complete_deposit proxy OK: order={order_id}, item={order_item_id}"
+            )
+
+        return Response(data, status=resp.status_code)
+
+    except requests.exceptions.RequestException as e:
+        logger.error(f"❌ complete_deposit proxy network error: {e}")
+        return Response({'error': 'Could not reach payment service'}, status=503)
+    except Exception as e:
+        logger.error(f"❌ complete_deposit proxy error: {e}", exc_info=True)
+        return Response({'error': str(e)}, status=500)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# cancel_deposit_item_proxy
+# ─────────────────────────────────────────────────────────────────────────────
+
+@login_required(login_url='login_user')
+@api_view(['POST'])
+def cancel_deposit_item_proxy(request, order_id, order_item_id):
+    """
+    Proxy: buyer cancels a pending deposit, releasing the reservation.
+    Forwards the request to the Fair Cashier payment app.
+
+    POST body: { "pin": "1234" }
+    Response mirrors the payment app response.
+    """
+    try:
+        order = get_object_or_404(Order, id=order_id, buyer=request.user)
+
+        order_item = get_object_or_404(
+            OrderItem,
+            id=order_item_id,
+            order=order,
+            payment_status='deposited',
+        )
+
+        if not order.fair_cashier_request_id:
+            return Response({'error': 'No payment request linked to this order'}, status=400)
+
+        pin = request.data.get('pin', '')
+        if not pin or len(pin) != 4 or not pin.isdigit():
+            return Response({'error': 'Valid 4-digit PIN required'}, status=400)
+
+        payment_app_url = (
+            f"{settings.FAIR_CASHIER_API_URL}"
+            f"/payment/{order.fair_cashier_request_id}"
+            f"/cancel-deposit/shopping-item/{order_item_id}/"
+        )
+
+        resp = requests.post(
+            payment_app_url,
+            json={
+                'email': request.user.email,
+                'pin':   pin,
+            },
+            headers={'Content-Type': 'application/json'},
+            timeout=15,
+        )
+
+        data = resp.json()
+
+        if resp.status_code == 200 and data.get('success'):
+            # Revert local status to pending; webhook will also confirm
+            order_item.payment_status = 'pending'
+            order_item.save(update_fields=['payment_status', 'updated_at'])
+            logger.info(
+                f"✅ cancel_deposit proxy OK: order={order_id}, item={order_item_id}"
+            )
+
+        return Response(data, status=resp.status_code)
+
+    except requests.exceptions.RequestException as e:
+        logger.error(f"❌ cancel_deposit proxy network error: {e}")
+        return Response({'error': 'Could not reach payment service'}, status=503)
+    except Exception as e:
+        logger.error(f"❌ cancel_deposit proxy error: {e}", exc_info=True)
+        return Response({'error': str(e)}, status=500)
 
 @login_required(login_url='login_user')
 @api_view(['GET'])
@@ -559,7 +694,11 @@ def get_order_detail(request, order_id):
                 'payment_status': item.payment_status,
                 'payment_status_display': item.get_payment_status_display(),
                 'payment_options': item.payment_options,  
-                'can_pay_online': item.can_pay_online    
+                'can_pay_online': item.can_pay_online,                  
+                'is_deposited': item.payment_status == 'deposited',
+                'fair_cashier_request_id':    str(order.fair_cashier_request_id)
+                                            if order.fair_cashier_request_id else None,
+                'order_item_id_for_deposit':  item.id,    
             })
 
         # Get seller payment summaries (no longer using SellerPayment model)
@@ -623,8 +762,8 @@ def get_order_detail(request, order_id):
 
         # Check if there are unpaid online items
         has_unpaid_online = order.items.filter(
-            payment_options__contains='online',  # ✅ Item supports online payment
-            payment_status='pending'  # ✅ Payment is still pending
+            payment_options__contains='online',  
+            payment_status__in=['pending', 'deposited'],   
         ).exists()
 
         order_data = {
@@ -641,6 +780,8 @@ def get_order_detail(request, order_id):
             'items': order_items,
             'seller_payments': seller_payments,
             'has_unpaid_online': has_unpaid_online,
+            'pending_online_count':  order.items.filter(payment_method='online', payment_status='pending').count(),
+            'deposited_count':       order.items.filter(payment_method='online', payment_status='deposited').count(),
             'created_at': order.created_at.strftime('%Y-%m-%d %H:%M:%S'),
             'updated_at': order.updated_at.strftime('%Y-%m-%d %H:%M:%S'),
             
@@ -652,287 +793,244 @@ def get_order_detail(request, order_id):
         return Response({'error': str(e)}, status=500)
 
 
+
+
 @login_required(login_url='login_user')
 @api_view(['POST'])
 def retry_online_payment(request, order_id):
-    """
-    Retry online payment for an order with failed/pending payment
-    
-    Creates a new Fair Cashier payment request for unpaid online items
-    """
+    """Retry online payment for pending/deposited online items in an order."""
     try:
-        order = get_object_or_404(
-            Order,
-            id=order_id,
-            buyer=request.user
-        )
-        
-        # Get unpaid online items
+        order = get_object_or_404(Order, id=order_id, buyer=request.user)
+
+        # FIX: include 'deposited' items (funds in wallet, seller not yet paid)
         unpaid_items = order.items.filter(
             payment_method='online',
-            payment_status='pending'
+            payment_status__in=['pending', 'deposited'],
         ).select_related('product', 'seller')
-        
+
         if not unpaid_items.exists():
-            return Response({
-                'error': 'No unpaid online items in this order'
-            }, status=400)
-        
-        # Group by seller
-        seller_amounts = {}
-        for item in unpaid_items:
-            seller_email = item.seller.email
-            if seller_email not in seller_amounts:
-                seller_amounts[seller_email] = {
-                    'amount': Decimal('0.00'),
-                    'description': []
-                }
-            seller_amounts[seller_email]['amount'] += item.subtotal
-            seller_amounts[seller_email]['description'].append(
-                f"{item.product.name} (×{item.quantity})"
-            )
-        
-        # Create payment request items
+            return Response({'error': 'No unpaid online items in this order'}, status=400)
+
+        # FIX: one payment_items entry per individual OrderItem (1:1 webhook mapping)
         payment_items = []
-        for seller_email, data in seller_amounts.items():
+        for item in unpaid_items:
             payment_items.append({
-                'seller_email': seller_email,
-                'amount': str(data['amount']),
-                'description': ', '.join(data['description'])
+                'seller_email':          item.seller.email,
+                'amount':                str(item.subtotal),
+                'description':           f"{item.product.name} (×{item.quantity})",
+                'shopping_order_item_id': item.id,
             })
-        
-        # Call Fair Cashier API
-        import requests
-        from django.conf import settings
-        
+
         try:
             response = requests.post(
                 f"{settings.FAIR_CASHIER_API_URL}/api/payment-request/create/",
                 json={
-                    'api_key': settings.FAIR_CASHIER_API_KEY,
+                    'api_key':    settings.FAIR_CASHIER_API_KEY,
                     'buyer_email': request.user.email,
-                    'items': payment_items,
+                    'items':      payment_items,
                     'metadata': {
-                        'order_id': order.id,
+                        'order_id':     order.id,
                         'order_number': order.order_number,
-                        'retry': True
-                    }
+                        'retry':        True,
+                    },
                 },
                 headers={'Content-Type': 'application/json'},
-                timeout=15
+                timeout=15,
             )
-            
+
             if response.status_code in [200, 201]:
                 payment_data = response.json()
-                
-                # Update order with new payment request
+
                 order.fair_cashier_request_id = payment_data['request_id']
-                order.online_payment_status = 'pending'
+                order.online_payment_status   = 'pending'
                 order.save()
-                
-                # Store payment info in session - INCLUDING online_item_ids
+
                 request.session['pending_payment'] = {
-                    'request_id': str(payment_data['request_id']),
-                    'amount': str(sum(Decimal(item['amount']) for item in payment_items)),
-                    'order_id': order.id,
-                    'order_number': order.order_number,
-                    'online_item_ids': list(unpaid_items.values_list('id', flat=True))  # ✅ ADD THIS
+                    'request_id':    str(payment_data['request_id']),
+                    'amount':        str(sum(Decimal(i['amount']) for i in payment_items)),
+                    'order_id':      order.id,
+                    'order_number':  order.order_number,
+                    'online_item_ids': list(unpaid_items.values_list('id', flat=True)),
                 }
-                
+
                 logger.info(f"✅ Payment retry created for order {order.order_number}")
-                
+
                 return Response({
-                    'success': True,
+                    'success':            True,
                     'payment_request_id': payment_data['request_id'],
-                    'order_id': order.id,
-                    'order_number': order.order_number,
-                    
+                    'order_id':           order.id,
+                    'order_number':       order.order_number,
                 })
             else:
                 logger.error(f"Failed to create payment request: {response.text}")
                 return Response({
-                    'error': 'Failed to create payment request',
-                    'details': response.text
+                    'error':   'Failed to create payment request',
+                    'details': response.text,
                 }, status=500)
-                
+
         except requests.exceptions.RequestException as e:
             logger.error(f"Error connecting to payment gateway: {str(e)}")
             return Response({
-                'error': 'Failed to connect to payment gateway',
-                'message': str(e)
+                'error':   'Failed to connect to payment gateway',
+                'message': str(e),
             }, status=503)
-            
+
     except Exception as e:
         logger.error(f"Error retrying payment: {str(e)}", exc_info=True)
         return Response({'error': str(e)}, status=500)
+
 
 
 @login_required(login_url='login_user')
 @api_view(['POST'])
 def retry_selected_items_payment(request, order_id):
     """
-    Create payment request for selected order items
-    
-    Request body: {
-        "item_ids": [1, 2, 3]  // IDs of items to pay for
-    }
+    Create payment request for selected order items.
+    Request body: { "item_ids": [1, 2, 3] }
     """
     try:
-        order = get_object_or_404(
-            Order,
-            id=order_id,
-            buyer=request.user
-        )
-        
+        order = get_object_or_404(Order, id=order_id, buyer=request.user)
+
         item_ids = request.data.get('item_ids', [])
-        
         if not item_ids:
-            return Response({
-                'error': 'No items selected'
-            }, status=400)
-        
-        # Get selected items that can be paid online and are pending
+            return Response({'error': 'No items selected'}, status=400)
+
+        # FIX: include 'deposited' items
         selected_items = order.items.filter(
             id__in=item_ids,
             payment_options__contains='online',
-            payment_status='pending'
+            payment_status__in=['pending', 'deposited'],
         ).select_related('product', 'seller')
-        
+
         if not selected_items.exists():
-            return Response({
-                'error': 'No valid items selected for online payment'
-            }, status=400)
-        
-        # Group by seller
-        seller_amounts = {}
-        for item in selected_items:
-            seller_email = item.seller.email
-            if seller_email not in seller_amounts:
-                seller_amounts[seller_email] = {
-                    'amount': Decimal('0.00'),
-                    'description': []
-                }
-            seller_amounts[seller_email]['amount'] += item.subtotal
-            seller_amounts[seller_email]['description'].append(
-                f"{item.product.name} (×{item.quantity})"
-            )
-        
-        # Create payment request items
+            return Response({'error': 'No valid items selected for online payment'}, status=400)
+
+        # FIX: one payment_items entry per individual OrderItem
         payment_items = []
-        for seller_email, data in seller_amounts.items():
+        for item in selected_items:
             payment_items.append({
-                'seller_email': seller_email,
-                'amount': str(data['amount']),
-                'description': ', '.join(data['description'])
+                'seller_email':          item.seller.email,
+                'amount':                str(item.subtotal),
+                'description':           f"{item.product.name} (×{item.quantity})",
+                'shopping_order_item_id': item.id,
             })
-        
-        # Call Fair Cashier API
-        import requests
-        from django.conf import settings
-        
+
         try:
             response = requests.post(
                 f"{settings.FAIR_CASHIER_API_URL}/api/payment-request/create/",
                 json={
-                    'api_key': settings.FAIR_CASHIER_API_KEY,
+                    'api_key':    settings.FAIR_CASHIER_API_KEY,
                     'buyer_email': request.user.email,
-                    'items': payment_items,
+                    'items':      payment_items,
                     'metadata': {
-                        'order_id': order.id,
-                        'order_number': order.order_number,
-                        'partial_payment': True
-                    }
+                        'order_id':       order.id,
+                        'order_number':   order.order_number,
+                        'partial_payment': True,
+                    },
                 },
                 headers={'Content-Type': 'application/json'},
-                timeout=15
+                timeout=15,
             )
-            
+
             if response.status_code in [200, 201]:
                 payment_data = response.json()
-                
-                # Update order with new payment request
+
                 order.fair_cashier_request_id = payment_data['request_id']
-                order.online_payment_status = 'pending'
+                order.online_payment_status   = 'pending'
                 order.save()
-                
-                # Store payment info in session
+
                 request.session['pending_payment'] = {
-                    'request_id': str(payment_data['request_id']),
-                    'amount': str(sum(Decimal(item['amount']) for item in payment_items)),
-                    'order_id': order.id,
-                    'order_number': order.order_number,
-                    'online_item_ids': list(selected_items.values_list('id', flat=True))
+                    'request_id':    str(payment_data['request_id']),
+                    'amount':        str(sum(Decimal(i['amount']) for i in payment_items)),
+                    'order_id':      order.id,
+                    'order_number':  order.order_number,
+                    'online_item_ids': list(selected_items.values_list('id', flat=True)),
                 }
-                
-                logger.info(f"✅ Selective payment created for order {order.order_number}, items: {item_ids}")
-                
+
+                logger.info(
+                    f"✅ Selective payment created for order {order.order_number}, items: {item_ids}"
+                )
+
                 return Response({
-                    'success': True,
+                    'success':            True,
                     'payment_request_id': payment_data['request_id'],
-                    'order_id': order.id,
-                    'order_number': order.order_number,
-                    'total_amount': str(sum(Decimal(item['amount']) for item in payment_items))
+                    'order_id':           order.id,
+                    'order_number':       order.order_number,
+                    'total_amount':       str(sum(Decimal(i['amount']) for i in payment_items)),
                 })
             else:
                 logger.error(f"Failed to create payment request: {response.text}")
                 return Response({
-                    'error': 'Failed to create payment request',
-                    'details': response.text
+                    'error':   'Failed to create payment request',
+                    'details': response.text,
                 }, status=500)
-                
+
         except requests.exceptions.RequestException as e:
             logger.error(f"Error connecting to payment gateway: {str(e)}")
             return Response({
-                'error': 'Failed to connect to payment gateway',
-                'message': str(e)
+                'error':   'Failed to connect to payment gateway',
+                'message': str(e),
             }, status=503)
-            
+
     except Exception as e:
         logger.error(f"Error creating selective payment: {str(e)}", exc_info=True)
         return Response({'error': str(e)}, status=500)
 
-@login_required(login_url='login_user')
+
+
+# ============= REPLACE THIS ENTIRE FUNCTION =============
+
 @api_view(['POST'])
+@login_required(login_url='login_user')
 def process_payment_selection(request):
     """
-    Process payment method selections and create payment request if needed
+    Process payment method selections and create payment request if needed.
+    Supports per-item granular payment method selection.
+
+    Expected POST body:
+    {
+        "item_selections": {          ← was "selections" (FIXED)
+            "<cart_item_id>": "online" | "cash",
+            ...
+        }
+    }
     """
     try:
         data = request.data
-        selections = data.get('selections', {})
-        
-        # Get seller payment capabilities from session
-        seller_payment_capabilities = request.session.get('seller_payment_capabilities', {})
-        
-        # Get cart
+        # FIX: key is 'item_selections' (sent by payment_selection.html)
+        selections = data.get('item_selections', {})
+
         cart = get_object_or_404(Cart, user=request.user)
-        
+
         if not cart.items.exists():
             return Response({'error': 'Cart is empty'}, status=400)
-        
+
         with transaction.atomic():
-            # Create order first
             order = Order.objects.create(
                 buyer=request.user,
                 total_amount=cart.total_price,
                 status='pending'
             )
-            
-            # Group items by seller and payment method
+
             online_items = []
-            cash_items = []
-            
-            for item in cart.items.all():
-                seller_email = item.product.seller.email
-                payment_method = selections.get(seller_email, 'cash')
-                
-                # Get payment options for this seller
-                seller_capabilities = seller_payment_capabilities.get(seller_email, {})
-                payment_options = ['cash']  # Cash always available
+            cash_items  = []
+
+            for item in cart.items.select_related('product__seller').all():
+                item_id_str   = str(item.id)
+                seller_email  = item.product.seller.email
+                payment_method = selections.get(item_id_str, 'cash')
+
+                # Validate: item can only be online if seller accepts it
+                seller_capabilities = request.session.get(
+                    'seller_payment_capabilities', {}
+                ).get(seller_email, {})
+                if payment_method == 'online' and not seller_capabilities.get('online', False):
+                    payment_method = 'cash'
+
+                payment_options = ['cash']
                 if seller_capabilities.get('online', False):
                     payment_options.append('online')
-                
-                # Create order item
+
                 order_item = OrderItem.objects.create(
                     order=order,
                     product=item.product,
@@ -942,143 +1040,120 @@ def process_payment_selection(request):
                     subtotal=item.subtotal,
                     payment_method=payment_method,
                     payment_status='pending',
-                    payment_options=payment_options 
+                    payment_options=payment_options,
                 )
-                
+
                 # Update stock
                 product = item.product
                 product.stock_quantity -= item.quantity
                 product.save()
-                
-                # Group for payment request
+
                 if payment_method == 'online':
                     online_items.append({
                         'seller_email': seller_email,
                         'product': item.product,
-                        'order_item': order_item
+                        'order_item': order_item,
                     })
                 else:
                     cash_items.append(order_item)
-            
-            # Clear cart
+
+            # Clear cart and session capabilities
             cart.items.all().delete()
-            
-            # Clear seller payment capabilities from session
             request.session.pop('seller_payment_capabilities', None)
-            
-            # Determine overall payment method
+
+            # Set overall payment method
             if online_items and cash_items:
                 order.payment_method = 'mixed'
             elif online_items:
                 order.payment_method = 'online'
             else:
                 order.payment_method = 'cash'
-                
-            
             order.save()
-            
-            # If online payment required, create Fair Cashier payment request
+
             if online_items:
-                
-                # Group by seller
-                seller_amounts = {}
-                for item_data in online_items:
-                    seller_email = item_data['seller_email']
-                    if seller_email not in seller_amounts:
-                        seller_amounts[seller_email] = {
-                            'amount': Decimal('0.00'),
-                            'description': []
-                        }
-                    seller_amounts[seller_email]['amount'] += item_data['order_item'].subtotal
-                    seller_amounts[seller_email]['description'].append(
-                        f"{item_data['product'].name} (×{item_data['order_item'].quantity})"
-                    )
-                
-                # Create payment request items
+                # FIX: one payment_items entry per individual OrderItem
+                # so the payment app can map each PaymentRequestItem → one OrderItem exactly
                 payment_items = []
-                for seller_email, data in seller_amounts.items():
+                for item_data in online_items:
+                    oi = item_data['order_item']
                     payment_items.append({
-                        'seller_email': seller_email,
-                        'amount': str(data['amount']),
-                        'description': ', '.join(data['description'])
+                        'seller_email':          item_data['seller_email'],
+                        'amount':                str(oi.subtotal),
+                        'description':           f"{item_data['product'].name} (×{oi.quantity})",
+                        'shopping_order_item_id': oi.id,   # singular — 1:1 mapping
                     })
-                
-                # Call Fair Cashier API to create payment request
-                import requests
-                from django.conf import settings
-                
+
+                all_online_item_ids = [item_data['order_item'].id for item_data in online_items]
+
                 try:
                     response = requests.post(
                         f"{settings.FAIR_CASHIER_API_URL}/api/payment-request/create/",
                         json={
-                            'api_key': settings.FAIR_CASHIER_API_KEY,
+                            'api_key':   settings.FAIR_CASHIER_API_KEY,
                             'buyer_email': request.user.email,
-                            'items': payment_items,
+                            'items':      payment_items,
                             'metadata': {
-                                'order_id': order.id,
-                                'order_number': order.order_number
-                            }
+                                'order_id':     order.id,
+                                'order_number': order.order_number,
+                            },
                         },
                         headers={'Content-Type': 'application/json'},
-                        timeout=15
+                        timeout=15,
                     )
-                    
+
                     if response.status_code in [200, 201]:
                         payment_data = response.json()
-                        
-                        # Save payment request ID to order
+
                         order.fair_cashier_request_id = payment_data['request_id']
-                        order.online_payment_status = 'pending'
+                        order.online_payment_status   = 'pending'
                         order.save()
-                        
-                        # Store payment info in session for iframe proxy authorization
+
                         request.session['pending_payment'] = {
-                            'request_id': str(payment_data['request_id']),
-                            'amount': str(sum(Decimal(item['amount']) for item in payment_items)),
-                            'order_id': order.id,
-                            'order_number': order.order_number,
-                            'online_item_ids': [item_data['order_item'].id for item_data in online_items]
+                            'request_id':    str(payment_data['request_id']),
+                            'amount':        str(sum(Decimal(i['amount']) for i in payment_items)),
+                            'order_id':      order.id,
+                            'order_number':  order.order_number,
+                            'online_item_ids': all_online_item_ids,
                         }
-                        
+
                         return Response({
-                            'success': True,
+                            'success':                True,
                             'online_payment_required': True,
-                            'payment_request_id': payment_data['request_id'],
-                            'order_id': order.id,
-                            'order_number': order.order_number
+                            'payment_request_id':     payment_data['request_id'],
+                            'order_id':               order.id,
+                            'order_number':           order.order_number,
                         })
                     else:
-                        # Payment request creation failed
                         logger.error(f"Failed to create payment request: {response.text}")
                         order.online_payment_status = 'failed'
                         order.save()
-                        
                         return Response({
-                            'error': 'Failed to create payment request',
-                            'details': response.text
+                            'error':   'Failed to create payment request',
+                            'details': response.text,
                         }, status=500)
-                        
+
                 except requests.exceptions.RequestException as e:
                     logger.error(f"Error connecting to payment gateway: {str(e)}")
                     order.online_payment_status = 'failed'
                     order.save()
-                    
                     return Response({
-                        'error': 'Failed to connect to payment gateway',
-                        'message': str(e)
+                        'error':   'Failed to connect to payment gateway',
+                        'message': str(e),
                     }, status=503)
-            
-            # No online payment needed - all cash
+
+            # All cash
             return Response({
-                'success': True,
+                'success':                True,
                 'online_payment_required': False,
-                'order_id': order.id,
-                'order_number': order.order_number
+                'order_id':              order.id,
+                'order_number':          order.order_number,
             })
-            
+
     except Exception as e:
         logger.error(f"Error processing payment selection: {str(e)}", exc_info=True)
         return Response({'error': str(e)}, status=500)
+
+
 
 @login_required(login_url='login_user')
 def payment_selection_page(request):

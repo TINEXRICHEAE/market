@@ -313,96 +313,213 @@ def payment_iframe_proxy(request, request_id):
 @login_required
 def payment_return(request):
     """
-    Handle return from Fair Cashier after payment
-    
+    Handle return from Fair Cashier after payment.
+
     Query params:
     - request_id: Payment request UUID
-    - status: success/failed/cancelled
+    - status: success / failed / cancelled / deposited
     """
     request_id = request.GET.get('request_id')
     status = request.GET.get('status')
-    
-    logger.info(f"🔙 Payment return: {request_id} - Status: {status}")
-    
-    # Clear pending payment from session
+
+    logger.info(f"🔙 Payment return: {request_id} — Status: {status}")
+
     pending_payment = request.session.pop('pending_payment', {})
     order_id = pending_payment.get('order_id')
     order_number = pending_payment.get('order_number')
     online_item_ids = pending_payment.get('online_item_ids', [])
-    
+
     if status == 'success':
-        # Payment successful - update order and order items
         if order_id:
             try:
                 order = Order.objects.get(id=order_id)
                 order.online_payment_status = 'completed'
                 order.status = 'processing'
-                
                 order.save()
-                
-                # Update payment status for online order items
+
                 if online_item_ids:
                     OrderItem.objects.filter(
                         id__in=online_item_ids,
-                        order=order
+                        order=order,
+                        payment_status='pending',
                     ).update(payment_status='paid', payment_method='online')
-                
+
                 logger.info(f"✅ Payment successful for order {order_number}")
-                logger.info(f"✅ Updated {len(online_item_ids)} order items to 'paid' status")
                 return redirect('view_order_detail', order_id=order_id)
             except Order.DoesNotExist:
                 logger.error(f"Order {order_id} not found")
                 return redirect('view_orders')
-        else:
-            return redirect('view_orders')
-    
+        return redirect('view_orders')
+
+    elif status == 'deposited':
+        # Buyer deposited funds to wallet but did not yet pay sellers
+        if order_id:
+            try:
+                order = Order.objects.get(id=order_id)
+                # Leave online_payment_status as 'pending' — funds are in wallet, not settled
+                order.save()
+
+                # Mark items that were "deposited" — webhook will have already done this;
+                # but as fallback, mark pending online items as deposited here too
+                if online_item_ids:
+                    OrderItem.objects.filter(
+                        id__in=online_item_ids,
+                        order=order,
+                        payment_status='pending',
+                    ).update(payment_status='deposited')
+
+                logger.info(f"💰 Deposit acknowledged for order {order_number}")
+                from django.contrib import messages
+                messages.success(request, 'Funds deposited to your wallet. Seller can see your payment is secured.')
+                return redirect('view_order_detail', order_id=order_id)
+            except Order.DoesNotExist:
+                return redirect('view_orders')
+        return redirect('view_orders')
+
     elif status == 'cancelled':
-        # Payment cancelled by user
         if order_id:
             try:
                 order = Order.objects.get(id=order_id)
                 order.online_payment_status = 'failed'
                 order.status = 'cancelled'
                 order.save()
-                
-                # Update payment status for online order items
+
                 if online_item_ids:
                     OrderItem.objects.filter(
                         id__in=online_item_ids,
-                        order=order
+                        order=order,
                     ).update(payment_status='failed')
-                
             except Order.DoesNotExist:
                 pass
-        
+
         logger.info(f"⚠️ Payment cancelled for order {order_number}")
         from django.contrib import messages
-        messages.warning(request, 'Payment was cancelled. Your cart has been restored.')
+        messages.warning(request, 'Payment was cancelled.')
         return redirect('view_cart')
-    
+
     else:
-        # Payment failed
+        # Failed
         if order_id:
             try:
                 order = Order.objects.get(id=order_id)
                 order.online_payment_status = 'failed'
                 order.status = 'cancelled'
                 order.save()
-                
-                # Update payment status for online order items
+
                 if online_item_ids:
                     OrderItem.objects.filter(
                         id__in=online_item_ids,
-                        order=order
+                        order=order,
                     ).update(payment_status='failed')
-                
             except Order.DoesNotExist:
                 pass
-        
-        logger.error(f"❌ Payment failed for order {order_number}")
+
+        logger.warning(f"⚠️ Payment failed for order {order_number}")
         from django.contrib import messages
-        messages.error(request, 'Payment failed. Please try again or choose another payment method.')
+        messages.error(request, 'Payment failed. Please try again.')
         return redirect('view_cart')
+
+
+# ============= ADD NEW: payment_status_webhook =============
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def payment_status_webhook(request):
+    """
+    Webhook endpoint for Fair Cashier to push per-item payment status updates.
+
+    Called by Fair Cashier payment app after processing items.
+
+    Expected payload:
+    {
+        "request_id": "uuid",
+        "item_updates": [
+            {
+                "shopping_order_item_id": 42,
+                "status": "deposited" | "paid" | "failed",
+                "amount": "5000.00"
+            },
+            ...
+        ],
+        "overall_status": "paid" | "deposited" | "partial" | "failed"
+    }
+    """
+    try:
+        data = json.loads(request.body)
+        request_id = data.get('request_id')
+        item_updates = data.get('item_updates', [])
+        overall_status = data.get('overall_status', '')
+
+        logger.info(f"📥 Payment status webhook: {request_id} — {overall_status}")
+
+        if not request_id:
+            return JsonResponse({'error': 'request_id required'}, status=400)
+
+        # Find the order linked to this payment request
+        try:
+            order = Order.objects.get(fair_cashier_request_id=request_id)
+        except Order.DoesNotExist:
+            logger.error(f"❌ No order found for request {request_id}")
+            return JsonResponse({'error': 'Order not found'}, status=404)
+
+        with db_transaction.atomic():
+            for update in item_updates:
+                item_id = update.get('shopping_order_item_id')
+                new_status = update.get('status')
+                print(f"Updating item {item_id} to status {new_status}")
+                
+                if not item_id or not new_status:
+                    continue
+
+                try:
+                    item = OrderItem.objects.get(id=item_id, order=order)
+                    if new_status in ('paid', 'deposited') and item.payment_method != 'online':
+                        item.payment_method = 'online'
+                        item.save(update_fields=['payment_method'])
+                except OrderItem.DoesNotExist:
+                    logger.warning(f"Item {item_id} not found in order {order.id}")
+                    continue
+
+                if new_status not in ('paid', 'deposited', 'failed', 'pending'):
+                    logger.warning(f"Unknown status '{new_status}' for item {item_id}")
+                    continue
+
+                updated = OrderItem.objects.filter(
+                    id=item_id,
+                    order=order,
+                ).update(payment_status=new_status)
+
+                logger.info(f"  Item {item_id} → {new_status} (updated: {updated})")
+
+            # Update order-level status
+            if overall_status == 'paid':
+                order.online_payment_status = 'completed'
+                order.status = 'processing'
+            elif overall_status == 'deposited':
+                # Funds in wallet, not yet settled
+                order.online_payment_status = 'deposited'
+            elif overall_status == 'partial':
+                # Mix of paid + deposited — keep as processing
+                order.online_payment_status = 'completed'
+                order.status = 'processing'
+            elif overall_status == 'failed':
+                order.online_payment_status = 'failed'
+
+            order.save()
+
+        return JsonResponse({
+            'status': 'ok',
+            'order_number': order.order_number,
+            'items_updated': len(item_updates),
+        })
+
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        logger.error(f"❌ Webhook error: {str(e)}", exc_info=True)
+        return JsonResponse({'error': 'Internal error'}, status=500)
+
+
 
 # ============= CHECK BUYER STATUS (FOR FAIR CASHIER) =============
 

@@ -38,4 +38,5 @@ proxy_urlpatterns = [
     path('api/fair-cashier/check-buyer/', 
          proxy_views.check_buyer_fair_cashier_status, 
          name='fc_check_buyer'),
+    path('api/webhook/payment-status/', proxy_views.payment_status_webhook, name='payment_status_webhook'),
 ]

@@ -97,4 +97,11 @@ urlpatterns = [
      path('api/orders/<int:order_id>/pay-selected-items/', 
      views.retry_selected_items_payment, 
      name='retry_selected_items_payment'),
+     path('api/orders/<int:order_id>/items/<int:order_item_id>/complete-deposit/',
+         views.complete_deposit_item_proxy,
+         name='complete_deposit_item'),
+
+    path('api/orders/<int:order_id>/items/<int:order_item_id>/cancel-deposit/',
+         views.cancel_deposit_item_proxy,
+         name='cancel_deposit_item'),
 ] + proxy_urlpatterns + seller_proxy_urlpatterns  + order_urlpatterns

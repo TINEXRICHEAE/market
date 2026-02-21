@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Complete Payment - Marketplace</title>
+    <title>Secure Payment</title>
     {% load static %}
     {% load humanize %}
-    <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
-    
     <style>
         * {
             margin: 0;
@@ -15,483 +13,425 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
-            color: #333;
-        }
-
-        .payment-iframe-container {
-            max-width: 900px;
-            margin: 1rem auto;
-            padding: 0 1rem;
-        }
-
-        .payment-header {
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        .payment-header h2 {
-            font-size: 1.5rem;
-            color: #333;
-            margin-bottom: 0.5rem;
-        }
-
-        .payment-header .order-info {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 0.5rem;
-        }
-
-        .payment-header .amount {
-            font-size: 2rem;
-            color: #667eea;
-            font-weight: bold;
-        }
-
-        .iframe-wrapper {
-            background: white;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.15);
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-            min-height: 600px;
-        }
-
-        #paymentFrame {
+        html, body {
             width: 100%;
-            height: 700px;
-            border: none;
-            display: block;
+            height: 100%;
+            overflow: hidden;
+            background: #0a0a0a;
         }
 
-        /* Loading overlay */
-        .loading-overlay {
-            position: absolute;
+        /* ============ FULLSCREEN IFRAME ============ */
+        #paymentFrame {
+            position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: white;
+            width: 100vw;
+            height: 100vh;
+            border: none;
+            z-index: 1;
+            background: #0a0a0a;
+        }
+
+        /* ============ FLOATING CONTROLS (top-left) ============ */
+        #floatingControls {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 100;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .float-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 10;
+            font-size: 18px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+            transition: transform 0.15s, box-shadow 0.15s;
+            text-decoration: none;
+            background: rgba(255,255,255,0.92);
+            color: #222;
+            backdrop-filter: blur(6px);
         }
 
-        .loading-overlay.hidden {
-            display: none;
+        .float-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
 
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
+        .float-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* ============ LOADING OVERLAY ============ */
+        #loadingOverlay {
+            position: fixed;
+            inset: 0;
+            background: #0a0a0a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            transition: opacity 0.4s ease;
+        }
+
+        #loadingOverlay.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-ring {
+            width: 52px;
+            height: 52px;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: #f0e040;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
+            animation: spin 0.9s linear infinite;
+            margin-bottom: 20px;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
         }
 
-        /* Payment status display */
-        #paymentStatus {
-            text-align: center;
-            padding: 3rem 2rem;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        .loader-text {
+            color: rgba(255,255,255,0.5);
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .loader-amount {
+            color: #f0e040;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-top: 8px;
+        }
+
+        /* ============ STATUS OVERLAY ============ */
+        #statusOverlay {
+            position: fixed;
+            inset: 0;
+            background: #0a0a0a;
             display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            padding: 2rem;
         }
 
-        #paymentStatus.show {
-            display: block;
+        #statusOverlay.show {
+            display: flex;
         }
 
         .status-icon {
             font-size: 4rem;
-            margin-bottom: 1rem;
-        }
-
-        .status-icon.success {
-            color: #27ae60;
-        }
-
-        .status-icon.error {
-            color: #e74c3c;
-        }
-
-        #statusMessage {
-            font-size: 1.5rem;
             margin-bottom: 1.5rem;
-            font-weight: 600;
         }
 
-        .status-details {
-            color: #666;
-            margin-bottom: 2rem;
+        .status-title {
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.75rem;
+            text-align: center;
         }
 
-        .btn {
-            padding: 1rem 2rem;
+        .status-subtitle {
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            margin-bottom: 2.5rem;
+            max-width: 320px;
+        }
+
+        .status-btn {
+            padding: 14px 40px;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s;
             text-decoration: none;
             display: inline-block;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            transition: transform 0.15s;
         }
 
-        .btn:hover {
+        .status-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
 
-        .security-note {
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 5px;
-            margin-top: 1.5rem;
-            text-align: center;
-            color: #666;
-            font-size: 0.85rem;
-            border-left: 4px solid #667eea;
+        .status-btn.success {
+            background: #f0e040;
+            color: #0a0a0a;
         }
 
-        .security-note strong {
-            color: #333;
-            display: block;
-            margin-bottom: 0.25rem;
+        .status-btn.error {
+            background: #fff;
+            color: #0a0a0a;
         }
 
-        /* Progress indicator */
-        .progress-steps {
+        /* ============ SECURITY BADGE (bottom-right) ============ */
+        #securityBadge {
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            z-index: 100;
+            background: rgba(0,0,0,0.65);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 6px;
+            padding: 6px 12px;
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 1.5rem;
-            padding: 0 1rem;
-        }
-
-        .step {
-            flex: 1;
-            text-align: center;
-            position: relative;
-            padding: 0.5rem;
-        }
-
-        .step::before {
-            content: '';
-            position: absolute;
-            top: 1rem;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: #e0e0e0;
-            z-index: -1;
-        }
-
-        .step:first-child::before {
-            left: 50%;
-        }
-
-        .step:last-child::before {
-            right: 50%;
-        }
-
-        .step-number {
-            width: 2rem;
-            height: 2rem;
-            border-radius: 50%;
-            background: #e0e0e0;
-            color: #666;
-            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
+            gap: 6px;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: rgba(255,255,255,0.55);
+            letter-spacing: 0.5px;
+            pointer-events: none;
         }
 
-        .step.active .step-number {
-            background: #667eea;
-            color: white;
+        #securityBadge .lock {
+            color: #f0e040;
+            font-size: 0.9rem;
         }
 
-        .step.completed .step-number {
-            background: #27ae60;
-            color: white;
+        /* ============ ORDER INFO PILL (top-right, fades after load) ============ */
+        #orderPill {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 100;
+            background: rgba(0,0,0,0.65);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 20px;
+            padding: 6px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: rgba(255,255,255,0.7);
+            transition: opacity 0.5s ease;
         }
 
-        .step-label {
-            font-size: 0.75rem;
-            color: #666;
+        #orderPill.fade-out {
+            opacity: 0;
+            pointer-events: none;
         }
 
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .payment-iframe-container {
-                padding: 0.5rem;
-                margin: 0.5rem auto;
-            }
-
-            .payment-header {
-                padding: 1rem;
-                margin-bottom: 1rem;
-            }
-
-            .payment-header h2 {
-                font-size: 1.2rem;
-            }
-
-            .payment-header .amount {
-                font-size: 1.5rem;
-            }
-
-            #paymentFrame {
-                height: calc(100vh - 250px);
-                min-height: 500px;
-            }
-
-            .progress-steps {
-                font-size: 0.8rem;
-            }
-
-            .step-number {
-                width: 1.5rem;
-                height: 1.5rem;
-                font-size: 0.8rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .progress-steps {
-                display: none; /* Hide on very small screens */
-            }
+        #orderPill .amount-pill {
+            color: #f0e040;
+            font-weight: 900;
         }
     </style>
 </head>
 <body>
-    {% include "navbar_base.html" %}
 
-    <div class="payment-iframe-container">
-        <!-- Progress Steps -->
-        <div class="progress-steps">
-            <div class="step completed">
-                <div class="step-number">✓</div>
-                <div class="step-label">Cart</div>
-            </div>
-            <div class="step completed">
-                <div class="step-number">✓</div>
-                <div class="step-label">Checkout</div>
-            </div>
-            <div class="step active">
-                <div class="step-number">3</div>
-                <div class="step-label">Payment</div>
-            </div>
-            <div class="step">
-                <div class="step-number">4</div>
-                <div class="step-label">Confirmation</div>
-            </div>
-        </div>
+    <!-- Fullscreen Payment Iframe -->
+    <iframe
+        id="paymentFrame"
+        src="{{ payment_url }}"
+        allow="payment; fullscreen"
+        sandbox="allow-same-origin allow-scripts allow-forms allow-top-navigation allow-popups"
+        title="Fair Cashier Payment Gateway">
+    </iframe>
 
-        <!-- Payment Header -->
-        <div class="payment-header">
-            <h2>🔒 Secure Payment</h2>
-            <div class="order-info">Order: {{ order_number }}</div>
-            <div class="amount">UGX {{ amount|floatformat:0|intcomma }}</div>
-        </div>
-        
-        <!-- Payment Iframe -->
-        <div class="iframe-wrapper">
-            <div id="loadingOverlay" class="loading-overlay">
-                <div class="spinner"></div>
-            </div>
-            
-            <iframe 
-                id="paymentFrame"
-                src="{{ payment_url }}"
-                allow="payment; fullscreen"
-                sandbox="allow-same-origin allow-scripts allow-forms allow-top-navigation allow-popups"
-                title="Fair Cashier Payment Gateway">
-            </iframe>
-        </div>
-        
-        <!-- Payment Status (Hidden initially) -->
-        <div id="paymentStatus">
-            <div class="status-icon" id="statusIcon"></div>
-            <h3 id="statusMessage"></h3>
-            <div class="status-details" id="statusDetails"></div>
-            <a href="#" id="continueBtn" class="btn" style="display: none;"></a>
-        </div>
-
-        <!-- Security Note -->
-        <div class="security-note">
-            <strong>🛡️ Secure Transaction</strong>
-            Your payment is protected by Fair Cashier's secure payment gateway.
-            Do not close this window until the payment is complete.
-        </div>
+    <!-- Floating Controls (back + refresh) -->
+    <div id="floatingControls">
+        <button class="float-btn" id="backBtn" title="Go back" onclick="confirmBack()">←</button>
+        <button class="float-btn" id="refreshBtn" title="Reload payment page" onclick="reloadFrame()">↺</button>
     </div>
 
-    <script src="{% static 'js/navbar.js' %}"></script>
+    <!-- Order Info Pill -->
+    <div id="orderPill">
+        <span>Order {{ order_number }}</span>
+        <span class="amount-pill">UGX {{ amount|floatformat:0|intcomma }}</span>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay">
+        <div class="loader-ring"></div>
+        <div class="loader-text">Connecting securely</div>
+        <div class="loader-amount">UGX {{ amount|floatformat:0|intcomma }}</div>
+    </div>
+
+    <!-- Status Overlay (shown after postMessage) -->
+    <div id="statusOverlay">
+        <div class="status-icon" id="statusIcon">✅</div>
+        <div class="status-title" id="statusTitle" style="color:#f0e040;">Payment Successful</div>
+        <div class="status-subtitle" id="statusSubtitle">Your payment has been processed. Redirecting…</div>
+        <a href="#" class="status-btn success" id="statusBtn">View Order</a>
+    </div>
+
+    <!-- Security Badge -->
+    <div id="securityBadge">
+        <span class="lock">🔒</span>
+        Secured by Fair Cashier
+    </div>
+
     <script>
-        console.log('💳 Payment iframe initialized');
-        console.log('Fair Cashier domain:', '{{ fair_cashier_domain }}');
-        
         const FAIR_CASHIER_DOMAIN = '{{ fair_cashier_domain }}';
         const REQUEST_ID = '{{ request_id }}';
         const ORDER_NUMBER = '{{ order_number }}';
-        
+
         let paymentCompleted = false;
-        
-        // Hide loading overlay when iframe loads
-        document.getElementById('paymentFrame').addEventListener('load', function() {
-            console.log('✅ Payment iframe loaded successfully');
+
+        // ============ IFRAME LOAD ============
+        const frame = document.getElementById('paymentFrame');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const orderPill = document.getElementById('orderPill');
+
+        frame.addEventListener('load', function () {
             setTimeout(() => {
-                document.getElementById('loadingOverlay').classList.add('hidden');
-            }, 500);
+                loadingOverlay.classList.add('fade-out');
+                // Fade out order pill after 4s
+                setTimeout(() => orderPill.classList.add('fade-out'), 4000);
+            }, 600);
         });
 
-        // Handle iframe load errors
-        document.getElementById('paymentFrame').addEventListener('error', function() {
-            console.error('❌ Failed to load payment iframe');
-            showError('Failed to load payment page. Please check your internet connection.');
+        frame.addEventListener('error', function () {
+            showStatus('error', '⚠️', 'Failed to Load', 'Could not reach the payment gateway. Please try again.', 'Go Back', () => {
+                window.location.href = '/cart/';
+            });
         });
 
-        // Listen for postMessage from Fair Cashier iframe
-        window.addEventListener('message', function(event) {
-            console.log('📨 Received message:', event);
-            
-            // Verify origin
-            const isDevelopment = event.origin.includes('localhost') || event.origin.includes('127.0.0.1');
-            const isTrustedOrigin = event.origin === FAIR_CASHIER_DOMAIN;
-            
-            if (!isDevelopment && !isTrustedOrigin) {
-                console.warn('⚠️ Received message from untrusted origin:', event.origin);
-                return;
-            }
-            
+        // ============ POSTMESSAGE HANDLER ============
+        window.addEventListener('message', function (event) {
+            const isDev = event.origin.includes('localhost') || event.origin.includes('127.0.0.1');
+            const isTrusted = event.origin === FAIR_CASHIER_DOMAIN;
+            if (!isDev && !isTrusted) return;
+
+            if (paymentCompleted) return;
+
             const data = event.data;
-            console.log('📦 Message data:', data);
-            
-            if (paymentCompleted) {
-                console.log('⏭️ Payment already completed, ignoring message');
-                return;
-            }
-            
-            // Handle payment success
+
             if (data.type === 'payment_success') {
                 paymentCompleted = true;
-                console.log('✅ Payment successful!');
-                
-                // Hide iframe
-                document.getElementById('paymentFrame').style.display = 'none';
-                document.getElementById('loadingOverlay').classList.add('hidden');
-                
-                // Show success status
-                showSuccess('Payment Successful!', 'Your order has been confirmed.');
-                
-                // Auto-redirect after 2 seconds
+                showStatus(
+                    'success', '✅', 'Payment Successful!',
+                    'Your order has been confirmed. Redirecting…',
+                    'View Order',
+                    () => { window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=success`; }
+                );
                 setTimeout(() => {
                     window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=success`;
-                }, 2000);
+                }, 2500);
             }
-            
-            // Handle payment cancellation
-            else if (data.type === 'payment_cancelled') {
+
+            else if (data.type === 'payment_deposited') {
+                // Items deposited to wallet (not yet paid to seller)
                 paymentCompleted = true;
-                console.log('⚠️ Payment cancelled by user');
-                
-                window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=cancelled`;
-            }
-            
-            // Handle payment failure
-            else if (data.type === 'payment_failed') {
-                paymentCompleted = true;
-                console.error('❌ Payment failed:', data.message);
-                
-                showError('Payment Failed', data.message || 'An error occurred during payment.');
-                
-                // Show retry button after 3 seconds
+                showStatus(
+                    'success', '💰', 'Funds Deposited!',
+                    'Money has been secured in your wallet. The seller can see your funds are ready.',
+                    'View Order',
+                    () => { window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=deposited`; }
+                );
                 setTimeout(() => {
-                    const continueBtn = document.getElementById('continueBtn');
-                    continueBtn.textContent = 'Try Again';
-                    continueBtn.href = '/cart/';
-                    continueBtn.style.display = 'inline-block';
+                    window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=deposited`;
                 }, 3000);
             }
-            
-            // Handle status updates
-            else if (data.type === 'payment_status') {
-                console.log('📊 Payment status update:', data.status);
-                // Could show progress indicators here
+
+            else if (data.type === 'payment_mixed') {
+                // Some items paid, some deposited
+                paymentCompleted = true;
+                showStatus(
+                    'success', '✅', 'Order Updated!',
+                    'Payment processed. Some items paid, others have funds deposited.',
+                    'View Order',
+                    () => { window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=success`; }
+                );
+                setTimeout(() => {
+                    window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=success`;
+                }, 2500);
+            }
+
+            else if (data.type === 'payment_cancelled') {
+                paymentCompleted = true;
+                window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=cancelled`;
+            }
+
+            else if (data.type === 'payment_failed') {
+                paymentCompleted = true;
+                showStatus(
+                    'error', '❌', 'Payment Failed',
+                    data.message || 'An error occurred during payment. Please try again.',
+                    'Try Again',
+                    () => { window.location.href = '/cart/'; }
+                );
             }
         });
 
-        function showSuccess(title, details) {
-            const statusDiv = document.getElementById('paymentStatus');
-            const statusIcon = document.getElementById('statusIcon');
-            const statusMessage = document.getElementById('statusMessage');
-            const statusDetails = document.getElementById('statusDetails');
-            const continueBtn = document.getElementById('continueBtn');
-            
-            statusIcon.textContent = '✅';
-            statusIcon.className = 'status-icon success';
-            statusMessage.textContent = title;
-            statusMessage.style.color = '#27ae60';
-            statusDetails.textContent = details;
-            
-            continueBtn.textContent = 'View Order';
-            continueBtn.href = `/payment/return/?request_id=${REQUEST_ID}&status=success`;
-            continueBtn.style.display = 'inline-block';
-            
-            statusDiv.classList.add('show');
+        // ============ FLOATING BUTTON ACTIONS ============
+        function confirmBack() {
+            if (paymentCompleted) { window.location.href = '/orders/'; return; }
+            if (confirm('Payment is in progress. Go back anyway? Your order will be cancelled.')) {
+                window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=cancelled`;
+            }
         }
 
-        function showError(title, details) {
-            const statusDiv = document.getElementById('paymentStatus');
-            const statusIcon = document.getElementById('statusIcon');
-            const statusMessage = document.getElementById('statusMessage');
-            const statusDetails = document.getElementById('statusDetails');
-            
-            statusIcon.textContent = '❌';
-            statusIcon.className = 'status-icon error';
-            statusMessage.textContent = title;
-            statusMessage.style.color = '#e74c3c';
-            statusDetails.textContent = details;
-            
-            document.getElementById('paymentFrame').style.display = 'none';
-            statusDiv.classList.add('show');
+        function reloadFrame() {
+            if (paymentCompleted) return;
+            loadingOverlay.classList.remove('fade-out');
+            frame.src = frame.src;
         }
 
-        // Prevent accidental page navigation
-        window.addEventListener('beforeunload', function(e) {
+        // ============ STATUS OVERLAY ============
+        function showStatus(type, icon, title, subtitle, btnLabel, btnAction) {
+            document.getElementById('statusIcon').textContent = icon;
+            const titleEl = document.getElementById('statusTitle');
+            titleEl.textContent = title;
+            titleEl.style.color = type === 'success' ? '#f0e040' : '#ff5555';
+            document.getElementById('statusSubtitle').textContent = subtitle;
+
+            const btn = document.getElementById('statusBtn');
+            btn.textContent = btnLabel;
+            btn.className = `status-btn ${type}`;
+            btn.onclick = (e) => { e.preventDefault(); btnAction(); };
+
+            // Hide iframe, show overlay
+            frame.style.opacity = '0';
+            loadingOverlay.classList.add('fade-out');
+            document.getElementById('statusOverlay').classList.add('show');
+        }
+
+        // ============ KEEP SESSION ALIVE ============
+        setInterval(() => {
+            if (!paymentCompleted) {
+                fetch('/api/csrf/', { credentials: 'include' }).catch(() => {});
+            }
+        }, 60000);
+
+        // ============ NAVIGATION GUARD ============
+        window.addEventListener('beforeunload', function (e) {
             if (!paymentCompleted) {
                 e.preventDefault();
-                e.returnValue = 'Payment is in progress. Are you sure you want to leave?';
+                e.returnValue = 'Payment in progress. Leave?';
                 return e.returnValue;
             }
         });
-
-        // Heartbeat to keep session alive
-        setInterval(() => {
-            if (!paymentCompleted) {
-                // Ping to keep session active
-                fetch('/api/csrf/', {
-                    credentials: 'include'
-                }).catch(() => {});
-            }
-        }, 60000); // Every minute
     </script>
 </body>
 </html>
