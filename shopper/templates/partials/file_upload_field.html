@@ -1,0 +1,58 @@
+{# templates/partials/file_upload_field.html #}
+{# Usage: {% include 'partials/file_upload_field.html' with field=form.national_id_front only %} #}
+<div class="file-upload-wrapper">
+  <label class="flex items-center gap-3 border-2 border-white/40 hover:border-white
+                cursor-pointer transition-colors p-3 group">
+    <span class="material-symbols-outlined text-white/50 group-hover:text-primary transition-colors">
+      upload_file
+    </span>
+    <span class="file-name-label text-xs font-bold text-white/50 group-hover:text-white transition-colors flex-1 truncate">
+      {% if field.value %}{{ field.value }}{% else %}Choose file…{% endif %}
+    </span>
+    <span class="text-xs font-black uppercase tracking-widest text-primary border border-primary px-2 py-1">
+      Browse
+    </span>
+    {# Render the actual file input hidden inside the label #}
+    <span class="sr-only">{{ field }}</span>
+  </label>
+  {# Re-render the real input (hidden visually but accessible) #}
+  <div class="hidden">{{ field }}</div>
+
+  {# Show existing file link if editing #}
+  {% if field.value %}
+  <p class="text-xs font-bold text-white/40 mt-1">
+    Current:
+    <a href="{{ field.value.url }}" target="_blank"
+       class="text-primary underline underline-offset-2">
+      View uploaded file
+    </a>
+  </p>
+  {% endif %}
+</div>
+
+<script>
+(function() {
+  // Each file_upload_field inclusion is self-contained
+  const wrappers = document.querySelectorAll('.file-upload-wrapper');
+  wrappers.forEach(wrapper => {
+    // Find the hidden real input and the label-bound one
+    const realInput = wrapper.querySelector('.hidden input[type="file"]');
+    const labelSpan = wrapper.querySelector('.sr-only input[type="file"]');
+    const nameLabel = wrapper.querySelector('.file-name-label');
+
+    // Sync click from label to real hidden input for proper form submission
+    const visibleLabel = wrapper.querySelector('label');
+    if (realInput && visibleLabel) {
+      visibleLabel.addEventListener('click', (e) => {
+        e.preventDefault();
+        realInput.click();
+      });
+      realInput.addEventListener('change', function() {
+        if (nameLabel && this.files[0]) {
+          nameLabel.textContent = this.files[0].name;
+        }
+      });
+    }
+  });
+})();
+</script>

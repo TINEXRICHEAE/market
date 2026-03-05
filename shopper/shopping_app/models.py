@@ -3,13 +3,11 @@ from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import Group as DjangoGroup
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
-from django.contrib.auth import get_user_model
 import uuid
 import json
 import hashlib
 from decimal import Decimal
 import os
-
 
 class UsersManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -125,7 +123,7 @@ class Group(DjangoGroup):
             return f"Group(name={self.name})"
 
 
-User = get_user_model()
+
 
 
 class Category(models.Model):
@@ -341,7 +339,7 @@ class OrderItem(models.Model):
     )
     payment_status = models.CharField(
         max_length=20,
-        choices=[('pending', 'Pending'), ('paid', 'Paid'), ('failed', 'Failed'), ('deposited', 'Deposited to Wallet')],
+        choices=[('pending', 'Pending'), ('paid', 'Paid'), ('failed', 'Failed'), ('deposited', 'Payment Reseved')],
         default='pending'
     )
     payment_options = models.JSONField(
@@ -565,4 +563,220 @@ class OrderDispute(models.Model):
             self.order_item.payment_method == 'online'
             and self.order_item.payment_status == 'paid'
         )
-    
+
+
+
+
+def seller_doc_upload_path(instance, filename):
+    """Store documents under media/seller_kyc/<user_id>/<filename>"""
+    ext = filename.rsplit('.', 1)[-1]
+    safe_name = f"{uuid.uuid4()}.{ext}"
+    return f"seller_kyc/{instance.seller.id}/{safe_name}"
+
+
+class SellerVerification(models.Model):
+    """
+    Full KYC record for a seller.
+    OneToOne with Users (role='seller').
+    Tracks both shopping-app KYC approval AND ZKP Merkle registration.
+    """
+
+    class VerificationStatus(models.TextChoices):
+        INCOMPLETE = 'incomplete', 'Incomplete'
+        PENDING    = 'pending',    'Pending Review'
+        APPROVED   = 'approved',   'Approved'
+        REJECTED   = 'rejected',   'Rejected'
+
+    class ZKPStatus(models.TextChoices):
+        NOT_REGISTERED = 'not_registered', 'Not Registered'
+        REGISTERED     = 'registered',     'Registered in Merkle Tree'
+        FAILED         = 'failed',         'Registration Failed'
+
+    # ── Core link ─────────────────────────────────────────────────────────────
+    seller = models.OneToOneField(
+        'Users',          # same app — adjust to just 'Users' if merged into models.py
+        on_delete=models.CASCADE,
+        related_name='kyc_verification',
+        limit_choices_to={'role': 'seller'},
+    )
+    verification_id = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
+
+    # ── Personal information ──────────────────────────────────────────────────
+    full_legal_name    = models.CharField(max_length=255)
+    national_id_number = models.CharField(max_length=100, unique=True)
+    date_of_birth      = models.DateField()
+    phone_number       = models.CharField(max_length=30)
+    physical_address   = models.TextField()
+    district           = models.CharField(max_length=100)
+    country            = models.CharField(max_length=100, default='Uganda')
+
+    # ── Business information ──────────────────────────────────────────────────
+    business_name            = models.CharField(max_length=255)
+    business_registration_no = models.CharField(max_length=100, blank=True)
+    business_type            = models.CharField(
+        max_length=50,
+        choices=[
+            ('individual',  'Individual / Sole Trader'),
+            ('partnership', 'Partnership'),
+            ('company',     'Registered Company'),
+            ('ngo',         'NGO / Non-profit'),
+        ],
+        default='individual',
+    )
+    business_address = models.TextField(blank=True)
+    tin_number       = models.CharField(max_length=100, blank=True, verbose_name='TIN Number')
+
+    # ── Document uploads ──────────────────────────────────────────────────────
+    national_id_front = models.FileField(upload_to=seller_doc_upload_path)
+    national_id_back  = models.FileField(upload_to=seller_doc_upload_path, blank=True, null=True)
+    selfie_with_id    = models.FileField(upload_to=seller_doc_upload_path, blank=True, null=True)
+    business_cert     = models.FileField(upload_to=seller_doc_upload_path, blank=True, null=True,
+                                         verbose_name='Business Registration Certificate')
+    proof_of_address  = models.FileField(upload_to=seller_doc_upload_path, blank=True, null=True)
+
+    # ── KYC review ───────────────────────────────────────────────────────────
+    status      = models.CharField(
+        max_length=20,
+        choices=VerificationStatus.choices,
+        default=VerificationStatus.INCOMPLETE,
+        db_index=True,
+    )
+    admin_notes = models.TextField(blank=True)
+    reviewed_by = models.ForeignKey(
+        'Users',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='kyc_reviews_given',
+        limit_choices_to={'role__in': ['admin', 'superadmin']},
+    )
+    reviewed_at = models.DateTimeField(null=True, blank=True)
+
+    # ── ZKP registration ──────────────────────────────────────────────────────
+    zkp_status           = models.CharField(
+        max_length=20,
+        choices=ZKPStatus.choices,
+        default=ZKPStatus.NOT_REGISTERED,
+        db_index=True,
+    )
+    zkp_commitment_hash  = models.CharField(max_length=512, blank=True,
+                                            help_text='Merkle leaf commitment returned by Strapi ZKP')
+    zkp_merkle_root      = models.CharField(max_length=512, blank=True)
+    zkp_registered_at    = models.DateTimeField(null=True, blank=True)
+    zkp_last_verified_at = models.DateTimeField(null=True, blank=True)
+    zkp_proof_cached     = models.JSONField(null=True, blank=True,
+                                            help_text='Latest cached proof object from Strapi')
+
+    zkp_leaf_index = models.IntegerField(
+        null=True, blank=True,
+        help_text='Leaf index in the Merkle tree (from Strapi registration)',
+    )
+    zkp_block_number = models.IntegerField(
+        null=True, blank=True,
+        help_text='Block number at time of Merkle tree registration',
+    )
+    zkp_public_signals = models.JSONField(
+        null=True, blank=True,
+        help_text='Public signals from PLONK KYC proof generation',
+    )
+    # ── Timestamps ────────────────────────────────────────────────────────────
+    submitted_at = models.DateTimeField(auto_now_add=True)
+    updated_at   = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'seller_kyc_verifications'
+        verbose_name = 'Seller KYC Verification'
+        verbose_name_plural = 'Seller KYC Verifications'
+        ordering = ['-submitted_at']
+
+    def __str__(self):
+        return f"KYC [{self.status}] — {self.seller.email}"
+
+    # ── Convenience properties ────────────────────────────────────────────────
+    @property
+    def is_approved(self):
+        return self.status == self.VerificationStatus.APPROVED
+
+    @property
+    def is_zkp_registered(self):
+        return self.zkp_status == self.ZKPStatus.REGISTERED
+
+    @property
+    def is_fully_verified(self):
+        """True only when KYC approved AND in ZKP Merkle tree."""
+        return self.is_approved and self.is_zkp_registered
+
+    # ── Lifecycle helpers ─────────────────────────────────────────────────────
+    def mark_approved(self, admin_user=None):
+        self.status      = self.VerificationStatus.APPROVED
+        self.reviewed_by = admin_user
+        self.reviewed_at = timezone.now()
+        self.save(update_fields=['status', 'reviewed_by', 'reviewed_at', 'updated_at'])
+
+    def mark_rejected(self, notes='', admin_user=None):
+        self.status      = self.VerificationStatus.REJECTED
+        self.admin_notes = notes
+        self.reviewed_by = admin_user
+        self.reviewed_at = timezone.now()
+        self.save(update_fields=['status', 'admin_notes', 'reviewed_by', 'reviewed_at', 'updated_at'])
+
+    def record_zkp_registration(self, commitment_hash, merkle_root, proof=None):
+        self.zkp_status          = self.ZKPStatus.REGISTERED
+        self.zkp_commitment_hash = commitment_hash
+        self.zkp_merkle_root     = merkle_root
+        self.zkp_registered_at   = timezone.now()
+        if proof:
+            self.zkp_proof_cached = proof
+        self.save(update_fields=[
+            'zkp_status', 'zkp_commitment_hash', 'zkp_merkle_root',
+            'zkp_registered_at', 'zkp_proof_cached', 'updated_at',
+        ])
+
+
+
+
+class BalanceProofVerification(models.Model):
+    """
+    Stores Shopping App's independent verification of balance proofs
+    generated by the Payment App. Buyer wallet balance is NEVER stored here.
+    """
+    TIER_CHOICES = (
+        ('green', 'Green — buyer can pay all items'),
+        ('amber', 'Amber — buyer can pay some items'),
+        ('red', 'Red — buyer cannot pay any items'),
+        ('unknown', 'Unknown'),
+    )
+
+    order_number = models.CharField(max_length=50, db_index=True, help_text='Matches Order.order_number')
+    seller_email = models.EmailField(db_index=True)
+
+    tier_result = models.CharField(max_length=10, choices=TIER_CHOICES, default='unknown')
+    items_payable = models.IntegerField(default=0)
+    total_items = models.IntegerField(default=0)
+    binary_bracket = models.IntegerField(default=0, help_text='Power-of-two bracket from proof')
+
+    verified = models.BooleanField(default=False, help_text='True if Strapi confirmed proof valid')
+    verified_at = models.DateTimeField(null=True, blank=True)
+
+    proof = models.JSONField(null=True, blank=True, help_text='Groth16 proof for re-verification')
+    public_signals = models.JSONField(null=True, blank=True)
+
+    expires_at = models.DateTimeField(null=True, blank=True)
+    refresh_count = models.IntegerField(default=0)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'balance_proof_verifications'
+        unique_together = [('order_number', 'seller_email')]
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"BalanceProof [{self.tier_result}] order={self.order_number} seller={self.seller_email}"
+
+    @property
+    def is_expired(self):
+        if not self.expires_at:
+            return False
+        return self.expires_at < timezone.now()
+

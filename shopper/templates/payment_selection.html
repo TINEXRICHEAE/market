@@ -14,448 +14,499 @@
         .page-subtitle { color: #666; margin-bottom: 2rem; font-size: 0.95rem; }
 
         /* ── Seller Group ── */
-        .seller-group {
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            border: 2px solid #e0e0e0;
-        }
-        .seller-group h3 {
-            color: #667eea;
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .seller-caps-badge {
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 20px;
-            margin-left: auto;
-        }
-        .badge-both { background: #e8f5e9; color: #388e3c; }
-        .badge-online-only { background: #e3f2fd; color: #1565c0; }
-        .badge-cash-only { background: #fff8e1; color: #f57f17; }
+        .seller-group { background: white; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.08); border: 2px solid #e0e0e0; }
+        .seller-group h3 { color: #667eea; margin-bottom: 0.75rem; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+        .seller-caps-badge { font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; margin-left: auto; }
+        .badge-both       { background: #e8f5e9; color: #388e3c; }
+        .badge-online-only{ background: #e3f2fd; color: #1565c0; }
+        .badge-cash-only  { background: #fff8e1; color: #f57f17; }
 
-        /* ── Group-level controls (shown when seller has both options) ── */
-        .group-controls {
-            background: #f8f9ff;
-            border-radius: 6px;
-            padding: 0.75rem 1rem;
-            margin-bottom: 1rem;
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            flex-wrap: wrap;
+        /* ── ZKP Verification Badge ───────────────────────────────── */
+        .zkp-badge-row {
+            display: flex; align-items: center; gap: 0.5rem;
+            padding: 0.55rem 0.75rem; border-radius: 8px; margin-bottom: 1rem;
+            border: 1.5px solid transparent; transition: all 0.3s;
         }
+        .zkp-badge-row.state-loading  { background: #f5f5f5; border-color: #ddd; }
+        .zkp-badge-row.state-verified { background: #e8f5e9; border-color: #66bb6a; }
+        .zkp-badge-row.state-unverified { background: #fff3e0; border-color: #ffa726; }
+        .zkp-badge-row.state-failed   { background: #fce4ec; border-color: #ef5350; }
+        .zkp-badge-row.state-down     { background: #f5f5f5; border-color: #bdbdbd; }
+
+        .zkp-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; transition: background 0.3s; }
+        .state-loading   .zkp-dot { background: #bdbdbd; animation: blink 1s infinite; }
+        .state-verified  .zkp-dot { background: #43a047; }
+        .state-unverified .zkp-dot { background: #fb8c00; animation: pulse-amber 1.8s infinite; }
+        .state-failed    .zkp-dot { background: #e53935; }
+        .state-down      .zkp-dot { background: #9e9e9e; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+        @keyframes pulse-amber { 0%,100%{box-shadow:0 0 0 0 rgba(251,140,0,0.5)} 50%{box-shadow:0 0 0 5px rgba(251,140,0,0)} }
+        @keyframes spin-icon { to{transform:rotate(360deg)} }
+
+        .zkp-badge-text { flex: 1; min-width: 0; }
+        .zkp-main-text  { font-size: 0.8rem; font-weight: 700; color: #333; }
+        .state-verified  .zkp-main-text { color: #2e7d32; }
+        .state-unverified .zkp-main-text { color: #e65100; }
+        .state-failed    .zkp-main-text { color: #b71c1c; }
+        .state-down      .zkp-main-text { color: #757575; }
+        .zkp-sub-text   { font-size: 0.68rem; color: #999; margin-top: 1px; }
+
+        .btn-zkp-refresh {
+            padding: 2px 7px; border-radius: 20px; border: 1.5px solid #ccc;
+            background: white; font-size: 0.68rem; font-weight: 700; cursor: pointer;
+            color: #777; transition: all 0.2s; flex-shrink: 0; display: flex; align-items: center; gap: 3px;
+        }
+        .btn-zkp-refresh:hover { border-color: #667eea; color: #667eea; }
+        .btn-zkp-refresh svg { transition: transform 0.1s; }
+        .btn-zkp-refresh.spinning svg { animation: spin-icon 0.7s linear infinite; }
+
+        .btn-view-proof {
+            padding: 3px 10px; border-radius: 20px; border: 1.5px solid #43a047;
+            background: transparent; font-size: 0.72rem; font-weight: 700;
+            cursor: pointer; color: #2e7d32; transition: all 0.2s; white-space: nowrap;
+        }
+        .btn-view-proof:hover { background: #e8f5e9; }
+
+        /* ── Proof Modal ──────────────────────────────────────────── */
+        .proof-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.55); z-index: 800;
+            align-items: center; justify-content: center; padding: 1rem;
+        }
+        .proof-overlay.open { display: flex; }
+        .proof-modal {
+            background: white; border-radius: 12px; padding: 1.75rem;
+            width: 100%; max-width: 480px; max-height: 85vh; overflow-y: auto;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+        }
+        .proof-modal-hdr { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 2px solid #f0f0f0; }
+        .proof-modal-title { font-size: 1rem; font-weight: 700; flex: 1; }
+        .proof-modal-close { background: none; border: none; cursor: pointer; font-size: 1.3rem; color: #999; padding: 2px 6px; border-radius: 4px; }
+        .proof-modal-close:hover { color: #333; }
+        .proof-status-banner { padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1.25rem; font-size: 0.85rem; font-weight: 600; }
+        .proof-status-banner.ok  { background: #e8f5e9; color: #2e7d32; }
+        .proof-status-banner.bad { background: #fce4ec; color: #b71c1c; }
+        .proof-field { margin-bottom: 0.85rem; }
+        .proof-field-lbl { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #999; margin-bottom: 0.25rem; }
+        .proof-field-val { font-size: 0.8rem; font-weight: 600; color: #333; background: #f8f8f8; padding: 0.45rem 0.65rem; border-radius: 6px; word-break: break-all; font-family: 'Courier New', monospace; }
+        .proof-loading-wrap { text-align: center; padding: 2.5rem; color: #888; }
+        .proof-spinner { display: inline-block; width: 26px; height: 26px; border: 3px solid #eee; border-top-color: #667eea; border-radius: 50%; animation: spin-icon 0.8s linear infinite; margin-bottom: 0.75rem; }
+
+        /* ── Group Controls ── */
+        .group-controls { background: #f8f9ff; border-radius: 6px; padding: 0.75rem 1rem; margin-bottom: 1rem; display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
         .group-controls span { font-size: 0.85rem; font-weight: 600; color: #555; flex: 0 0 auto; }
-        .quick-btn {
-            padding: 4px 14px;
-            border-radius: 20px;
-            border: 2px solid #667eea;
-            background: white;
-            color: #667eea;
-            font-size: 0.8rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+        .quick-btn { padding: 4px 14px; border-radius: 20px; border: 2px solid #667eea; background: white; color: #667eea; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
         .quick-btn:hover, .quick-btn.active { background: #667eea; color: white; }
         .quick-btn.cash-all:hover, .quick-btn.cash-all.active { border-color: #f57c00; background: #f57c00; color: white; }
 
-        /* ── Item row ── */
-        .item-row {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 1rem;
-            align-items: center;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
+        /* ── Item Row ── */
+        .item-row { display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f0f0f0; }
         .item-row:last-child { border-bottom: none; }
         .item-name { font-weight: 600; font-size: 0.95rem; }
         .item-meta { font-size: 0.82rem; color: #777; margin-top: 2px; }
         .item-price { font-weight: 700; color: #667eea; font-size: 1rem; white-space: nowrap; }
-
-        /* ── Per-item payment toggle (when seller has both) ── */
-        .item-payment-toggle {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-            margin-top: 0.5rem;
-        }
-        .pay-method-btn {
-            padding: 4px 12px;
-            border-radius: 4px;
-            border: 2px solid #e0e0e0;
-            background: white;
-            font-size: 0.78rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: #555;
-        }
+        .item-payment-toggle { display: flex; gap: 0.5rem; align-items: center; margin-top: 0.5rem; }
+        .pay-method-btn { padding: 4px 12px; border-radius: 4px; border: 2px solid #e0e0e0; background: white; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; color: #555; }
         .pay-method-btn:hover { border-color: #667eea; color: #667eea; }
         .pay-method-btn.selected-online { border-color: #1565c0; background: #1565c0; color: white; }
-        .pay-method-btn.selected-cash { border-color: #f57c00; background: #f57c00; color: white; }
-
-        /* ── Fixed-method indicator (seller has only one option) ── */
-        .fixed-method-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 0.78rem;
-            font-weight: 700;
-            margin-top: 0.5rem;
-        }
+        .pay-method-btn.selected-cash   { border-color: #f57c00; background: #f57c00; color: white; }
+        .fixed-method-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; margin-top: 0.5rem; }
         .fixed-online { background: #e3f2fd; color: #1565c0; }
-        .fixed-cash { background: #fff8e1; color: #e65100; }
+        .fixed-cash   { background: #fff8e1; color: #e65100; }
 
-        /* ── Seller total bar ── */
-        .seller-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 1.25rem;
-            padding-top: 1rem;
-            border-top: 2px solid #667eea;
-        }
+        /* ── Seller Footer ── */
+        .seller-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem; padding-top: 1rem; border-top: 2px solid #667eea; }
         .seller-total { font-size: 1.1rem; font-weight: 700; color: #333; }
-        .seller-total-online, .seller-total-cash {
-            font-size: 0.85rem;
-            font-weight: 600;
-            padding: 2px 10px;
-            border-radius: 20px;
-        }
+        .seller-total-online, .seller-total-cash { font-size: 0.85rem; font-weight: 600; padding: 2px 10px; border-radius: 20px; }
         .seller-total-online { background: #e3f2fd; color: #1565c0; }
-        .seller-total-cash { background: #fff8e1; color: #e65100; }
+        .seller-total-cash   { background: #fff8e1; color: #e65100; }
 
-        /* ── Grand total summary ── */
-        .grand-summary {
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            margin-bottom: 1.5rem;
-        }
+        /* ── Grand Summary ── */
+        .grand-summary { background: white; border-radius: 10px; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 1.5rem; }
         .grand-summary h3 { font-size: 1.1rem; margin-bottom: 1rem; color: #333; }
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 0.9rem;
-        }
+        .summary-row { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #f0f0f0; font-size: 0.9rem; }
         .summary-row:last-child { border-bottom: none; font-weight: 700; font-size: 1rem; }
 
-        /* ── Submit button ── */
-        .btn-primary {
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 0.5rem;
-        }
+        /* ── Submit ── */
+        .btn-primary { width: 100%; padding: 1rem; background: linear-gradient(135deg,#667eea,#764ba2); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s; margin-top: 0.5rem; }
         .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
-        .btn-primary:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+        .btn-primary:disabled { background: #ccc; cursor: not-allowed; }
 
-        /* ── Loading overlay ── */
-        .loading-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.5);
-            display: none; align-items: center; justify-content: center; z-index: 9999;
-        }
-        .loading-overlay.active { display: flex; }
-        .spinner {
-            border: 4px solid #f3f3f3; border-top: 4px solid #667eea;
-            border-radius: 50%; width: 60px; height: 60px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        .toast {
-            position: fixed; bottom: 2rem; right: 2rem; padding: 1rem 1.5rem;
-            border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            opacity: 0; transform: translateY(20px); transition: all 0.3s; z-index: 10000;
-            color: white; background: #333;
-        }
-        .toast.show { opacity: 1; transform: translateY(0); }
-        .toast.error { background: #e74c3c; }
-        .toast.success { background: #27ae60; }
-
-        @media (max-width: 768px) {
-            .container { padding: 1rem; }
-            .item-row { grid-template-columns: 1fr; }
-        }
+        .loading-overlay { position: fixed; top:0;left:0;right:0;bottom:0; background: rgba(0,0,0,0.5); display:none; align-items:center; justify-content:center; z-index:9999; }
+        .loading-overlay.active { display:flex; }
+        .spinner { border:4px solid #f3f3f3; border-top:4px solid #667eea; border-radius:50%; width:60px;height:60px; animation:spin-icon 1s linear infinite; }
+        .toast { position:fixed; bottom:2rem;right:2rem; padding:1rem 1.5rem; border-radius:5px; box-shadow:0 2px 10px rgba(0,0,0,0.2); opacity:0; transform:translateY(20px); transition:all 0.3s; z-index:10000; color:white; background:#333; }
+        .toast.show { opacity:1; transform:translateY(0); }
+        .toast.error   { background:#e74c3c; }
+        .toast.success { background:#27ae60; }
+        @media(max-width:768px){ .container{padding:1rem;} .item-row{grid-template-columns:1fr;} }
     </style>
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
 </head>
 <body>
-    {% include "navbar_base.html" %}
+{% include "navbar_base.html" %}
 
-    <div class="container">
-        <h1>💳 Select Payment Methods</h1>
-        <p class="page-subtitle">Choose how you'd like to pay for each item. You can mix cash and online payments.</p>
+<div class="container">
+    <h1>💳 Select Payment Methods</h1>
+    <p class="page-subtitle">Choose how you'd like to pay for each item. You can mix cash and online payments.</p>
 
-        <form id="paymentSelectionForm">
-            {% csrf_token %}
+    <form id="paymentSelectionForm">
+        {% csrf_token %}
 
-            {% for seller_email, seller_data in grouped_items.items %}
-            {% with opts=seller_data.payment_options has_both=seller_data.payment_options.online %}
-            <div class="seller-group" data-seller="{{ seller_email }}">
-                <h3>
-                    📦 {{ seller_email }}
-                    {% if has_both %}
-                        <span class="seller-caps-badge badge-both">Cash &amp; Online Available</span>
-                    {% elif opts.online %}
-                        <span class="seller-caps-badge badge-online-only">Online Only</span>
-                    {% else %}
-                        <span class="seller-caps-badge badge-cash-only">Cash on Delivery</span>
-                    {% endif %}
-                </h3>
+        {% for seller_email, seller_data in grouped_items.items %}
+        {% with opts=seller_data.payment_options has_both=seller_data.payment_options.online %}
+        <div class="seller-group" data-seller="{{ seller_email }}">
 
+            <h3>
+                📦 {{ seller_email }}
                 {% if has_both %}
-                <!-- Quick-select shortcuts when seller supports both -->
-                <div class="group-controls">
-                    <span>Quick select for all items:</span>
-                    <button type="button" class="quick-btn online-all" onclick="setAllForSeller('{{ seller_email }}', 'online')">All Online</button>
-                    <button type="button" class="quick-btn cash-all" onclick="setAllForSeller('{{ seller_email }}', 'cash')">All Cash</button>
-                </div>
+                    <span class="seller-caps-badge badge-both">Cash &amp; Online Available</span>
+                {% elif opts.online %}
+                    <span class="seller-caps-badge badge-online-only">Online Only</span>
+                {% else %}
+                    <span class="seller-caps-badge badge-cash-only">Cash on Delivery</span>
                 {% endif %}
+            </h3>
 
-                <!-- Items -->
-                {% for item in seller_data.items %}
-                <div class="item-row"
-                     id="item-row-{{ item.id }}"
-                     data-item-id="{{ item.id }}"
-                     data-seller="{{ seller_email }}"
-                     data-subtotal="{{ item.subtotal }}"
-                     data-method="{% if seller_data.payment_options.online %}online{% else %}cash{% endif %}">
-                    <div>
-                        <div class="item-name">{{ item.product.name }}</div>
-                        <div class="item-meta">Qty: {{ item.quantity }} &times; UGX {{ item.product.price|intcomma }}</div>
-
-                        {% if has_both %}
-                        <!-- Per-item toggle: Online or Cash -->
-                        <div class="item-payment-toggle">
-                            <input type="hidden"
-                                   name="item_payment_{{ item.id }}"
-                                   id="hid_{{ item.id }}"
-                                   value="online">
-                            <button type="button"
-                                    class="pay-method-btn selected-online"
-                                    id="btn-online-{{ item.id }}"
-                                    onclick="selectItemMethod('{{ item.id }}', 'online')">
-                                💳 Online
-                            </button>
-                            <button type="button"
-                                    class="pay-method-btn"
-                                    id="btn-cash-{{ item.id }}"
-                                    onclick="selectItemMethod('{{ item.id }}', 'cash')">
-                                💵 Cash
-                            </button>
-                        </div>
-                        {% elif opts.online %}
-                        <!-- Online only -->
-                        <input type="hidden" name="item_payment_{{ item.id }}" value="online">
-                        <span class="fixed-method-badge fixed-online">💳 Online Payment</span>
-                        {% else %}
-                        <!-- Cash only -->
-                        <input type="hidden" name="item_payment_{{ item.id }}" value="cash">
-                        <span class="fixed-method-badge fixed-cash">💵 Cash on Delivery</span>
-                        {% endif %}
-                    </div>
-                    <div class="item-price">UGX {{ item.subtotal|intcomma }}</div>
+            <!-- ════ ZKP SELLER VERIFICATION BADGE ════════════════════ -->
+            {% with seller_id=seller_data.seller_id %}
+            <div class="zkp-badge-row state-loading"
+                 id="zkp-badge-{{ seller_id|default:'none' }}"
+                 data-seller-id="{{ seller_id }}"
+                 data-seller-email="{{ seller_email }}">
+                <div class="zkp-dot"></div>
+                <div class="zkp-badge-text">
+                    <div class="zkp-main-text">Checking seller verification…</div>
+                    <div class="zkp-sub-text"></div>
                 </div>
-                {% endfor %}
-
-                <div class="seller-footer">
-                    <span class="seller-total">Subtotal: UGX {{ seller_data.total|intcomma }}</span>
-                    {% if has_both %}
-                    <span class="seller-total-online" id="online-total-{{ forloop.counter }}">Online: UGX {{ seller_data.total|intcomma }}</span>
-                    <span class="seller-total-cash" id="cash-total-{{ forloop.counter }}" style="display:none">Cash: UGX 0</span>
-                    {% elif opts.online %}
-                    <span class="seller-total-online">Online: UGX {{ seller_data.total|intcomma }}</span>
-                    {% else %}
-                    <span class="seller-total-cash">Cash: UGX {{ seller_data.total|intcomma }}</span>
-                    {% endif %}
-                </div>
+                <button type="button" class="btn-zkp-refresh"
+                        id="zkp-refresh-{{ seller_id|default:'none' }}"
+                        onclick="refreshZkp('{{ seller_id|escapejs }}', this)"
+                        title="Re-check live">
+                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                        <path d="M23 4v6h-6M1 20v-6h6"/>
+                        <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+                    </svg>
+                    Refresh
+                </button>
+                <button type="button" class="btn-view-proof"
+                        id="zkp-proof-btn-{{ seller_id|default:'none' }}"
+                        onclick="openProofModal('{{ seller_id|escapejs }}', '{{ seller_email|escapejs }}')"
+                        style="display:none">
+                    🔍 View Proof
+                </button>
             </div>
             {% endwith %}
+            <!-- ═══════════════════════════════════════════════════════ -->
+
+            {% if has_both %}
+            <div class="group-controls">
+                <span>Quick select for all items:</span>
+                <button type="button" class="quick-btn online-all" onclick="setAllForSeller('{{ seller_email }}','online')">All Online</button>
+                <button type="button" class="quick-btn cash-all"   onclick="setAllForSeller('{{ seller_email }}','cash')">All Cash</button>
+            </div>
+            {% endif %}
+
+            {% for item in seller_data.items %}
+            <div class="item-row"
+                 id="item-row-{{ item.id }}"
+                 data-item-id="{{ item.id }}"
+                 data-seller="{{ seller_email }}"
+                 data-subtotal="{{ item.subtotal }}"
+                 data-method="{% if seller_data.payment_options.online %}online{% else %}cash{% endif %}">
+                <div>
+                    <div class="item-name">{{ item.product.name }}</div>
+                    <div class="item-meta">Qty: {{ item.quantity }} &times; UGX {{ item.product.price|intcomma }}</div>
+                    {% if has_both %}
+                    <div class="item-payment-toggle">
+                        <input type="hidden" name="item_payment_{{ item.id }}" id="hid_{{ item.id }}" value="online">
+                        <button type="button" class="pay-method-btn selected-online" id="btn-online-{{ item.id }}" onclick="selectItemMethod('{{ item.id }}','online')">💳 Online</button>
+                        <button type="button" class="pay-method-btn" id="btn-cash-{{ item.id }}" onclick="selectItemMethod('{{ item.id }}','cash')">💵 Cash</button>
+                    </div>
+                    {% elif opts.online %}
+                    <input type="hidden" name="item_payment_{{ item.id }}" value="online">
+                    <span class="fixed-method-badge fixed-online">💳 Online Payment</span>
+                    {% else %}
+                    <input type="hidden" name="item_payment_{{ item.id }}" value="cash">
+                    <span class="fixed-method-badge fixed-cash">💵 Cash on Delivery</span>
+                    {% endif %}
+                </div>
+                <div class="item-price">UGX {{ item.subtotal|intcomma }}</div>
+            </div>
             {% endfor %}
 
-            <!-- Grand total summary -->
-            <div class="grand-summary">
-                <h3>📊 Order Summary</h3>
-                <div class="summary-row">
-                    <span>💳 Online Payment Total</span>
-                    <span id="grandOnlineTotal">UGX 0</span>
-                </div>
-                <div class="summary-row">
-                    <span>💵 Cash on Delivery Total</span>
-                    <span id="grandCashTotal">UGX 0</span>
-                </div>
-                <div class="summary-row">
-                    <span>Grand Total</span>
-                    <span>UGX {{ total_amount|intcomma }}</span>
-                </div>
+            <div class="seller-footer">
+                <span class="seller-total">Subtotal: UGX {{ seller_data.total|intcomma }}</span>
+                {% if has_both %}
+                <span class="seller-total-online" id="online-total-{{ forloop.counter }}">Online: UGX {{ seller_data.total|intcomma }}</span>
+                <span class="seller-total-cash" id="cash-total-{{ forloop.counter }}" style="display:none">Cash: UGX 0</span>
+                {% elif opts.online %}
+                <span class="seller-total-online">Online: UGX {{ seller_data.total|intcomma }}</span>
+                {% else %}
+                <span class="seller-total-cash">Cash: UGX {{ seller_data.total|intcomma }}</span>
+                {% endif %}
             </div>
+        </div>
+        {% endwith %}
+        {% endfor %}
 
-            <button type="submit" class="btn-primary" id="submitBtn">
-                Continue to Payment →
-            </button>
-        </form>
+        <div class="grand-summary">
+            <h3>📊 Order Summary</h3>
+            <div class="summary-row"><span>💳 Online Payment Total</span><span id="grandOnlineTotal">UGX 0</span></div>
+            <div class="summary-row"><span>💵 Cash on Delivery Total</span><span id="grandCashTotal">UGX 0</span></div>
+            <div class="summary-row"><span>Grand Total</span><span>UGX {{ total_amount|intcomma }}</span></div>
+        </div>
+
+        <button type="submit" class="btn-primary" id="submitBtn">Continue to Payment →</button>
+    </form>
+</div>
+
+<!-- ═══════════ PROOF MODAL ══════════════════════════════════════════════ -->
+<div class="proof-overlay" id="proofOverlay">
+    <div class="proof-modal">
+        <div class="proof-modal-hdr">
+            <div class="proof-modal-title" id="proofModalTitle">Seller Verification Proof</div>
+            <button class="proof-modal-close" onclick="closeProofModal()">✕</button>
+        </div>
+        <div id="proofModalBody">
+            <div class="proof-loading-wrap">
+                <div class="proof-spinner"></div>
+                <div>Loading…</div>
+            </div>
+        </div>
     </div>
+</div>
 
-    <div id="loadingOverlay" class="loading-overlay">
-        <div class="spinner"></div>
-    </div>
-    <div id="toast" class="toast"></div>
+<div id="loadingOverlay" class="loading-overlay"><div class="spinner"></div></div>
+<div id="toast" class="toast"></div>
 
-    <script src="{% static 'js/navbar.js' %}"></script>
-    <script>
-        // Build a data map of all items with their seller and subtotal
-        // This is used for computing per-seller and grand totals dynamically
-        const ITEM_DATA = {};
-        document.querySelectorAll('.item-row[data-item-id]').forEach(row => {
-            ITEM_DATA[row.dataset.itemId] = {
-                seller: row.dataset.seller,
-                subtotal: parseFloat(row.dataset.subtotal),
-                method: row.dataset.method
-            };
+<script src="{% static 'js/navbar.js' %}"></script>
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// ITEM DATA
+// ═══════════════════════════════════════════════════════════════════
+const ITEM_DATA = {};
+document.querySelectorAll('.item-row[data-item-id]').forEach(row => {
+    ITEM_DATA[row.dataset.itemId] = {
+        seller: row.dataset.seller,
+        subtotal: parseFloat(row.dataset.subtotal),
+        method: row.dataset.method
+    };
+});
+
+// ═══════════════════════════════════════════════════════════════════
+// ZKP BADGE
+// ═══════════════════════════════════════════════════════════════════
+const zkpCache = {};
+
+async function loadZkpBadge(sellerId, refresh = false) {
+    if (!sellerId || sellerId === 'null') return;
+    const badge = document.getElementById(`zkp-badge-${sellerId}`);
+    if (!badge) return;
+
+    setZkpState(badge, 'loading', 'Checking seller verification…', '');
+    try {
+        const r    = await fetch(`/api/seller-verification-status/${sellerId}/${refresh ? '?refresh=1' : ''}`,
+                                 { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+        const data = await r.json();
+        zkpCache[sellerId] = data;
+        applyZkpData(badge, data, sellerId);
+    } catch {
+        setZkpState(badge, 'down', 'Verification service unavailable', '');
+    }
+}
+
+function applyZkpData(badge, data, sellerId) {
+    const proofBtn = document.getElementById(`zkp-proof-btn-${sellerId}`);
+    const show = v => { if (proofBtn) proofBtn.style.display = v; };
+
+    if (!data.kyc_approved) {
+        setZkpState(badge, 'unverified', 'Seller not KYC verified', 'Identity not yet approved');
+        show('none'); return;
+    }
+    if (data.zkp_status === 'registered' && data.zkp_valid) {
+        setZkpState(badge, 'verified', 'Verified Seller ✓',
+            `Merkle tree · Block ${data.block_number ?? '—'} · ${data.tree_size ?? '?'} registered`);
+        show(''); return;
+    }
+    if (data.zkp_status === 'registered' && !data.zkp_valid) {
+        setZkpState(badge, 'failed', 'Verification failed', 'Proof rejected — proceed with caution');
+        show('none'); return;
+    }
+    if (data.zkp_status === 'not_registered') {
+        setZkpState(badge, 'unverified', 'KYC approved · Awaiting ZKP registration', 'Not yet in Merkle tree');
+        show('none'); return;
+    }
+    setZkpState(badge, 'down', 'Status unknown', '');
+    show('none');
+}
+
+function setZkpState(badge, state, main, sub) {
+    badge.className = `zkp-badge-row state-${state}`;
+    badge.querySelector('.zkp-main-text').textContent = main;
+    badge.querySelector('.zkp-sub-text').textContent  = sub;
+}
+
+async function refreshZkp(sellerId, btn) {
+    if (!sellerId) return;
+    btn.classList.add('spinning');
+    await loadZkpBadge(sellerId, true);
+    btn.classList.remove('spinning');
+}
+
+// Init all badges
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.zkp-badge-row[data-seller-id]').forEach(b => {
+        const id = b.dataset.sellerId;
+        if (id && id !== 'None') loadZkpBadge(id);
+        else setZkpState(b, 'unverified', 'Seller not Verified', '');
+    });
+});
+
+// ═══════════════════════════════════════════════════════════════════
+// PROOF MODAL
+// ═══════════════════════════════════════════════════════════════════
+function openProofModal(sellerId, sellerEmail) {
+    document.getElementById('proofModalTitle').textContent = `🔍 Seller Proof — ${sellerEmail}`;
+    document.getElementById('proofOverlay').classList.add('open');
+    renderProof(sellerId, sellerEmail);
+}
+function closeProofModal() {
+    document.getElementById('proofOverlay').classList.remove('open');
+}
+document.getElementById('proofOverlay').addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeProofModal();
+});
+async function renderProof(sellerId, sellerEmail) {
+    const body = document.getElementById('proofModalBody');
+    body.innerHTML = `<div class="proof-loading-wrap"><div class="proof-spinner"></div><div>Checking seller verification…</div></div>`;
+
+    let data;
+    try {
+        const r = await fetch(`/api/seller-verification-status/${sellerId}/?refresh=1`,
+                              { headers:{'X-Requested-With':'XMLHttpRequest'} });
+        data = await r.json();
+        zkpCache[sellerId] = data;
+    } catch {
+        body.innerHTML = `<div class="proof-status-banner bad">⚠ Could not reach verification service</div>`;
+        return;
+    }
+
+    const ok = data.zkp_valid;
+    const bizName = data.business_name || sellerEmail;
+
+    body.innerHTML = `
+        <div class="proof-status-banner ${ok ? 'ok' : 'bad'}">
+            ${ok ? '✅ This seller is identity-verified and approved to trade on the platform'
+                 : '⚠ Seller verification could not be confirmed — proceed with caution'}
+        </div>
+
+        <div class="proof-field">
+            <div class="proof-field-lbl">Seller</div>
+            <div class="proof-field-val" style="font-family:inherit;">${bizName}</div>
+        </div>
+
+        <div class="proof-field">
+            <div class="proof-field-lbl">Identity Check</div>
+            <div class="proof-field-val" style="font-family:inherit;">
+                ${data.kyc_approved ? '✓ Government ID and business details reviewed and approved by platform admin' : '✗ Not yet verified'}
+            </div>
+        </div>
+
+        <div class="proof-field">
+            <div class="proof-field-lbl">Cryptographic Verification</div>
+            <div class="proof-field-val" style="font-family:inherit;">
+                ${data.zkp_status === 'registered'
+                    ? '✓ Seller identity is cryptographically registered — verified without exposing personal data'
+                    : data.zkp_status === 'failed'
+                    ? '✗ Registration failed'
+                    : '⏳ Pending registration'}
+            </div>
+        </div>
+
+        ${data.verified_at ? `
+        <div class="proof-field">
+            <div class="proof-field-lbl">Last Verified</div>
+            <div class="proof-field-val" style="font-family:inherit;">${new Date(data.verified_at).toLocaleString()}</div>
+        </div>` : ''}
+
+        <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px solid #f0f0f0;font-size:0.72rem;color:#aaa;line-height:1.7;">
+            🔒 <strong>How this works:</strong> The seller's identity documents were reviewed by a platform admin.
+            After approval, a cryptographic proof was generated that confirms the seller is legitimate
+            — without revealing any personal details to you. This uses zero-knowledge proof technology.
+        </div>`;
+}
+// ═══════════════════════════════════════════════════════════════════
+// PAYMENT METHOD TOGGLE + TOTALS  (original logic — unchanged)
+// ═══════════════════════════════════════════════════════════════════
+function selectItemMethod(itemId, method) {
+    document.getElementById('hid_' + itemId).value = method;
+    ITEM_DATA[itemId].method = method;
+    const ob = document.getElementById('btn-online-' + itemId);
+    const cb = document.getElementById('btn-cash-' + itemId);
+    ob.className = method === 'online' ? 'pay-method-btn selected-online' : 'pay-method-btn';
+    cb.className = method === 'cash'   ? 'pay-method-btn selected-cash'   : 'pay-method-btn';
+    updateTotals();
+}
+function setAllForSeller(sellerEmail, method) {
+    Object.entries(ITEM_DATA).forEach(([id, d]) => {
+        if (d.seller === sellerEmail) selectItemMethod(parseInt(id), method);
+    });
+}
+function updateTotals() {
+    let on = 0, ca = 0;
+    Object.values(ITEM_DATA).forEach(d => { if (d.method==='online') on+=d.subtotal; else ca+=d.subtotal; });
+    document.getElementById('grandOnlineTotal').textContent = 'UGX ' + Math.round(on).toLocaleString();
+    document.getElementById('grandCashTotal').textContent   = 'UGX ' + Math.round(ca).toLocaleString();
+}
+updateTotals();
+
+
+
+document.getElementById('paymentSelectionForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    document.getElementById('loadingOverlay').classList.add('active');
+    document.getElementById('submitBtn').disabled = true;
+    document.getElementById('submitBtn').textContent = 'Processing...';
+    const itemSelections = {};
+    Object.keys(ITEM_DATA).forEach(id => {
+        const h = document.getElementById('hid_' + id);
+        itemSelections[id] = h ? h.value : ITEM_DATA[id].method;
+    });
+    try {
+        const response = await fetch('/api/process-payment-selection/', {
+            method:'POST',
+            headers:{'Content-Type':'application/json','X-CSRFToken':csrfToken},
+            body: JSON.stringify({ item_selections: itemSelections })
         });
-
-        // --- Per-item toggle ---
-        function selectItemMethod(itemId, method) {
-            // Update hidden input
-            document.getElementById('hid_' + itemId).value = method;
-            ITEM_DATA[itemId].method = method;
-
-            // Update button styles
-            const onlineBtn = document.getElementById('btn-online-' + itemId);
-            const cashBtn   = document.getElementById('btn-cash-' + itemId);
-            if (method === 'online') {
-                onlineBtn.className = 'pay-method-btn selected-online';
-                cashBtn.className   = 'pay-method-btn';
+        const data = await response.json();
+        document.getElementById('loadingOverlay').classList.remove('active');
+        if (response.ok && data.success) {
+            if (data.online_payment_required) {
+                showToast('Redirecting to secure payment...','success');
+                setTimeout(() => { window.location.href = `/payment/process/${data.payment_request_id}/`; }, 500);
             } else {
-                onlineBtn.className = 'pay-method-btn';
-                cashBtn.className   = 'pay-method-btn selected-cash';
+                showToast('Order placed! All items are not paid.','success');
+                setTimeout(() => { window.location.href = `/orders/${data.order_id}/`; }, 1000);
             }
-            updateTotals();
+        } else {
+            showToast(data.error || 'Failed to process payment selection','error');
+            document.getElementById('submitBtn').disabled = false;
+            document.getElementById('submitBtn').textContent = 'Continue to Payment →';
         }
+    } catch {
+        document.getElementById('loadingOverlay').classList.remove('active');
+        showToast('Network error. Please try again.','error');
+        document.getElementById('submitBtn').disabled = false;
+        document.getElementById('submitBtn').textContent = 'Continue to Payment →';
+    }
+});
 
-        // --- Quick set all items for a seller ---
-        function setAllForSeller(sellerEmail, method) {
-            Object.entries(ITEM_DATA).forEach(([itemId, data]) => {
-                if (data.seller === sellerEmail) {
-                    selectItemMethod(parseInt(itemId), method);
-                }
-            });
-        }
-
-        // --- Update running totals ---
-        function updateTotals() {
-            let grandOnline = 0, grandCash = 0;
-
-            // Group by seller for seller-level display
-            const sellerOnline = {}, sellerCash = {};
-            Object.values(ITEM_DATA).forEach(d => {
-                const s = d.seller;
-                if (!sellerOnline[s]) sellerOnline[s] = 0;
-                if (!sellerCash[s]) sellerCash[s] = 0;
-                if (d.method === 'online') sellerOnline[s] += d.subtotal;
-                else sellerCash[s] += d.subtotal;
-            });
-
-            Object.values(ITEM_DATA).forEach(d => {
-                if (d.method === 'online') grandOnline += d.subtotal;
-                else grandCash += d.subtotal;
-            });
-
-            document.getElementById('grandOnlineTotal').textContent = 'UGX ' + Math.round(grandOnline).toLocaleString();
-            document.getElementById('grandCashTotal').textContent   = 'UGX ' + Math.round(grandCash).toLocaleString();
-        }
-
-        // Initialise totals on page load
-        updateTotals();
-
-        // --- CSRF token helper ---
-        function getCsrfToken() {
-            return document.querySelector('[name=csrfmiddlewaretoken]').value;
-        }
-
-        // --- Form submit ---
-        document.getElementById('paymentSelectionForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            document.getElementById('loadingOverlay').classList.add('active');
-            document.getElementById('submitBtn').disabled = true;
-            document.getElementById('submitBtn').textContent = 'Processing...';
-
-            // Collect per-item selections
-            const itemSelections = {};
-            Object.keys(ITEM_DATA).forEach(itemId => {
-                const hiddenInput = document.getElementById('hid_' + itemId);
-                itemSelections[itemId] = hiddenInput ? hiddenInput.value : ITEM_DATA[itemId].method;
-            });
-
-            try {
-                const response = await fetch('/api/process-payment-selection/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCsrfToken()
-                    },
-                    body: JSON.stringify({ item_selections: itemSelections })
-                });
-
-                const data = await response.json();
-                document.getElementById('loadingOverlay').classList.remove('active');
-
-                if (response.ok && data.success) {
-                    if (data.online_payment_required) {
-                        showToast('Redirecting to secure payment...', 'success');
-                        setTimeout(() => {
-                            window.location.href = `/payment/process/${data.payment_request_id}/`;
-                        }, 500);
-                    } else {
-                        showToast('Order placed! All items are cash on delivery.', 'success');
-                        setTimeout(() => {
-                            window.location.href = `/orders/${data.order_id}/`;
-                        }, 1000);
-                    }
-                } else {
-                    showToast(data.error || 'Failed to process payment selection', 'error');
-                    document.getElementById('submitBtn').disabled = false;
-                    document.getElementById('submitBtn').textContent = 'Continue to Payment →';
-                }
-            } catch (err) {
-                console.error('Error:', err);
-                document.getElementById('loadingOverlay').classList.remove('active');
-                showToast('Network error. Please try again.', 'error');
-                document.getElementById('submitBtn').disabled = false;
-                document.getElementById('submitBtn').textContent = 'Continue to Payment →';
-            }
-        });
-
-        function showToast(message, type = 'error') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = `toast ${type} show`;
-            setTimeout(() => toast.classList.remove('show'), 3500);
-        }
-    </script>
+function showToast(msg, type='error') {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.className = `toast ${type} show`;
+    setTimeout(() => t.classList.remove('show'), 3500);
+}
+</script>
 </body>
 </html>

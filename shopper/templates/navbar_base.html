@@ -6,7 +6,6 @@
             <span>🛒</span>
             <span>Marketplace</span>
         </a>
-
         <!-- Desktop Navigation -->
         <div class="nav-links">
             <!-- Public Links (Always Visible) -->
@@ -41,7 +40,6 @@
                 Login
             </a>
         </div>
-
         <!-- Mobile Hamburger -->
         <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
             <span></span>
@@ -79,6 +77,10 @@
         <a href="/seller/dashboard/">📊 Dashboard</a>
         <a href="/seller/products/">📦 My Products</a>
         <a href="/seller/cashout/">💰 Cash Out</a>
+        <!-- KYC link — only shown for sellers, populated by navbar.js -->
+        <a href="/seller/kyc/" id="mobileKycLink" style="display: none;">
+            🪪 Identity Verification
+        </a>
     </div>
     
     <!-- Login Link (Visible when not authenticated) -->
@@ -94,7 +96,6 @@
             <h2>Profile Settings</h2>
             <button class="close-modal" onclick="closeProfileModal()">×</button>
         </div>
-
         <!-- User Info -->
         <div class="profile-info">
             <div class="info-item">
@@ -107,12 +108,49 @@
             </div>
         </div>
 
+        <!-- ── KYC Verification Link (sellers only) ───────────────────── -->
+        <div id="kycVerificationSection" style="display: none; margin-bottom: 1.25rem;">
+            <a href="/seller/kyc/"
+               style="
+                 display: flex;
+                 align-items: center;
+                 gap: 0.6rem;
+                 padding: 0.75rem 1rem;
+                 border: 2px solid #667eea;
+                 border-radius: 8px;
+                 text-decoration: none;
+                 color: #667eea;
+                 font-weight: 700;
+                 font-size: 0.875rem;
+                 transition: background 0.2s, color 0.2s;
+               "
+               onmouseover="this.style.background='#667eea';this.style.color='white';"
+               onmouseout="this.style.background='';this.style.color='#667eea';"
+            >
+                <span>🪪</span>
+                <span>Identity Verification (KYC)</span>
+                <!-- KYC status badge — filled by navbar.js -->
+                <span id="kycStatusBadge"
+                      style="
+                        margin-left: auto;
+                        font-size: 0.7rem;
+                        font-weight: 700;
+                        padding: 2px 8px;
+                        border-radius: 20px;
+                        background: #f5f5f5;
+                        color: #999;
+                      ">
+                    …
+                </span>
+            </a>
+        </div>
+        <!-- ─────────────────────────────────────────────────────────────── -->
+
         <!-- Phone Number -->
         <div class="input-group">
             <label for="phoneInput">Phone Number</label>
             <input type="tel" id="phoneInput" placeholder="e.g., +256700000000">
         </div>
-
         <!-- Role Toggle -->
         <div class="role-toggle">
             <div class="role-toggle-title">Switch Role</div>
@@ -128,7 +166,6 @@
                 Switch between buyer and seller modes without creating a new account.
             </div>
         </div>
-
         <!-- Actions -->
         <button class="btn btn-primary" onclick="saveProfile()">
             Save Changes
@@ -157,3 +194,57 @@
 
 <!-- Toast Notification -->
 <div id="toast" class="toast"></div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// KYC SECTION VISIBILITY + BADGE
+//
+// Called from wherever your navbar.js sets the user's role after auth.
+
+
+function showKycSectionIfSeller(role) {
+    const kycSection   = document.getElementById('kycVerificationSection');
+    const mobileKyc    = document.getElementById('mobileKycLink');
+
+    if (role === 'seller') {
+        if (kycSection) kycSection.style.display = '';
+        if (mobileKyc)  mobileKyc.style.display  = '';
+        loadKycBadge();
+    } else {
+        if (kycSection) kycSection.style.display = 'none';
+        if (mobileKyc)  mobileKyc.style.display  = 'none';
+    }
+}
+
+async function loadKycBadge() {
+    const badge = document.getElementById('kycStatusBadge');
+    if (!badge) return;
+
+    try {
+        const r    = await fetch('/api/seller/kyc-status/', {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        });
+        if (!r.ok) throw new Error('non-200');
+        const data = await r.json();
+        applyKycBadge(badge, data.status);
+    } catch {
+        // If endpoint not available, show neutral state — link still works
+        applyKycBadge(badge, 'unknown');
+    }
+}
+
+function applyKycBadge(badge, status) {
+    const cfg = {
+        approved:   { label: '✓ Verified',   bg: '#d1e7dd', color: '#0f5132' },
+        pending:    { label: '⏳ Pending',    bg: '#fff3cd', color: '#856404' },
+        rejected:   { label: '✗ Rejected',   bg: '#f8d7da', color: '#842029' },
+        incomplete: { label: 'Complete KYC', bg: '#e7f3ff', color: '#004085' },
+        unknown:    { label: '—',            bg: '#f5f5f5', color: '#999'    },
+    }[status] || { label: status, bg: '#f5f5f5', color: '#555' };
+
+    badge.textContent        = cfg.label;
+    badge.style.background   = cfg.bg;
+    badge.style.color        = cfg.color;
+}
+
+</script>

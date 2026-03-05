@@ -3,6 +3,8 @@ from . import views
 from shopping_app.proxy_urls import proxy_urlpatterns
 from shopping_app.seller_proxy_urls import seller_proxy_urlpatterns
 from shopping_app.order_urls import order_urlpatterns
+from shopping_app.urls_seller_verification import seller_verification_urlpatterns
+from shopping_app.urls_balance_proof import balance_proof_urlpatterns
 
 urlpatterns = [
     # === User Authentication ===
@@ -104,4 +106,4 @@ urlpatterns = [
     path('api/orders/<int:order_id>/items/<int:order_item_id>/cancel-deposit/',
          views.cancel_deposit_item_proxy,
          name='cancel_deposit_item'),
-] + proxy_urlpatterns + seller_proxy_urlpatterns  + order_urlpatterns
+] + proxy_urlpatterns + seller_proxy_urlpatterns  + order_urlpatterns + seller_verification_urlpatterns + balance_proof_urlpatterns

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Access Denied{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-black flex items-center justify-center px-4">
+  <div class="w-full max-w-md">
+
+    <!-- Icon -->
+    <div class="flex justify-center mb-6">
+      <div class="border-2 border-white w-16 h-16 flex items-center justify-center">
+        <span class="material-symbols-outlined text-white text-4xl">block</span>
+      </div>
+    </div>
+
+    <!-- Heading -->
+    <div class="border-2 border-white p-6 mb-4 text-center">
+      <p class="text-xs font-black uppercase tracking-widest text-white/50 mb-2">Access Denied</p>
+      <h1 class="text-2xl font-black uppercase tracking-tighter text-white mb-4">
+        Sellers Only
+      </h1>
+      <p class="text-sm font-bold text-white/70">
+        This page is restricted to registered sellers.
+        If you believe this is an error, please contact support.
+      </p>
+    </div>
+
+    <!-- Action -->
+    <a href="{% url 'home' %}"
+       class="block w-full bg-primary text-black border-2 border-primary py-4
+              text-sm font-black uppercase tracking-widest text-center
+              hover:bg-white hover:border-white transition-colors">
+      Back to Home
+    </a>
+
+  </div>
+</div>
+{% endblock %}

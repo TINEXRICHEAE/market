@@ -142,6 +142,11 @@ function hideAllRoleLinks() {
     const mobileSellerLinks = document.getElementById('mobileSellerLinks');
     if (mobileBuyerLinks) mobileBuyerLinks.style.display = 'none';
     if (mobileSellerLinks) mobileSellerLinks.style.display = 'none';
+
+    // KYC section — hide whenever role links are cleared
+    if (typeof showKycSectionIfSeller === 'function') {
+        showKycSectionIfSeller(null);
+    }
 }
 
 // === Update Role Links ===
@@ -167,6 +172,12 @@ function updateRoleLinks() {
         // Mobile
         const mobileSellerLinks = document.getElementById('mobileSellerLinks');
         if (mobileSellerLinks) mobileSellerLinks.style.display = 'block';
+
+        // ── KYC verification link + badge (sellers only) ──────────────
+        if (typeof showKycSectionIfSeller === 'function') {
+            showKycSectionIfSeller('seller');
+        }
+        // ─────────────────────────────────────────────────────────────
     }
 }
 

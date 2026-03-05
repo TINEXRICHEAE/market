@@ -1,0 +1,15 @@
+{# templates/partials/kyc_field.html #}
+{# Usage: {% include 'partials/kyc_field.html' with field=form.full_legal_name required=True only %} #}
+<div class="mb-5">
+  <label class="block text-xs font-black uppercase tracking-widest text-white mb-2">
+    {{ field.label }}
+    {% if required %}<span class="text-primary">*</span>{% else %}<span class="text-white/40 text-xs font-bold normal-case ml-1">(optional)</span>{% endif %}
+  </label>
+  {{ field }}
+  {% if field.errors %}
+    <p class="text-xs text-red-400 mt-1">{{ field.errors.0 }}</p>
+  {% endif %}
+  {% if field.help_text %}
+    <p class="text-xs text-white/40 mt-1">{{ field.help_text }}</p>
+  {% endif %}
+</div>

@@ -20,13 +20,16 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 DEBUG = True
 
 
-# E-commerce App (shopper/settings.py)
-
 # Fair Cashier Configuration
 FAIR_CASHIER_API_URL = 'http://localhost:8001'  # Change in production
 FAIR_CASHIER_API_KEY = os.getenv('FAIR_CASHIER_API_KEY', '')
-
-
+PAYMENT_APP_URL = os.getenv('PAYMENT_APP_URL', 'http://localhost:8001')
+# ZKP / Strapi configuration
+ZKP_STRAPI_URL = os.getenv('ZKP_STRAPI_URL', 'http://localhost:1337')
+ZKP_STRAPI_API_TOKEN = os.getenv('ZKP_STRAPI_API_TOKEN', '')   
+PAYMENT_APP_URL              = os.getenv('PAYMENT_APP_URL',              'http://localhost:8001')
+# Shopping-app internal secret used by payment app to pull seller KYC data
+SHOPPING_APP_INTERNAL_SECRET = os.getenv('SHOPPING_APP_INTERNAL_SECRET', '')
 
 # CSP for iframes
 CSP_FRAME_SRC = ["'self'", "http://localhost:8001"]
@@ -38,6 +41,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1:8001",
     "http://localhost:8001",   # Fair Cashier
+    "http://localhost:1337",   # Strapi (for ZKP verification)
 ]
 
 CSRF_TRUSTED_ORIGINS = [

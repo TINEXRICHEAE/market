@@ -709,6 +709,7 @@ def get_order_detail(request, order_id):
             if seller_key not in seller_summaries:
                 seller_summaries[seller_key] = {
                     'seller_email': seller_key,
+                    'seller_id':      item.seller.id,
                     'items': [],
                     'total_amount': Decimal('0.00'),
                     'online_amount': Decimal('0.00'),
@@ -752,6 +753,7 @@ def get_order_detail(request, order_id):
             
             seller_payments.append({
                 'seller_email': summary['seller_email'],
+                'seller_id':     summary['seller_id'],
                 'total_amount': str(summary['total_amount']),
                 'online_amount': str(summary['online_amount']),
                 'cash_amount': str(summary['cash_amount']),
@@ -1070,6 +1072,20 @@ def process_payment_selection(request):
                 order.payment_method = 'cash'
             order.save()
 
+            # Generate balance proofs for all sellers (non-blocking)
+            try:
+                from .views_balance_proof import request_balance_proofs_for_order
+                proof_result = request_balance_proofs_for_order(order)
+                if proof_result:
+                    logger.info(
+                        f"✅ Balance proofs generated for order {order.order_number}: "
+                        f"{len(proof_result.get('proofs', []))} seller(s)"
+                    )
+                else:
+                    logger.warning(f"⚠️ Balance proofs unavailable for {order.order_number}")
+            except Exception as e:
+                logger.error(f"⚠️ Balance proof generation failed for {order.order_number}: {e}")
+
             if online_items:
                 # FIX: one payment_items entry per individual OrderItem
                 # so the payment app can map each PaymentRequestItem → one OrderItem exactly
@@ -1172,12 +1188,14 @@ def payment_selection_page(request):
         seller_items = {}
         for item in cart.items.select_related('product__seller'):
             seller_email = item.product.seller.email
+        
             
             if seller_email not in seller_items:
                 seller_items[seller_email] = {
                     'items': [],
                     'total': Decimal('0.00'),
-                    'payment_options': None
+                    'payment_options': None,
+                    'seller_id':       item.product.seller.id,
                 }
             
             seller_items[seller_email]['items'].append(item)

@@ -1,7 +1,3 @@
-<!-- ═══════════════════════════════════════════════════════════════════════
-     BATCH 5B: TEMPLATE — seller_order_detail.html
-     Place in: templates/seller_order_detail.html
-     ═══════════════════════════════════════════════════════════════════════ -->
 {% extends 'base.html' %}
 {% load static %}
 
@@ -16,7 +12,36 @@
         <div class="text-center py-4 text-gray-500">Loading order details...</div>
     </div>
 
-    <!-- Order Items with Tracking Controls -->
+    <!-- ══ BUYER PAYMENT CAPABILITY PANEL (ZKP — no balance exposed) ══════ -->
+    <div id="balancePanel" class="hidden mb-6">
+        <div class="bg-white border-2 rounded-lg overflow-hidden shadow-sm">
+            <div class="flex items-center justify-between px-5 py-3 bg-gray-50 border-b flex-wrap gap-2">
+                <span class="text-xs font-black uppercase tracking-widest text-gray-700">
+                    💳 Buyer Payment Capability
+                </span>
+                <div class="flex items-center gap-2">
+                    <span id="bpBadge" class="bp-badge gray">
+                        <span class="bp-dot"></span>
+                        <span id="bpBadgeLabel">Checking…</span>
+                    </span>
+                    <button class="bp-refresh-btn" id="bpRefreshBtn" onclick="refreshBalanceProof(this)">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="3">
+                            <path d="M23 4v6h-6M1 20v-6h6"/>
+                            <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+                        </svg>
+                        Refresh
+                    </button>
+                </div>
+            </div>
+            <div class="px-5 py-4" id="bpBody">
+                <div class="text-xs font-bold text-gray-400 uppercase tracking-wider">Loading…</div>
+            </div>
+        </div>
+    </div>
+    <!-- ═════════════════════════════════════════════════════════════════════ -->
+
+    <!-- Order Items -->
     <div id="orderItems" class="space-y-4"></div>
 
     <!-- Bulk Actions -->
@@ -49,14 +74,88 @@
         </div>
     </div>
 </div>
+
+<style>
+/* ── ZKP Balance proof panel ──────────────────────────────────────────────── */
+.bp-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 10px; border-radius: 20px;
+    font-size: 0.68rem; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.04em;
+}
+.bp-badge.green  { background: #dcfce7; color: #15803d; border: 1.5px solid #86efac; }
+.bp-badge.amber  { background: #fef9c3; color: #92400e; border: 1.5px solid #fde047; }
+.bp-badge.red    { background: #fee2e2; color: #991b1b; border: 1.5px solid #fca5a5; }
+.bp-badge.gray   { background: #f3f4f6; color: #6b7280; border: 1.5px solid #d1d5db; }
+
+.bp-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.bp-badge.green .bp-dot { background: #16a34a; animation: bp-pulse-g 2s infinite; }
+.bp-badge.amber .bp-dot { background: #d97706; animation: bp-pulse-a 2s infinite; }
+.bp-badge.red   .bp-dot { background: #dc2626; animation: bp-pulse-r 1.8s infinite; }
+.bp-badge.gray  .bp-dot { background: #9ca3af; }
+
+@keyframes bp-pulse-g { 0%,100%{opacity:1} 50%{opacity:.4} }
+@keyframes bp-pulse-a { 0%,100%{opacity:1} 50%{opacity:.3} }
+@keyframes bp-pulse-r { 0%,100%{opacity:1} 40%{opacity:.2} }
+
+.bp-count      { font-size: 1.6rem; font-weight: 900; line-height: 1; }
+.bp-count.green { color: #16a34a; }
+.bp-count.amber { color: #d97706; }
+.bp-count.red   { color: #dc2626; }
+.bp-count.gray  { color: #9ca3af; }
+.bp-count-sub {
+    font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.05em; color: #6b7280; padding-bottom: 0.15rem;
+}
+.bp-meta {
+    margin-top: 0.5rem; font-size: 0.65rem; color: #9ca3af; font-weight: 600;
+}
+.bp-meta .bp-unverified { color: #f59e0b; }
+.bp-meta .bp-expired    { color: #ef4444; }
+
+.bp-refresh-btn {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 4px 10px; border: 1.5px solid #d1d5db; background: white;
+    border-radius: 5px; font-size: 0.65rem; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    color: #374151; cursor: pointer; transition: border-color 0.15s;
+}
+.bp-refresh-btn:hover { border-color: #374151; }
+.bp-refresh-btn.spinning svg { animation: bp-spin 0.7s linear infinite; }
+@keyframes bp-spin { to { transform: rotate(360deg); } }
+
+/* Item card tier borders */
+.item-tier-green   { border-color: #86efac !important; border-width: 2px !important; }
+.item-tier-amber   {
+    border-color: #fde047 !important; border-width: 2px !important;
+    animation: flicker-amber 2.5s ease-in-out infinite;
+}
+.item-tier-red     {
+    border-color: #fca5a5 !important; border-width: 2px !important;
+    animation: flicker-red 1.8s ease-in-out infinite;
+}
+.item-tier-unknown { border-color: #e5e7eb !important; }
+
+@keyframes flicker-amber {
+    0%,100% { border-color: #fde047; box-shadow: 0 0 0 1px rgba(253,224,71,.4); }
+    50%     { border-color: #f59e0b; box-shadow: 0 0 0 3px rgba(245,158,11,.25); }
+}
+@keyframes flicker-red {
+    0%,100% { border-color: #fca5a5; box-shadow: 0 0 0 1px rgba(252,165,165,.4); }
+    50%     { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,.25); }
+}
+</style>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-const orderId = '{{ order_id }}';
-let orderData = null;
+const orderId     = '{{ order_id }}';
+let orderData     = null;
 let selectedItems = new Set();
 
+// ════════════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════════════
 async function childInit() {
     await loadOrderDetail();
 }
@@ -65,15 +164,20 @@ async function loadOrderDetail() {
     try {
         const resp = await fetch(`/api/seller/order/${orderId}/`);
         const data = await resp.json();
-        orderData = data;
+        orderData  = data;
         renderOrderHeader(data.order);
         renderOrderItems(data.items);
+        // Load ZKP balance proof panel after items are in the DOM
+        loadBalanceProof();
     } catch (err) {
         document.getElementById('orderHeader').innerHTML =
             '<div class="text-center py-4 text-red-500">Failed to load order.</div>';
     }
 }
 
+// ════════════════════════════════════════════════════════════════════
+// ORDER HEADER  (original, unchanged)
+// ════════════════════════════════════════════════════════════════════
 function renderOrderHeader(order) {
     document.getElementById('orderHeader').innerHTML = `
         <div class="flex flex-wrap justify-between items-start gap-4">
@@ -83,20 +187,135 @@ function renderOrderHeader(order) {
             </div>
             <div class="text-right">
                 <p class="text-sm"><strong>Buyer:</strong> ${order.buyer_email}</p>
-                ${order.buyer_phone ? `<p class="text-sm">📱 <a href="tel:${order.buyer_phone}" class="text-blue-600">${order.buyer_phone}</a></p>` : '<p class="text-xs text-gray-400">No phone provided</p>'}
+                ${order.buyer_phone
+                    ? `<p class="text-sm">📱 <a href="tel:${order.buyer_phone}" class="text-blue-600">${order.buyer_phone}</a></p>`
+                    : '<p class="text-xs text-gray-400">No phone provided</p>'}
             </div>
-        </div>
-    `;
+        </div>`;
 }
 
+// ════════════════════════════════════════════════════════════════════
+// ZKP BALANCE PROOF PANEL
+// Replaces old loadBuyerBalanceCheck / renderBalancePanel / applyItemBorderColors.
+// Seller sees only: tier badge + "N of M items payable". No balance, no amounts.
+// ════════════════════════════════════════════════════════════════════
+async function loadBalanceProof() {
+    document.getElementById('balancePanel').classList.remove('hidden');
+    try {
+        const r    = await fetch(`/api/buyer-balance-proof/?order_id=${orderId}`,
+                                 { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+        const data = await r.json();
+        renderBalanceProof(data);
+    } catch {
+        renderBalanceProof({ tier: 'unknown', items_payable: 0, total_items: 0, verified: false });
+    }
+}
+
+async function refreshBalanceProof(btn) {
+    btn.classList.add('spinning');
+    btn.disabled = true;
+    try {
+        
+        const r    = await fetch('/api/buyer-balance-proof/refresh/', {
+            method:  'POST',
+            headers: {
+                'Content-Type':     'application/json',
+                'X-CSRFToken':      csrfToken,
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: JSON.stringify({ order_id: orderId }),
+        });
+        const data = await r.json();
+        if (data.error) showBpError(data.error);
+        else            renderBalanceProof(data);
+    } catch {
+        showBpError('Refresh failed — try again shortly');
+    } finally {
+        btn.classList.remove('spinning');
+        btn.disabled = false;
+    }
+}
+
+function renderBalanceProof(data) {
+    const tier = data.tier || 'unknown';
+    const cfg  = {
+        green:   { cls: 'green', icon: '✅', label: 'Can pay all items'   },
+        amber:   { cls: 'amber', icon: '⚠',  label: 'Can pay some items'  },
+        red:     { cls: 'red',   icon: '⛔', label: 'Cannot pay any item' },
+        unknown: { cls: 'gray',  icon: '?',  label: 'Unknown'             },
+    }[tier] || { cls: 'gray', icon: '?', label: 'Unknown' };
+
+    const payable    = data.items_payable ?? 0;
+    const total      = data.total_items   ?? 0;
+    const verified   = data.verified      ?? false;
+    const isExpired  = data.is_expired    ?? false;
+    const includeCod = data.include_cod   ?? false;
+    const genTime    = data.generated_at
+        ? new Date(data.generated_at).toLocaleTimeString() : null;
+
+    // Update badge
+    const badge = document.getElementById('bpBadge');
+    badge.className = `bp-badge ${cfg.cls}`;
+    document.getElementById('bpBadgeLabel').textContent = `${cfg.icon} ${cfg.label}`;
+
+    // Body — count only, zero financial figures
+    document.getElementById('bpBody').innerHTML = `
+        <div style="display:flex;align-items:flex-end;gap:0.5rem;margin-bottom:0.35rem;">
+            <div class="bp-count ${cfg.cls}">${payable}</div>
+            <div class="bp-count-sub" style="padding-bottom:0.2rem;">
+                of ${total} item${total !== 1 ? 's' : ''} payable
+            </div>
+        </div>
+        <div class="bp-meta">
+            ${!verified && total > 0
+                ? '<span class="bp-unverified">⚠ Proof not independently verified</span> · '
+                : verified ? '✓ ZKP verified · ' : ''}
+            ${includeCod ? 'Includes COD items · ' : 'Online items only · '}
+            ${isExpired
+                ? '<span class="bp-expired">Proof expired — refresh for latest</span>'
+                : genTime ? `Checked at ${genTime}` : '—'}
+        </div>`;
+
+    // Apply tier borders to item cards in the order list
+    applyItemTierBorders(tier, payable, total);
+}
+
+function applyItemTierBorders(tier, payable, total) {
+    // Item cards have id="item-<item_id>". We colour positionally:
+    // first `payable` cards = green (cheapest items most likely covered),
+    // remaining = red for amber overall tier.
+    const cards = document.querySelectorAll('#orderItems > div[id^="item-"]');
+    cards.forEach((card, idx) => {
+        card.classList.remove(
+            'item-tier-green', 'item-tier-amber',
+            'item-tier-red',   'item-tier-unknown'
+        );
+        let cls;
+        if (tier === 'unknown')    cls = 'item-tier-unknown';
+        else if (tier === 'green') cls = 'item-tier-green';
+        else if (tier === 'red')   cls = 'item-tier-red';
+        else /* amber */           cls = idx < payable ? 'item-tier-green' : 'item-tier-red';
+        card.classList.add(cls);
+    });
+}
+
+function showBpError(msg) {
+    document.getElementById('bpBody').innerHTML =
+        `<div style="color:#ef4444;font-size:0.72rem;font-weight:700;">${msg}</div>`;
+}
+
+// ════════════════════════════════════════════════════════════════════
+// ORDER ITEMS RENDER  (original, unchanged)
+// ════════════════════════════════════════════════════════════════════
 function renderOrderItems(items) {
     const container = document.getElementById('orderItems');
     container.innerHTML = items.map(item => `
-        <div class="bg-white border rounded-lg shadow-sm overflow-hidden" id="item-${item.item_id}">
+        <div class="bg-white border rounded-lg shadow-sm overflow-hidden transition-colors duration-500"
+             id="item-${item.item_id}">
             <div class="p-4 border-b bg-gray-50 flex items-center gap-3">
                 <input type="checkbox" class="item-checkbox" value="${item.item_id}"
                        onchange="toggleItemSelection(${item.item_id})"
-                       ${item.tracking_status === 'delivered' || item.tracking_status === 'disputed' ? 'disabled' : ''}>
+                       ${item.tracking_status==='delivered'||item.tracking_status==='disputed' ? 'disabled' : ''}>
                 <div class="flex-1">
                     <span class="font-bold text-sm">${item.product_name}</span>
                     <span class="text-xs text-gray-500 ml-2">×${item.quantity}</span>
@@ -109,7 +328,8 @@ function renderOrderItems(items) {
                 <div>
                     <p class="text-xs text-gray-500 uppercase font-bold mb-1">Payment</p>
                     <p class="text-sm">${item.payment_method_display}</p>
-                    <span class="text-xs px-2 py-0.5 rounded ${item.payment_status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}">
+                    <span class="text-xs px-2 py-0.5 rounded ${item.payment_status==='paid'
+                        ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}">
                         ${item.payment_status_display}
                     </span>
                 </div>
@@ -120,77 +340,76 @@ function renderOrderItems(items) {
                     <span class="text-xs px-2 py-1 rounded font-bold ${getTrackingColor(item.tracking_status)}">
                         ${item.tracking_status_display}
                     </span>
-                    ${item.tracking_number ? `<p class="text-xs text-gray-500 mt-1">📋 ${item.tracking_number}</p>` : ''}
-                    ${item.dispatch_date ? `<p class="text-xs text-gray-500">Dispatched: ${item.dispatch_date}</p>` : ''}
-                    ${item.estimated_delivery ? `<p class="text-xs text-gray-500">Est. Delivery: ${item.estimated_delivery}</p>` : ''}
+                    ${item.tracking_number
+                        ? `<p class="text-xs text-gray-500 mt-1">📋 ${item.tracking_number}</p>` : ''}
+                    ${item.dispatch_date
+                        ? `<p class="text-xs text-gray-500">Dispatched: ${item.dispatch_date}</p>` : ''}
+                    ${item.estimated_delivery
+                        ? `<p class="text-xs text-gray-500">Est. Delivery: ${item.estimated_delivery}</p>` : ''}
                 </div>
 
-                <!-- Update Status (per item) -->
+                <!-- Update Status -->
                 <div>
-                    ${item.tracking_status !== 'delivered' && item.tracking_status !== 'disputed' ? `
+                    ${item.tracking_status!=='delivered'&&item.tracking_status!=='disputed' ? `
                     <p class="text-xs text-gray-500 uppercase font-bold mb-1">Update Status</p>
                     <select id="status-${item.item_id}" class="border rounded px-2 py-1 text-xs w-full mb-2">
-                        <option value="reviewed" ${item.tracking_status === 'reviewed' ? 'selected' : ''}>Reviewed</option>
-                        <option value="confirmed" ${item.tracking_status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
-                        <option value="packed" ${item.tracking_status === 'packed' ? 'selected' : ''}>Packed</option>
-                        <option value="dispatched" ${item.tracking_status === 'dispatched' ? 'selected' : ''}>Dispatched</option>
-                        <option value="in_transit" ${item.tracking_status === 'in_transit' ? 'selected' : ''}>In Transit</option>
-                        <option value="out_for_delivery" ${item.tracking_status === 'out_for_delivery' ? 'selected' : ''}>Out for Delivery</option>
-                        <option value="delivered_by_seller" ${item.tracking_status === 'delivered_by_seller' ? 'selected' : ''}>Mark Delivered</option>
+                        <option value="reviewed"            ${item.tracking_status==='reviewed'            ?'selected':''}>Reviewed</option>
+                        <option value="confirmed"           ${item.tracking_status==='confirmed'           ?'selected':''}>Confirmed</option>
+                        <option value="packed"              ${item.tracking_status==='packed'             ?'selected':''}>Packed</option>
+                        <option value="dispatched"          ${item.tracking_status==='dispatched'         ?'selected':''}>Dispatched</option>
+                        <option value="in_transit"          ${item.tracking_status==='in_transit'         ?'selected':''}>In Transit</option>
+                        <option value="out_for_delivery"    ${item.tracking_status==='out_for_delivery'   ?'selected':''}>Out for Delivery</option>
+                        <option value="delivered_by_seller" ${item.tracking_status==='delivered_by_seller'?'selected':''}>Mark Delivered</option>
                     </select>
                     <button onclick="updateSingleItem(${item.item_id})"
                             class="bg-blue-600 text-white px-3 py-1 rounded text-xs hover:bg-blue-700 w-full">
                         Update
                     </button>
-                    ` : `
-                    <p class="text-xs text-gray-400 italic">No further updates available</p>
-                    `}
+                    ` : `<p class="text-xs text-gray-400 italic">No further updates available</p>`}
                 </div>
             </div>
 
-            <!-- Dispute Section -->
             ${item.has_dispute && item.dispute ? `
             <div class="border-t bg-red-50 p-4">
                 <p class="text-xs font-bold text-red-700 uppercase mb-1">⚠️ Dispute Filed</p>
                 <p class="text-sm"><strong>Complaint:</strong> ${item.dispute.complaint_type}</p>
                 <p class="text-sm text-gray-600">${item.dispute.description || 'No description'}</p>
-                <p class="text-xs mt-1">
-                    Status: <span class="font-bold">${item.dispute.status_display}</span>
-                    ${item.dispute.payment_app_status ? ` | Payment App: <span class="font-bold">${item.dispute.payment_app_status}</span>` : ''}
-                </p>
-                ${item.dispute.admin_notes ? `<p class="text-xs text-gray-500 mt-1">Admin: ${item.dispute.admin_notes}</p>` : ''}
-                ${item.dispute.refund_amount ? `<p class="text-xs text-green-700 mt-1">Refund: ${item.dispute.refund_amount} UGX</p>` : ''}
-            </div>
-            ` : ''}
+                <p class="text-xs mt-1">Status: <span class="font-bold">${item.dispute.status_display}</span>
+                    ${item.dispute.payment_app_status
+                        ? ` | Payment App: <span class="font-bold">${item.dispute.payment_app_status}</span>` : ''}</p>
+                ${item.dispute.admin_notes
+                    ? `<p class="text-xs text-gray-500 mt-1">Admin: ${item.dispute.admin_notes}</p>` : ''}
+                ${item.dispute.refund_amount
+                    ? `<p class="text-xs text-green-700 mt-1">Refund: ${item.dispute.refund_amount} UGX</p>` : ''}
+            </div>` : ''}
 
-            <!-- Tracking History -->
             ${item.tracking_history && item.tracking_history.length > 0 ? `
             <div class="border-t p-4">
                 <details>
-                    <summary class="text-xs font-bold text-gray-500 cursor-pointer">📜 Tracking History (${item.tracking_history.length})</summary>
+                    <summary class="text-xs font-bold text-gray-500 cursor-pointer">
+                        📜 Tracking History (${item.tracking_history.length})
+                    </summary>
                     <div class="mt-2 space-y-1">
                         ${item.tracking_history.map(h => `
-                            <div class="text-xs border-l-2 border-blue-200 pl-3 py-1">
-                                <span class="font-bold">${h.status}</span>
-                                <span class="text-gray-400 ml-2">${h.created_at}</span>
-                                <span class="text-gray-500 ml-1">(${h.updated_by})</span>
-                                ${h.notes ? `<p class="text-gray-500">${h.notes}</p>` : ''}
-                            </div>
-                        `).join('')}
+                        <div class="text-xs border-l-2 border-blue-200 pl-3 py-1">
+                            <span class="font-bold">${h.status}</span>
+                            <span class="text-gray-400 ml-2">${h.created_at}</span>
+                            <span class="text-gray-500 ml-1">(${h.updated_by})</span>
+                            ${h.notes ? `<p class="text-gray-500">${h.notes}</p>` : ''}
+                        </div>`).join('')}
                     </div>
                 </details>
-            </div>
-            ` : ''}
+            </div>` : ''}
         </div>
     `).join('');
 }
 
+// ════════════════════════════════════════════════════════════════════
+// EXISTING FUNCTIONS  (original, unchanged)
+// ════════════════════════════════════════════════════════════════════
 function toggleItemSelection(itemId) {
-    if (selectedItems.has(itemId)) {
-        selectedItems.delete(itemId);
-    } else {
-        selectedItems.add(itemId);
-    }
+    if (selectedItems.has(itemId)) selectedItems.delete(itemId);
+    else selectedItems.add(itemId);
     document.getElementById('bulkActions').classList.toggle('hidden', selectedItems.size === 0);
 }
 
@@ -198,33 +417,26 @@ async function updateSingleItem(itemId) {
     const status = document.getElementById(`status-${itemId}`).value;
     try {
         const resp = await fetch(`/api/seller/order-item/${itemId}/update-tracking/`, {
-            method: 'POST',
+            method:  'POST',
             headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
-            body: JSON.stringify({ status })
+            body:    JSON.stringify({ status }),
         });
         const data = await resp.json();
-        if (data.success) {
-            showToast(`Item updated to ${status}`);
-            await loadOrderDetail();
-        } else {
-            showToast(data.error || 'Update failed', 'error');
-        }
-    } catch (err) {
-        showToast('Network error', 'error');
-    }
+        if (data.success) { showToast(`Item updated to ${status}`); await loadOrderDetail(); }
+        else showToast(data.error || 'Update failed', 'error');
+    } catch { showToast('Network error', 'error'); }
 }
 
 async function bulkUpdate() {
-    const status = document.getElementById('bulkStatus').value;
+    const status   = document.getElementById('bulkStatus').value;
     const tracking = document.getElementById('bulkTracking').value;
-    const notes = document.getElementById('bulkNotes').value;
-    const itemIds = Array.from(selectedItems);
-
+    const notes    = document.getElementById('bulkNotes').value;
+    const itemIds  = Array.from(selectedItems);
     try {
         const resp = await fetch(`/api/seller/order/${orderId}/bulk-update-tracking/`, {
-            method: 'POST',
+            method:  'POST',
             headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
-            body: JSON.stringify({ item_ids: itemIds, status, tracking_number: tracking, notes })
+            body:    JSON.stringify({ item_ids: itemIds, status, tracking_number: tracking, notes }),
         });
         const data = await resp.json();
         if (data.success) {
@@ -232,30 +444,33 @@ async function bulkUpdate() {
             selectedItems.clear();
             document.getElementById('bulkActions').classList.add('hidden');
             await loadOrderDetail();
-        } else {
-            showToast(data.error || 'Update failed', 'error');
-        }
-    } catch (err) {
-        showToast('Network error', 'error');
-    }
+        } else showToast(data.error || 'Update failed', 'error');
+    } catch { showToast('Network error', 'error'); }
 }
 
 function getTrackingColor(status) {
     const colors = {
-        'pending': 'bg-gray-100 text-gray-700', 'reviewed': 'bg-blue-50 text-blue-700',
-        'confirmed': 'bg-blue-100 text-blue-700', 'packed': 'bg-indigo-100 text-indigo-700',
-        'dispatched': 'bg-purple-100 text-purple-700', 'in_transit': 'bg-orange-100 text-orange-700',
-        'out_for_delivery': 'bg-yellow-100 text-yellow-700', 'delivered_by_seller': 'bg-teal-100 text-teal-800',
-        'delivered': 'bg-green-100 text-green-800', 'disputed': 'bg-red-100 text-red-800',
+        pending:             'bg-gray-100 text-gray-700',
+        reviewed:            'bg-blue-50 text-blue-700',
+        confirmed:           'bg-blue-100 text-blue-700',
+        packed:              'bg-indigo-100 text-indigo-700',
+        dispatched:          'bg-purple-100 text-purple-700',
+        in_transit:          'bg-orange-100 text-orange-700',
+        out_for_delivery:    'bg-yellow-100 text-yellow-700',
+        delivered_by_seller: 'bg-teal-100 text-teal-800',
+        delivered:           'bg-green-100 text-green-800',
+        disputed:            'bg-red-100 text-red-800',
     };
     return colors[status] || 'bg-gray-100 text-gray-700';
 }
 
-function showToast(msg, type='success') {
+function fmtN(v) { return Number(v).toLocaleString(); }
+
+function showToast(msg, type = 'success') {
     const toast = document.getElementById('toast');
     if (toast) {
         toast.textContent = msg;
-        toast.className = `toast show ${type === 'error' ? 'error' : 'success'}`;
+        toast.className   = `toast show ${type === 'error' ? 'error' : 'success'}`;
         setTimeout(() => toast.className = 'toast', 3000);
     }
 }

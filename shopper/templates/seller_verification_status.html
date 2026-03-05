@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% block title %}Verification Status — Seller KYC{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-black px-4 py-10">
+<div class="w-full max-w-2xl mx-auto">
+
+  <!-- Header -->
+  <div class="text-center mb-8 border-b-2 border-white pb-6">
+    <div class="bg-primary w-12 h-12 mx-auto mb-4 flex items-center justify-center">
+      <span class="material-symbols-outlined text-black font-black text-2xl">verified_user</span>
+    </div>
+    <h1 class="text-2xl font-black uppercase tracking-tighter text-white">Verification Status</h1>
+    <p class="text-xs font-bold text-white/50 mt-1 uppercase tracking-widest">Seller KYC &amp; ZKP Registration</p>
+  </div>
+
+  <!-- KYC Status Card -->
+  <div class="border-2 border-white p-6 mb-4">
+    <p class="text-xs font-black uppercase tracking-widest text-white/50 mb-4">Identity Verification (KYC)</p>
+    <div class="flex items-center justify-between mb-4">
+      <p class="text-sm font-black text-white uppercase">Status</p>
+      {% if kyc.status == 'approved' %}
+        <span class="bg-green-500 text-black text-xs font-black uppercase px-3 py-1 flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm">check_circle</span> Approved
+        </span>
+      {% elif kyc.status == 'pending' %}
+        <span class="border-2 border-yellow-400 text-yellow-400 text-xs font-black uppercase px-3 py-1 flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm">schedule</span> Pending Review
+        </span>
+      {% elif kyc.status == 'rejected' %}
+        <span class="border-2 border-red-500 text-red-500 text-xs font-black uppercase px-3 py-1 flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm">cancel</span> Rejected
+        </span>
+      {% else %}
+        <span class="border-2 border-white/40 text-white/40 text-xs font-black uppercase px-3 py-1 flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm">edit_note</span> Incomplete
+        </span>
+      {% endif %}
+    </div>
+
+    {% if kyc.status == 'approved' and kyc.reviewed_at %}
+    <div class="flex justify-between border-t-2 border-white/10 pt-3 mt-3">
+      <p class="text-xs font-bold text-white/50 uppercase">Approved on</p>
+      <p class="text-xs font-bold text-white">{{ kyc.reviewed_at|date:"N j, Y — g:i A" }}</p>
+    </div>
+    {% endif %}
+
+    {% if kyc.status == 'rejected' and kyc.admin_notes %}
+    <div class="border-2 border-red-500/40 p-3 mt-4 bg-red-950/20">
+      <p class="text-xs font-black uppercase tracking-widest text-red-400 mb-1">Rejection Reason</p>
+      <p class="text-sm font-bold text-white/80">{{ kyc.admin_notes }}</p>
+    </div>
+    {% endif %}
+
+    {% if kyc.status == 'pending' %}
+    <div class="border-2 border-yellow-400/30 p-3 mt-4 bg-yellow-950/10">
+      <p class="text-xs font-bold text-yellow-400/80">
+        Your documents are under review. This typically takes 1–3 business days.
+      </p>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- ZKP Status Card -->
+  <div class="border-2 border-white p-6 mb-4">
+    <p class="text-xs font-black uppercase tracking-widest text-white/50 mb-4">Zero-Knowledge Proof Registration</p>
+
+    <div class="flex items-center justify-between mb-4">
+      <p class="text-sm font-black text-white uppercase">ZKP Merkle Tree</p>
+      {% if kyc.zkp_status == 'registered' %}
+        <span class="bg-primary text-black text-xs font-black uppercase px-3 py-1 flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm">lock</span> Registered
+        </span>
+      {% elif kyc.zkp_status == 'failed' %}
+        <span class="border-2 border-red-500 text-red-500 text-xs font-black uppercase px-3 py-1 flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm">error</span> Failed
+        </span>
+      {% else %}
+        <span class="border-2 border-white/30 text-white/30 text-xs font-black uppercase px-3 py-1 flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm">radio_button_unchecked</span> Not Registered
+        </span>
+      {% endif %}
+    </div>
+
+    {% if kyc.zkp_status == 'registered' %}
+      {% if kyc.zkp_registered_at %}
+      <div class="flex justify-between border-t-2 border-white/10 pt-3">
+        <p class="text-xs font-bold text-white/50 uppercase">Registered on</p>
+        <p class="text-xs font-bold text-white">{{ kyc.zkp_registered_at|date:"N j, Y — g:i A" }}</p>
+      </div>
+      {% endif %}
+      {% if kyc.zkp_last_verified_at %}
+      <div class="flex justify-between border-t border-white/10 pt-2 mt-2">
+        <p class="text-xs font-bold text-white/50 uppercase">Last verified</p>
+        <p class="text-xs font-bold text-white">{{ kyc.zkp_last_verified_at|date:"N j, Y — g:i A" }}</p>
+      </div>
+      {% endif %}
+      {% if kyc.zkp_commitment_hash %}
+      <div class="border-t-2 border-white/10 pt-3 mt-3">
+        <p class="text-xs font-bold text-white/50 uppercase mb-1">Commitment Hash</p>
+        <p class="text-xs font-mono text-primary break-all">{{ kyc.zkp_commitment_hash|truncatechars:64 }}</p>
+      </div>
+      {% endif %}
+
+      <!-- UPDATED: Explain that Payment App can now verify this -->
+      <div class="border-2 border-primary/30 p-3 mt-4 bg-green-950/10">
+        <p class="text-xs font-bold text-primary/80">
+          ✓ Your identity is in the Merkle tree. The payment platform can now
+          verify your KYC cryptographically — without seeing your personal details.
+          Buyers will see a "Verified Seller" badge on your products.
+        </p>
+      </div>
+
+    {% elif kyc.zkp_status == 'not_registered' and kyc.is_approved %}
+      <!-- UPDATED: ZKP registration is now auto-triggered on approval.
+           If it didn't happen (e.g., Strapi was down), show retry info. -->
+      <div class="border-2 border-primary/40 p-4 mt-4 bg-green-950/10">
+        <p class="text-xs font-black uppercase tracking-widest text-primary mb-2">
+          Ready for ZKP Registration
+        </p>
+        <p class="text-xs font-bold text-white/70 mb-4">
+          Your KYC is approved. ZKP registration is normally automatic upon approval.
+          If it hasn't completed yet, the platform admin can trigger it from the
+          admin panel, or it will be retried automatically.
+        </p>
+        <p class="text-xs font-bold text-white/40">
+          Once registered, buyers can verify you cryptographically without
+          seeing your personal details.
+        </p>
+      </div>
+
+    {% elif kyc.zkp_status == 'not_registered' and not kyc.is_approved %}
+      <p class="text-xs font-bold text-white/40 mt-2">
+        ZKP registration becomes available once your KYC is approved.
+      </p>
+
+    {% elif kyc.zkp_status == 'failed' %}
+      <div class="border-2 border-red-500/30 p-3 mt-4">
+        <p class="text-xs font-bold text-red-400">
+          Registration failed. The platform admin can retry from the admin panel.
+          This is typically a temporary issue with the verification service.
+        </p>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Verification Journey Steps -->
+  <div class="border-2 border-white p-6 mb-6">
+    <p class="text-xs font-black uppercase tracking-widest text-white/50 mb-4">Verification Journey</p>
+    <div class="space-y-3">
+
+      <!-- Step 1: Submitted -->
+      <div class="flex items-center gap-3">
+        <div class="w-6 h-6 border-2 flex items-center justify-center flex-shrink-0
+          {% if kyc.submitted_at %}border-primary bg-primary{% else %}border-white/30{% endif %}">
+          <span class="material-symbols-outlined text-xs {% if kyc.submitted_at %}text-black{% else %}text-white/30{% endif %}">
+            {% if kyc.submitted_at %}check{% else %}radio_button_unchecked{% endif %}
+          </span>
+        </div>
+        <div>
+          <p class="text-xs font-black uppercase {% if kyc.submitted_at %}text-white{% else %}text-white/30{% endif %}">Documents Submitted</p>
+          {% if kyc.submitted_at %}<p class="text-xs text-white/50">{{ kyc.submitted_at|date:"N j, Y" }}</p>{% endif %}
+        </div>
+      </div>
+
+      <!-- Step 2: Under Review -->
+      <div class="flex items-center gap-3">
+        <div class="w-6 h-6 border-2 flex items-center justify-center flex-shrink-0
+          {% if kyc.status == 'pending' %}border-yellow-400{% elif kyc.status == 'approved' or kyc.status == 'rejected' %}border-primary bg-primary{% else %}border-white/30{% endif %}">
+          <span class="material-symbols-outlined text-xs
+            {% if kyc.status == 'pending' %}text-yellow-400{% elif kyc.status == 'approved' or kyc.status == 'rejected' %}text-black{% else %}text-white/30{% endif %}">
+            {% if kyc.status == 'approved' or kyc.status == 'rejected' %}check{% elif kyc.status == 'pending' %}schedule{% else %}radio_button_unchecked{% endif %}
+          </span>
+        </div>
+        <div>
+          <p class="text-xs font-black uppercase {% if kyc.status == 'pending' or kyc.status == 'approved' or kyc.status == 'rejected' %}text-white{% else %}text-white/30{% endif %}">Under Review</p>
+        </div>
+      </div>
+
+      <!-- Step 3: KYC Decision -->
+      <div class="flex items-center gap-3">
+        <div class="w-6 h-6 border-2 flex items-center justify-center flex-shrink-0
+          {% if kyc.status == 'approved' %}border-primary bg-primary{% elif kyc.status == 'rejected' %}border-red-500{% else %}border-white/30{% endif %}">
+          <span class="material-symbols-outlined text-xs
+            {% if kyc.status == 'approved' %}text-black{% elif kyc.status == 'rejected' %}text-red-500{% else %}text-white/30{% endif %}">
+            {% if kyc.status == 'approved' %}check{% elif kyc.status == 'rejected' %}close{% else %}radio_button_unchecked{% endif %}
+          </span>
+        </div>
+        <div>
+          <p class="text-xs font-black uppercase {% if kyc.status == 'approved' or kyc.status == 'rejected' %}text-white{% else %}text-white/30{% endif %}">KYC Decision</p>
+          {% if kyc.reviewed_at %}<p class="text-xs text-white/50">{{ kyc.reviewed_at|date:"N j, Y" }}</p>{% endif %}
+        </div>
+      </div>
+
+      <!-- Step 4: ZKP Registration (auto on approval) -->
+      <div class="flex items-center gap-3">
+        <div class="w-6 h-6 border-2 flex items-center justify-center flex-shrink-0
+          {% if kyc.zkp_status == 'registered' %}border-primary bg-primary{% elif kyc.zkp_status == 'failed' %}border-red-500{% else %}border-white/30{% endif %}">
+          <span class="material-symbols-outlined text-xs
+            {% if kyc.zkp_status == 'registered' %}text-black{% elif kyc.zkp_status == 'failed' %}text-red-500{% else %}text-white/30{% endif %}">
+            {% if kyc.zkp_status == 'registered' %}lock{% elif kyc.zkp_status == 'failed' %}error{% else %}radio_button_unchecked{% endif %}
+          </span>
+        </div>
+        <div>
+          <p class="text-xs font-black uppercase {% if kyc.zkp_status == 'registered' %}text-white{% else %}text-white/30{% endif %}">
+            ZKP Registration
+            {% if kyc.status == 'approved' and kyc.zkp_status == 'not_registered' %}
+            <span class="text-yellow-400/60 normal-case">(automatic)</span>
+            {% endif %}
+          </p>
+          {% if kyc.zkp_registered_at %}<p class="text-xs text-white/50">{{ kyc.zkp_registered_at|date:"N j, Y" }}</p>{% endif %}
+        </div>
+      </div>
+
+      <!-- Step 5: Payment App Verification (NEW) -->
+      <div class="flex items-center gap-3">
+        <div class="w-6 h-6 border-2 flex items-center justify-center flex-shrink-0
+          {% if kyc.zkp_last_verified_at and kyc.zkp_status == 'registered' %}border-primary bg-primary{% else %}border-white/30{% endif %}">
+          <span class="material-symbols-outlined text-xs
+            {% if kyc.zkp_last_verified_at and kyc.zkp_status == 'registered' %}text-black{% else %}text-white/30{% endif %}">
+            {% if kyc.zkp_last_verified_at and kyc.zkp_status == 'registered' %}verified{% else %}radio_button_unchecked{% endif %}
+          </span>
+        </div>
+        <div>
+          <p class="text-xs font-black uppercase {% if kyc.zkp_last_verified_at and kyc.zkp_status == 'registered' %}text-white{% else %}text-white/30{% endif %}">
+            Payment App Verified
+          </p>
+          {% if kyc.zkp_last_verified_at %}
+          <p class="text-xs text-white/50">{{ kyc.zkp_last_verified_at|date:"N j, Y" }}</p>
+          {% else %}
+          <p class="text-xs text-white/30">Verified when seller accesses payment dashboard</p>
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="space-y-3">
+    {% if kyc.status == 'incomplete' or kyc.status == 'rejected' %}
+    <a href="{% url 'seller_kyc_submit' %}"
+       class="block w-full bg-primary text-black border-2 border-primary py-4
+              text-sm font-black uppercase tracking-widest text-center
+              hover:bg-white hover:border-white transition-colors">
+      {% if kyc.status == 'rejected' %}Resubmit KYC{% else %}Complete Submission{% endif %}
+    </a>
+    {% endif %}
+
+    <a href="{% url 'home' %}"
+       class="block w-full border-2 border-white text-white py-4
+              text-sm font-black uppercase tracking-widest text-center
+              hover:bg-white hover:text-black transition-colors">
+      Back to Dashboard
+    </a>
+  </div>
+
+</div>
+</div>
+{% endblock %}

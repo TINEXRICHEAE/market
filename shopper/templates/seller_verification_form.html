@@ -1,0 +1,401 @@
+{% extends 'base.html' %}
+{% block title %}Seller Verification — KYC Submission{% endblock %}
+
+{% block content %}
+<script>
+// Defined here so inline onclick="goStep(N)" works before block scripts loads
+var TOTAL_STEPS = 3;
+function goStep(n) {
+  for (var i = 1; i <= TOTAL_STEPS; i++) {
+    var panel = document.getElementById('step-' + i);
+    var tab   = document.getElementById('tab-' + i);
+    if (panel) panel.classList.toggle('hidden', i !== n);
+    if (tab) {
+      var active = i === n;
+      tab.classList.toggle('bg-primary',    active);
+      tab.classList.toggle('text-black',    active);
+      tab.classList.toggle('bg-black',     !active);
+      tab.classList.toggle('text-white/40', !active);
+    }
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+<div class="min-h-screen bg-black px-4 py-10">
+<div class="w-full max-w-2xl mx-auto">
+
+  <!-- ── Header ─────────────────────────────────────────────────────── -->
+  <div class="text-center mb-8 border-b-2 border-white pb-6">
+    <div class="bg-primary w-12 h-12 mx-auto mb-4 flex items-center justify-center">
+      <span class="material-symbols-outlined text-black font-black text-2xl">badge</span>
+    </div>
+    <h1 class="text-2xl font-black uppercase tracking-tighter text-white">
+      Seller Verification
+    </h1>
+    <p class="text-xs font-bold text-white/50 mt-1 uppercase tracking-widest">
+      Complete your KYC to unlock full platform features
+    </p>
+  </div>
+
+  <!-- ── Step Tabs ──────────────────────────────────────────────────── -->
+  <div class="flex border-2 border-white mb-6">
+    <button type="button" onclick="goStep(1)" id="tab-1"
+      class="step-tab flex-1 py-3 text-xs font-black uppercase tracking-widest
+             border-r-2 border-white bg-primary text-black transition-colors">
+      1. Personal
+    </button>
+    <button type="button" onclick="goStep(2)" id="tab-2"
+      class="step-tab flex-1 py-3 text-xs font-black uppercase tracking-widest
+             border-r-2 border-white bg-black text-white/40 transition-colors">
+      2. Business
+    </button>
+    <button type="button" onclick="goStep(3)" id="tab-3"
+      class="step-tab flex-1 py-3 text-xs font-black uppercase tracking-widest
+             bg-black text-white/40 transition-colors">
+      3. Documents
+    </button>
+  </div>
+
+  <!-- ── Form ───────────────────────────────────────────────────────── -->
+  <form method="post" enctype="multipart/form-data" id="kycForm" novalidate>
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+    <div class="border-2 border-red-500 p-4 mb-6">
+      <p class="text-xs font-black uppercase tracking-widest text-red-400 mb-2">Errors</p>
+      {% for error in form.non_field_errors %}
+        <p class="text-sm font-bold text-red-400">{{ error }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- ════ STEP 1 — Personal ════════════════════════════════════ -->
+    <div id="step-1" class="step-panel">
+      <div class="border-2 border-white p-6 mb-4">
+        <p class="text-xs font-black uppercase tracking-widest text-white/50 mb-5">Personal Information</p>
+
+        <div class="mb-5">
+          <label class="block text-xs font-black uppercase tracking-widest text-white mb-2">{{ form.full_legal_name.label }} <span class="text-primary">*</span></label>
+          {{ form.full_legal_name }}
+          {% if form.full_legal_name.errors %}<p class="text-xs text-red-400 mt-1">{{ form.full_legal_name.errors.0 }}</p>{% endif %}
+        </div>
+        <div class="mb-5">
+          <label class="block text-xs font-black uppercase tracking-widest text-white mb-2">{{ form.national_id_number.label }} <span class="text-primary">*</span></label>
+          {{ form.national_id_number }}
+          {% if form.national_id_number.errors %}<p class="text-xs text-red-400 mt-1">{{ form.national_id_number.errors.0 }}</p>{% endif %}
+        </div>
+        <div class="mb-5">
+          <label class="block text-xs font-black uppercase tracking-widest text-white mb-2">{{ form.date_of_birth.label }} <span class="text-primary">*</span></label>
+          {{ form.date_of_birth }}
+          {% if form.date_of_birth.errors %}<p class="text-xs text-red-400 mt-1">{{ form.date_of_birth.errors.0 }}</p>{% endif %}
+        </div>
+        <div class="mb-5">
+          <label class="block text-xs font-black uppercase tracking-widest text-white mb-2">{{ form.phone_number.label }} <span class="text-primary">*</span></label>
+          {{ form.phone_number }}
+          {% if form.phone_number.errors %}<p class="text-xs text-red-400 mt-1">{{ form.phone_number.errors.0 }}</p>{% endif %}
+        </div>
+        <div class="mb-5">
+          <label class="block text-xs font-black uppercase tracking-widest text-white mb-2">{{ form.physical_address.label }} <span class="text-primary">*</span></label>
+          {{ form.physical_address }}
+          {% if form.physical_address.errors %}<p class="text-xs text-red-400 mt-1">{{ form.physical_address.errors.0 }}</p>{% endif %}
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-black uppercase tracking-widest text-white mb-2">
+              {{ form.district.label }} <span class="text-primary">*</span>
+            </label>
+            {{ form.district }}
+            {% if form.district.errors %}<p class="text-xs text-red-400 mt-1">{{ form.district.errors.0 }}</p>{% endif %}
+          </div>
+          <div>
+            <label class="block text-xs font-black uppercase tracking-widest text-white mb-2">
+              {{ form.country.label }} <span class="text-primary">*</span>
+            </label>
+            {{ form.country }}
+            {% if form.country.errors %}<p class="text-xs text-red-400 mt-1">{{ form.country.errors.0 }}</p>{% endif %}
+          </div>
+        </div>
+      </div>
+
+      <button type="button" onclick="goStep(2)"
+        class="w-full bg-primary text-black border-2 border-primary py-4
+               text-sm font-black uppercase tracking-widest
+               hover:bg-white hover:border-white transition-colors">
+        Next: Business Info →
+      </button>
+    </div>
+
+    <!-- ════ STEP 2 — Business ════════════════════════════════════ -->
+    <div id="step-2" class="step-panel hidden">
+      <div class="border-2 border-white p-6 mb-4">
+        <p class="text-xs font-black uppercase tracking-widest text-white/50 mb-5">Business Information</p>
+
+        <div class="mb-5">
+          <label class="block text-xs font-black uppercase tracking-widest text-white mb-2">
+            {{ form.business_name.label }} <span class="text-primary">*</span>
+          </label>
+          {{ form.business_name }}
+          {% if form.business_name.errors %}<p class="text-xs text-red-400 mt-1">{{ form.business_name.errors.0 }}</p>{% endif %}
+        </div>
+
+        <div class="mb-5">
+          <label class="block text-xs font-black uppercase tracking-widest text-white mb-2">
+            {{ form.business_type.label }} <span class="text-primary">*</span>
+          </label>
+          {{ form.business_type }}
+          {% if form.business_type.errors %}<p class="text-xs text-red-400 mt-1">{{ form.business_type.errors.0 }}</p>{% endif %}
+        </div>
+
+        <div class="mb-5">
+          <label class="block text-xs font-black uppercase tracking-widest text-white mb-2">
+            {{ form.business_registration_no.label }}
+            <span class="text-white/40 text-xs font-bold normal-case ml-1">(optional)</span>
+          </label>
+          {{ form.business_registration_no }}
+        </div>
+
+        <div class="mb-5">
+          <label class="block text-xs font-black uppercase tracking-widest text-white mb-2">
+            {{ form.tin_number.label }}
+            <span class="text-white/40 text-xs font-bold normal-case ml-1">(optional)</span>
+          </label>
+          {{ form.tin_number }}
+        </div>
+
+        <div>
+          <label class="block text-xs font-black uppercase tracking-widest text-white mb-2">
+            {{ form.business_address.label }}
+            <span class="text-white/40 text-xs font-bold normal-case ml-1">(optional)</span>
+          </label>
+          {{ form.business_address }}
+        </div>
+      </div>
+
+      <div class="flex gap-3">
+        <button type="button" onclick="goStep(1)"
+          class="flex-1 border-2 border-white text-white py-4
+                 text-sm font-black uppercase tracking-widest
+                 hover:bg-white hover:text-black transition-colors">← Back</button>
+        <button type="button" onclick="goStep(3)"
+          class="flex-1 bg-primary text-black border-2 border-primary py-4
+                 text-sm font-black uppercase tracking-widest
+                 hover:bg-white hover:border-white transition-colors">Next: Documents →</button>
+      </div>
+    </div>
+
+    <!-- ════ STEP 3 — Documents ═══════════════════════════════════ -->
+    <div id="step-3" class="step-panel hidden">
+
+      <!-- Identity docs -->
+      <div class="border-2 border-white p-6 mb-4">
+        <p class="text-xs font-black uppercase tracking-widest text-white/50 mb-1">Identity Documents</p>
+        <p class="text-xs font-bold text-white/30 mb-5">JPG, PNG or PDF · Max 5 MB per file</p>
+
+        <!-- National ID Front (required) -->
+        <div class="mb-5">
+          <label class="block text-xs font-black uppercase tracking-widest text-white mb-2">
+            {{ form.national_id_front.label }} <span class="text-primary">*</span>
+          </label>
+          <div class="file-drop border-2 border-dashed border-white/40 hover:border-primary
+                      p-4 cursor-pointer transition-colors" data-input="id_national_id_front">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-white/40 text-xl">upload_file</span>
+              <span class="file-label text-xs font-bold text-white/40">Click or drag to upload</span>
+            </div>
+          </div>
+          {{ form.national_id_front }}
+          {% if form.national_id_front.errors %}<p class="text-xs text-red-400 mt-1">{{ form.national_id_front.errors.0 }}</p>{% endif %}
+          {% if form.national_id_front.value %}<p class="text-xs text-primary mt-1">✓ File already uploaded</p>{% endif %}
+        </div>
+
+        <!-- National ID Back -->
+        <div class="mb-5">
+          <label class="block text-xs font-black uppercase tracking-widest text-white mb-2">
+            {{ form.national_id_back.label }}
+            <span class="text-white/40 text-xs font-bold normal-case ml-1">(optional)</span>
+          </label>
+          <div class="file-drop border-2 border-dashed border-white/40 hover:border-white
+                      p-4 cursor-pointer transition-colors" data-input="id_national_id_back">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-white/40 text-xl">upload_file</span>
+              <span class="file-label text-xs font-bold text-white/40">Click or drag to upload</span>
+            </div>
+          </div>
+          {{ form.national_id_back }}
+          {% if form.national_id_back.value %}<p class="text-xs text-primary mt-1">✓ File already uploaded</p>{% endif %}
+        </div>
+
+        <!-- Selfie with ID -->
+        <div>
+          <label class="block text-xs font-black uppercase tracking-widest text-white mb-2">
+            {{ form.selfie_with_id.label }}
+            <span class="text-white/40 text-xs font-bold normal-case ml-1">(recommended)</span>
+          </label>
+          <div class="file-drop border-2 border-dashed border-white/40 hover:border-white
+                      p-4 cursor-pointer transition-colors" data-input="id_selfie_with_id">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-white/40 text-xl">add_a_photo</span>
+              <span class="file-label text-xs font-bold text-white/40">Click or drag to upload</span>
+            </div>
+          </div>
+          {{ form.selfie_with_id }}
+          {% if form.selfie_with_id.value %}<p class="text-xs text-primary mt-1">✓ File already uploaded</p>{% endif %}
+        </div>
+      </div>
+
+      <!-- Business docs -->
+      <div class="border-2 border-white p-6 mb-4">
+        <p class="text-xs font-black uppercase tracking-widest text-white/50 mb-5">Business Documents</p>
+
+        <!-- Business Certificate -->
+        <div class="mb-5">
+          <label class="block text-xs font-black uppercase tracking-widest text-white mb-2">
+            {{ form.business_cert.label }}
+            <span class="text-white/40 text-xs font-bold normal-case ml-1">(if applicable)</span>
+          </label>
+          <div class="file-drop border-2 border-dashed border-white/40 hover:border-white
+                      p-4 cursor-pointer transition-colors" data-input="id_business_cert">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-white/40 text-xl">description</span>
+              <span class="file-label text-xs font-bold text-white/40">Click or drag to upload</span>
+            </div>
+          </div>
+          {{ form.business_cert }}
+          {% if form.business_cert.value %}<p class="text-xs text-primary mt-1">✓ File already uploaded</p>{% endif %}
+        </div>
+
+        <!-- Proof of Address -->
+        <div>
+          <label class="block text-xs font-black uppercase tracking-widest text-white mb-2">
+            {{ form.proof_of_address.label }}
+            <span class="text-white/40 text-xs font-bold normal-case ml-1">(optional)</span>
+          </label>
+          <div class="file-drop border-2 border-dashed border-white/40 hover:border-white
+                      p-4 cursor-pointer transition-colors" data-input="id_proof_of_address">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-white/40 text-xl">home_pin</span>
+              <span class="file-label text-xs font-bold text-white/40">Click or drag to upload</span>
+            </div>
+          </div>
+          {{ form.proof_of_address }}
+          {% if form.proof_of_address.value %}<p class="text-xs text-primary mt-1">✓ File already uploaded</p>{% endif %}
+        </div>
+      </div>
+
+      <!-- Declaration -->
+      <div class="border-2 border-white/30 p-4 mb-6">
+        <label class="flex items-start gap-3 cursor-pointer">
+          <input type="checkbox" id="declarationCheck"
+                 class="mt-0.5 w-4 h-4 accent-primary flex-shrink-0">
+          <span class="text-xs font-bold text-white/60 leading-relaxed">
+            I declare that all information and documents submitted are genuine and accurate.
+            I understand that providing false information may result in permanent account suspension.
+          </span>
+        </label>
+      </div>
+
+      <div class="flex gap-3">
+        <button type="button" onclick="goStep(2)"
+          class="flex-1 border-2 border-white text-white py-4
+                 text-sm font-black uppercase tracking-widest
+                 hover:bg-white hover:text-black transition-colors">← Back</button>
+        <button type="submit" id="submitBtn"
+          class="flex-1 bg-primary text-black border-2 border-primary py-4
+                 text-sm font-black uppercase tracking-widest
+                 hover:bg-white hover:border-white transition-colors
+                 disabled:opacity-30 disabled:cursor-not-allowed">
+          Submit KYC
+        </button>
+      </div>
+    </div>
+
+  </form>
+
+  <!-- Privacy note -->
+  <div class="border-2 border-white/10 p-4 mt-6">
+    <p class="text-xs font-black uppercase tracking-widest text-white/30 mb-2">🔒 Privacy</p>
+    <ul class="text-xs font-bold text-white/30 space-y-1">
+      <li>• Documents are encrypted at rest and never exposed to buyers</li>
+      <li>• Only cryptographic proofs are used during buyer verification</li>
+      <li>• Review completes within 1–3 business days</li>
+    </ul>
+  </div>
+
+</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+  /* Hide native file inputs — they're still in the DOM for form submission */
+  .step-panel input[type="file"] {
+    position: absolute;
+    width: 1px; height: 1px;
+    opacity: 0; pointer-events: none;
+  }
+</style>
+
+<script>
+// ── Step navigation ──────────────────────────────────────────────────────────
+// ── Auto-jump to first step with errors on POST ──────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Auto-jump to first step with errors on POST
+  for (let i = 1; i <= TOTAL_STEPS; i++) {
+    const panel = document.getElementById(`step-${i}`);
+    if (panel?.querySelector('.text-red-400')) { goStep(i); break; }
+  }
+
+  // Declaration checkbox
+  const decl = document.getElementById('declarationCheck');
+  const btn  = document.getElementById('submitBtn');
+  if (decl && btn) {
+    btn.disabled = true;
+    btn.style.opacity = '0.3';
+    btn.style.cursor = 'not-allowed';
+    decl.addEventListener('change', function() {
+      btn.disabled = !this.checked;
+      btn.style.opacity = this.checked ? '1' : '0.3';
+      btn.style.cursor = this.checked ? 'pointer' : 'not-allowed';
+    });
+  }
+
+  // ── File drop zones ────────────────────────────────────────────────────────
+  document.querySelectorAll('.file-drop').forEach(zone => {
+    const inputId = zone.dataset.input;
+    const input   = document.getElementById(inputId);
+    const label   = zone.querySelector('.file-label');
+
+    if (!input) return;
+
+    // Click zone → trigger file picker
+    zone.addEventListener('click', () => input.click());
+
+    // Update label on file select
+    input.addEventListener('change', () => {
+      if (input.files[0]) {
+        label.textContent = input.files[0].name;
+        label.classList.remove('text-white/40');
+        label.classList.add('text-primary');
+        zone.classList.replace('border-white/40', 'border-primary');
+      }
+    });
+
+    // Drag & drop
+    zone.addEventListener('dragover',  e => { e.preventDefault(); zone.classList.add('border-primary'); });
+    zone.addEventListener('dragleave', () => { if (!input.files[0]) zone.classList.remove('border-primary'); });
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      const file = e.dataTransfer.files[0];
+      if (!file) return;
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      input.files = dt.files;
+      label.textContent = file.name;
+      label.classList.replace('text-white/40', 'text-primary');
+      zone.classList.add('border-primary');
+    });
+  });
+});
+</script>
+{% endblock %}
