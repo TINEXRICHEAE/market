@@ -12,73 +12,87 @@
             box-sizing: border-box;
         }
 
-        body {
+        html, body {
+            height: 100%;
+            overflow: hidden;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f5f5f5;
             color: #333;
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 2rem auto;
-            padding: 0 2rem;
+        .page-wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
         }
 
-        .back-button {
-            background: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 5px;
-            margin-bottom: 1rem;
-            display: inline-block;
-            text-decoration: none;
-            color: #667eea;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .back-button:hover {
-            background: #f0f0f0;
-        }
-
-        .page-header {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .page-header h1 {
-            font-size: 2rem;
-            color: #333;
-            margin-bottom: 0.5rem;
-        }
-
-        .iframe-container {
-            background: white;
-            border-radius: 10px;
-            padding: 1rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            min-height: 800px;
+        .iframe-fill {
+            flex: 1;
             position: relative;
+            overflow: hidden;
         }
 
-        .iframe-container iframe {
+        .iframe-fill iframe {
             width: 100%;
-            height: 800px;
+            height: 100%;
             border: none;
-            border-radius: 5px;
+            display: block;
         }
 
-        .loading {
-            text-align: center;
-            padding: 3rem;
+        /* Floating action buttons */
+        .fab-group {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            z-index: 1000;
+        }
+
+        .fab {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
             font-size: 1.2rem;
-            color: #666;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .fab-back {
+            background: white;
+            color: #667eea;
+        }
+
+        .fab-refresh {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Loading / error overlays */
+        .overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            z-index: 10;
         }
 
         .loading-spinner {
-            display: inline-block;
             width: 40px;
             height: 40px;
             border: 4px solid #f3f3f3;
@@ -93,101 +107,69 @@
             100% { transform: rotate(360deg); }
         }
 
-        .error-message {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 2rem 0;
-            text-align: center;
+        .overlay p {
+            font-size: 1.1rem;
+            color: #666;
         }
 
-        .error-message h3 {
+        .error-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 420px;
+        }
+
+        .error-box h3 {
             color: #856404;
             margin-bottom: 0.5rem;
         }
 
-        .error-message p {
+        .error-box p {
             color: #856404;
             margin-bottom: 1rem;
+            font-size: 0.95rem;
         }
 
         .retry-button {
             background: #667eea;
             color: white;
-            padding: 0.75rem 1.5rem;
+            padding: 0.6rem 1.4rem;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s;
+            transition: background 0.2s;
         }
 
         .retry-button:hover {
             background: #5568d3;
         }
-
-        /* Status indicator */
-        .status-indicator {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .status-loading {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .status-ready {
-            background: #d1e7dd;
-            color: #0f5132;
-        }
-
-        .status-error {
-            background: #f8d7da;
-            color: #842029;
-        }
     </style>
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
 </head>
 <body>
-    {% include "navbar_base.html" %}
+    <div class="page-wrapper">
+        {% include "navbar_base.html" %}
 
-    <div class="container">
-        <a href="/seller/dashboard/" class="back-button">← Back to Dashboard</a>
-
-        <div class="page-header">
-            <h1>💰 Finances & Cashout</h1>
-            <p>Manage your earnings and request withdrawals through Fair Cashier</p>
-            <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
-                Seller: <strong>{{ seller_email }}</strong>
-            </p>
-        </div>
-
-        <div class="iframe-container">
-            <div id="statusIndicator" class="status-indicator status-loading">
-                Loading...
-            </div>
-
-            <div id="loadingMessage" class="loading">
+        <div class="iframe-fill">
+            <div id="loadingMessage" class="overlay">
                 <div class="loading-spinner"></div>
                 <p>Connecting to Fair Cashier payment system...</p>
             </div>
 
-            <div id="errorMessage" class="error-message" style="display: none;">
-                <h3>⚠️ Connection Error</h3>
-                <p id="errorText">Failed to load Fair Cashier. Please try again.</p>
-                <button class="retry-button" onclick="retryLoad()">Retry</button>
+            <div id="errorMessage" class="overlay" style="display: none;">
+                <div class="error-box">
+                    <h3>Connection Error</h3>
+                    <p id="errorText">Failed to load Fair Cashier. Please try again.</p>
+                    <button class="retry-button" onclick="retryLoad()">Retry</button>
+                </div>
             </div>
 
-            <iframe 
-                id="financesIframe" 
-                src="{{ iframe_url }}" 
+            <iframe
+                id="financesIframe"
+                src="{{ iframe_url }}"
                 style="display:none;"
                 sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
                 allow="payment"
@@ -195,12 +177,17 @@
         </div>
     </div>
 
+    <!-- Floating action buttons -->
+    <div class="fab-group">
+        <a href="/seller/dashboard/" class="fab fab-back" title="Back to Dashboard">&#8592;</a>
+        <button class="fab fab-refresh" title="Refresh" onclick="retryLoad()">&#8635;</button>
+    </div>
+
     <script src="{% static 'js/navbar.js' %}"></script>
     <script>
         const iframe = document.getElementById('financesIframe');
         const loadingMessage = document.getElementById('loadingMessage');
         const errorMessage = document.getElementById('errorMessage');
-        const statusIndicator = document.getElementById('statusIndicator');
         
         let loadTimeout;
         let hasLoaded = false;
@@ -265,25 +252,19 @@
             loadingMessage.style.display = 'none';
             errorMessage.style.display = 'none';
             iframe.style.display = 'block';
-            statusIndicator.textContent = 'Connected';
-            statusIndicator.className = 'status-indicator status-ready';
         }
 
         function showError(message) {
             loadingMessage.style.display = 'none';
             iframe.style.display = 'none';
-            errorMessage.style.display = 'block';
+            errorMessage.style.display = 'flex';
             document.getElementById('errorText').textContent = message;
-            statusIndicator.textContent = 'Error';
-            statusIndicator.className = 'status-indicator status-error';
         }
 
         function retryLoad() {
             hasLoaded = false;
             errorMessage.style.display = 'none';
-            loadingMessage.style.display = 'block';
-            statusIndicator.textContent = 'Retrying...';
-            statusIndicator.className = 'status-indicator status-loading';
+            loadingMessage.style.display = 'flex';
             
             // Reload iframe
             iframe.src = iframe.src;

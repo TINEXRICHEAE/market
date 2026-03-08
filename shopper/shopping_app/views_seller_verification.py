@@ -6,7 +6,7 @@ ZKP registration is handled by views_zkp.py (auto-triggered from admin.py on app
 
 import json
 import logging
-
+import requests as http_requests
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -23,6 +23,15 @@ logger = logging.getLogger(__name__)
 
 def _require_seller(user):
     return user.is_authenticated and user.role == 'seller'
+
+
+def _internal_secret():
+    return getattr(settings, 'SHOPPING_APP_INTERNAL_SECRET', '')
+
+
+def _payment_app_url():
+    return getattr(settings, 'PAYMENT_APP_URL', 'http://localhost:8001')
+
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -82,12 +91,19 @@ def seller_kyc_status(request):
 #    Used by payment_selection.html and order_detail.html badges.
 # ─────────────────────────────────────────────────────────────────────────────
 
+# ─────────────────────────────────────────────────────────────────────────────
+# 3. AJAX — buyer/seller checks a seller's verification status
+#    GET /api/seller-verification-status/<seller_id>/
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+
 @login_required
 @require_GET
 def api_seller_verification_status(request, seller_id):
     """
     Returns KYC + ZKP verification status for a seller.
-    ?refresh=1 triggers a live Strapi tree check.
+    ?refresh=1 fetches live status from Payment App.
     """
     refresh = request.GET.get('refresh') == '1'
 
@@ -115,28 +131,23 @@ def api_seller_verification_status(request, seller_id):
         'kyc_approved': kyc_approved,
         'kyc_status': kyc.status,
         'zkp_status': kyc.zkp_status,
-        'zkp_valid': False,
-        'merkle_root': kyc.zkp_merkle_root or None,
-        'block_number': getattr(kyc, 'zkp_block_number', None),
-        'tree_size': None,
-        'verified_at': kyc.zkp_last_verified_at.isoformat() if kyc.zkp_last_verified_at else None,
         'commitment_hash': kyc.zkp_commitment_hash or None,
-        'business_name': kyc.business_name,
+        'business_name': kyc.business_name or '',
     }
 
     if not kyc_approved or kyc.zkp_status != 'registered':
         return JsonResponse(response)
 
-    # Live ZKP check if requested or never verified
+    # Fetch actual verification status from Payment App
     if refresh or not kyc.zkp_last_verified_at:
         result = _refresh_zkp_verification(kyc)
         response['zkp_valid'] = result.get('valid', False)
-        response['merkle_root'] = result.get('merkle_root', kyc.zkp_merkle_root)
-        response['block_number'] = result.get('block_number')
-        response['tree_size'] = result.get('tree_size')
         response['verified_at'] = result.get('verified_at')
+        response['commitment_match'] = result.get('commitment_match', False)
+        # Keep block_number/tree_size from local registration data
+        response['block_number'] = getattr(kyc, 'zkp_block_number', None)
     else:
-        # Use cached — registered sellers assumed valid unless explicitly failed
+        # Cached — use last known status
         response['zkp_valid'] = True
         response['block_number'] = getattr(kyc, 'zkp_block_number', None)
 
@@ -145,42 +156,107 @@ def api_seller_verification_status(request, seller_id):
 
 def _refresh_zkp_verification(kyc):
     """
-    Verify the seller's KYC proof via Strapi and update cached status.
-    Uses the proof already stored on SellerVerification (generated during registration).
-    """
-    from .zkp_client import ZKPClient
+    Fetch the seller's ACTUAL verification status from the Payment App.
 
-    client = ZKPClient()
-    result = {'valid': False, 'verified_at': timezone.now().isoformat()}
+    The Payment App is the one that verified the proof via Strapi /verify-kyc-proof.
+    Its User model has the ground-truth fields:
+      - zkp_verified (bool)
+      - zkp_verified_at (datetime)
+      - zkp_kyc_root (Merkle root at verification time)
+      - zkp_commitment_hash (from the proof it verified)
+
+    We call: GET Payment App /api/internal/seller-zkp-status/<email>/
+    Then cross-check commitment_hash to confirm both apps agree on identity.
+
+    Returns:
+        dict with {valid, verified_at, kyc_root, commitment_match}
+    """
+    seller_email = kyc.seller.email
+    result = {'valid': False, 'verified_at': None, 'kyc_root': None, 'commitment_match': False}
 
     try:
-        # Verify stored proof via Strapi
-        if kyc.zkp_proof_cached and getattr(kyc, 'zkp_public_signals', None):
-            verification = client.verify_balance_proof(
-                kyc.zkp_proof_cached,
-                kyc.zkp_public_signals,
+        resp = http_requests.get(
+            f"{_payment_app_url()}/api/internal/seller-zkp-status/{seller_email}/",
+            headers={'X-Internal-Secret': _internal_secret()},
+            timeout=15,
+        )
+
+        if resp.status_code == 404:
+            # Seller doesn't exist in Payment App yet — not verified
+            logger.info(f"Seller {seller_email} not found in Payment App")
+            return result
+
+        if resp.status_code != 200:
+            logger.warning(
+                f"Payment App returned {resp.status_code} for "
+                f"seller ZKP status: {seller_email}"
             )
-            # Note: This is a KYC proof, but verify_balance_proof works on
-            # any proof+signals pair. For a dedicated KYC verify endpoint:
-            # verification = client.verify_kyc_proof(kyc.zkp_proof_cached, kyc.zkp_public_signals)
-            # But since Shopping App generated the proof, we can also just
-            # check tree status to confirm the seller is still in the tree.
+            return result
 
-        # Fetch tree status for additional metadata
-        status = client.get_kyc_tree_status()
-        result['block_number'] = status.get('block_number')
-        result['tree_size'] = status.get('tree_size')
-        result['merkle_root'] = status.get('merkle_root', '')
-        result['valid'] = True  # Seller is registered and tree is active
+        data = resp.json()
 
-        # Update cache
-        kyc.zkp_last_verified_at = timezone.now()
-        kyc.save(update_fields=['zkp_last_verified_at', 'updated_at'])
+    except http_requests.exceptions.RequestException as e:
+        logger.warning(f"Failed to fetch seller ZKP status from Payment App: {e}")
+        return result
 
-    except Exception as exc:
-        logger.warning(f"ZKP refresh failed for {kyc.seller.email}: {exc}")
+    # Extract Payment App's ground-truth verification fields
+    pa_verified = data.get('zkp_verified', False)
+    pa_verified_at = data.get('zkp_verified_at')
+    pa_kyc_root = data.get('zkp_kyc_root', '')
+    pa_commitment = data.get('zkp_commitment_hash', '')
+
+    # Cross-check: does Payment App's commitment_hash match ours?
+    local_commitment = kyc.zkp_commitment_hash or ''
+    commitment_match = (
+        bool(pa_commitment) and
+        bool(local_commitment) and
+        pa_commitment == local_commitment
+    )
+
+    if not commitment_match and pa_commitment and local_commitment:
+        logger.warning(
+            f"Commitment hash MISMATCH for {seller_email}: "
+            f"Shopping App={local_commitment[:20]}... "
+            f"Payment App={pa_commitment[:20]}..."
+        )
+
+    # Seller is valid only if:
+    #   1. Payment App has verified the proof (zkp_verified=True)
+    #   2. Commitment hashes match between both apps
+    is_valid = pa_verified and commitment_match
+
+    result['valid'] = is_valid
+    result['verified_at'] = pa_verified_at
+    result['kyc_root'] = pa_kyc_root
+    result['commitment_match'] = commitment_match
+
+    # Update local cache with Payment App's verified timestamp
+    try:
+        update_fields = ['updated_at']
+
+        if pa_verified_at:
+            from django.utils.dateparse import parse_datetime
+            parsed = parse_datetime(pa_verified_at)
+            if parsed:
+                kyc.zkp_last_verified_at = parsed
+                update_fields.append('zkp_last_verified_at')
+
+        if pa_kyc_root:
+            kyc.zkp_merkle_root = pa_kyc_root
+            update_fields.append('zkp_merkle_root')
+
+        kyc.save(update_fields=update_fields)
+    except Exception as e:
+        logger.warning(f"Failed to cache verification status for {seller_email}: {e}")
+
+    logger.info(
+        f"ZKP verification refresh for {seller_email}: "
+        f"valid={is_valid}, pa_verified={pa_verified}, "
+        f"commitment_match={commitment_match}"
+    )
 
     return result
+
 
 
 # ─────────────────────────────────────────────────────────────────────────────

@@ -11,11 +11,11 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         # Create sample buyers
         buyer_emails = [
-            'buyer1@example.com',
-            'buyer2@example.com',
-            'buyer3@example.com',
-            'buyer4@example.com',
-            'buyer5@example.com'
+            'buyer1@gmail.com',
+            'buyer2@gmail.com',
+            'buyer3@gmail.com',
+            'buyer4@gmail.com',
+            'buyer5@gmail.com'
         ]
 
         buyers = []
@@ -145,7 +145,7 @@ class Command(BaseCommand):
                 f'Wishlists: {Wishlist.objects.count()}\n'
                 f'Orders created: {Order.objects.filter(buyer__in=buyers).count()}\n'
                 f'\nLogin credentials:\n'
-                f'Email: buyer1@example.com - buyer5@example.com\n'
+                f'Email: buyer1@gmail.com - buyer5@gmail.com\n'
                 f'Password: buyer123\n'
                 f'='*50
             )

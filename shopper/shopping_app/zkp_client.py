@@ -1,5 +1,5 @@
 """
-Shopping App — zkp_client.py 
+Shopping App — zkp_client.py (FIXED)
 
 Strapi ZKP HTTP client. Shopping App calls:
   - register_seller()       → POST /api/register-seller
@@ -7,6 +7,10 @@ Strapi ZKP HTTP client. Shopping App calls:
   - verify_balance_proof()  → POST /api/verify-balance-proof
   - get_kyc_tree_status()   → GET  /api/kyc-tree-status
   - get_latest_root()       → GET  /api/latest-root
+
+FIX: Strapi controller uses snake_case field names in destructuring:
+  const { national_id, date_of_birth, business_license, tin, business_address } = ctx.request.body;
+So we must send snake_case keys, NOT camelCase.
 """
 
 import hashlib
@@ -37,6 +41,10 @@ def encode_kyc_fields(raw_kyc):
     Encode raw KYC dict to numeric BigInt strings for Poseidon circuit.
 
     Keys: national_id, date_of_birth (YYYYMMDD), business_license, tin, business_address
+    
+    date_of_birth MUST be passed as 'YYYYMMDD' string (e.g., '19900115').
+    The circuit expects it as an integer: birth_year = date_of_birth \ 10000.
+    encode_to_bigint() passes it through as-is since it's purely numeric.
     """
     fields = ['national_id', 'date_of_birth', 'business_license', 'tin', 'business_address']
     encoded = {}
@@ -67,25 +75,37 @@ class ZKPClient:
     # ── Seller KYC (Shopping App registers + generates proof) ──
 
     def register_seller(self, national_id, date_of_birth, business_license, tin, business_address):
-        """Register seller KYC commitment in Strapi Merkle tree. All fields pre-encoded."""
+        """
+        Register seller KYC commitment in Strapi Merkle tree.
+        All fields must be pre-encoded as numeric BigInt strings.
+        
+        IMPORTANT: Strapi controller destructures with snake_case:
+          const { national_id, date_of_birth, business_license, tin, business_address } = ctx.request.body;
+        So JSON keys MUST be snake_case.
+        """
         return self._request('post', '/api/register-seller', json={
-            'nationalId': national_id,
-            'dateOfBirth': date_of_birth,
-            'businessLicense': business_license,
+            'national_id': national_id,
+            'date_of_birth': date_of_birth,
+            'business_license': business_license,
             'tin': tin,
-            'businessAddress': business_address,
-        }, timeout=45)
+            'business_address': business_address,
+        }, timeout=120)  # Registration involves Poseidon hashing + Merkle tree rebuild — can take 60s+
 
     def generate_kyc_proof(self, national_id, date_of_birth, business_license, tin, business_address, leaf_index):
-        """Generate PLONK KYC proof. Same encoded fields + leaf_index from registration."""
+        """
+        Generate PLONK KYC proof. Same encoded fields + leaf_index from registration.
+        
+        Strapi controller destructures with snake_case:
+          const { national_id, date_of_birth, business_license, tin, business_address, leaf_index } = ctx.request.body;
+        """
         return self._request('post', '/api/generate-kyc-proof', json={
-            'nationalId': national_id,
-            'dateOfBirth': date_of_birth,
-            'businessLicense': business_license,
+            'national_id': national_id,
+            'date_of_birth': date_of_birth,
+            'business_license': business_license,
             'tin': tin,
-            'businessAddress': business_address,
-            'leafIndex': leaf_index,
-        }, timeout=60)
+            'business_address': business_address,
+            'leaf_index': leaf_index,
+        }, timeout=120)  # PLONK proof generation with Merkle path can take 60s+
 
     # ── Balance Proof (Shopping App verifies Payment App's proof) ──
 

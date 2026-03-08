@@ -89,7 +89,7 @@ def request_balance_proofs_for_order(order):
 
         if proof and pub:
             try:
-                ok = zkp.verify_balance_proof(proof, pub).get('valid', False)
+                ok = zkp.verify_balance_proof(proof, pub).get('verified', False)
             except Exception as e:
                 logger.error(f"Balance verify failed for {se}: {e}")
 
@@ -133,7 +133,7 @@ def refresh_balance_proof_for_seller(order, seller_email, include_cod=False):
     ok = False
     if proof and pub:
         try:
-            ok = ZKPClient().verify_balance_proof(proof, pub).get('valid', False)
+            ok = ZKPClient().verify_balance_proof(proof, pub).get('verified', False)
         except Exception:
             pass
 

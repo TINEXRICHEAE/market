@@ -11,9 +11,9 @@ class Command(BaseCommand):
         # Create sample sellers
         sellers = []
         seller_emails = [
-            'seller1@example.com',
-            'seller2@example.com',
-            'seller3@example.com'
+            'seller1@gmail.com',
+            'seller2@gmail.com',
+            'seller3@gmail.com'
         ]
 
         for email in seller_emails:
@@ -26,7 +26,7 @@ class Command(BaseCommand):
                 }
             )
             if created:
-                seller.set_password('password123')
+                seller.set_password('Seller.123')
                 seller.save()
                 self.stdout.write(self.style.SUCCESS(
                     f'Created seller: {email}'))
