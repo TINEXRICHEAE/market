@@ -1,5 +1,5 @@
 """
-Shopping App — views_zkp.py (NEW)
+Shopping App - views_zkp.py (NEW)
 
 Seller KYC ZKP registration + proof generation.
 Uses: Users model + SellerVerification model (OneToOne via seller FK).

@@ -5,8 +5,6 @@ from .views_seller_verification import (
     api_seller_verification_status,
     api_seller_kyc_status,
     internal_seller_kyc_data,
-    api_buyer_balance_proof,
-    api_buyer_balance_proof_refresh,
 )
 from . import views_zkp
 
@@ -32,7 +30,5 @@ seller_verification_urlpatterns = [
     path('seller/zkp-status/<str:seller_email>/', views_zkp.seller_zkp_status, name='seller_zkp_status'),
     path('internal/seller-zkp-proof/<str:seller_email>/', views_zkp.internal_seller_zkp_proof, name='internal_seller_zkp_proof'),
 
-    # ── Buyer balance proof (seller-facing tier display) ─────────────
-    path('api/buyer-balance-proof/', api_buyer_balance_proof, name='api_buyer_balance_proof'),
-    path('api/buyer-balance-proof/refresh/', api_buyer_balance_proof_refresh, name='api_buyer_balance_proof_refresh'),
+    
 ]

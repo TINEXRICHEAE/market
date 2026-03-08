@@ -194,20 +194,29 @@ function renderOrderHeader(order) {
         </div>`;
 }
 
+
+
+
 // ════════════════════════════════════════════════════════════════════
 // ZKP BALANCE PROOF PANEL
-// Replaces old loadBuyerBalanceCheck / renderBalancePanel / applyItemBorderColors.
-// Seller sees only: tier badge + "N of M items payable". No balance, no amounts.
+// Shows tier badge + "N of M pending items payable". No balance, no amounts.
+// Only includes items that are: pending + online-capable (seller on Fair Cashier).
 // ════════════════════════════════════════════════════════════════════
+
+
+// Store item_details globally so applyItemTierBorders can use them
+let _bpItemDetails = [];
+
 async function loadBalanceProof() {
-    document.getElementById('balancePanel').classList.remove('hidden');
+    const panel = document.getElementById('balancePanel');
+    panel.classList.remove('hidden');
     try {
         const r    = await fetch(`/api/buyer-balance-proof/?order_id=${orderId}`,
                                  { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
         const data = await r.json();
         renderBalanceProof(data);
     } catch {
-        renderBalanceProof({ tier: 'unknown', items_payable: 0, total_items: 0, verified: false });
+        renderBalanceProof({ tier: 'unknown', items_payable: 0, total_items: 0, verified: false, item_details: [] });
     }
 }
 
@@ -215,8 +224,7 @@ async function refreshBalanceProof(btn) {
     btn.classList.add('spinning');
     btn.disabled = true;
     try {
-        
-        const r    = await fetch('/api/buyer-balance-proof/refresh/', {
+        const r = await fetch('/api/buyer-balance-proof/refresh/', {
             method:  'POST',
             headers: {
                 'Content-Type':     'application/json',
@@ -237,65 +245,146 @@ async function refreshBalanceProof(btn) {
 }
 
 function renderBalanceProof(data) {
-    const tier = data.tier || 'unknown';
-    const cfg  = {
+    const tier     = data.tier || 'unknown';
+    const payable  = data.items_payable ?? 0;
+    const total    = data.total_items   ?? 0;
+    const verified = data.verified      ?? false;
+    const isExpired  = data.is_expired  ?? false;
+    const includeCod = data.include_cod ?? false;
+    const note       = data.note        || '';
+    const genTime    = data.generated_at
+        ? new Date(data.generated_at).toLocaleTimeString() : null;
+    const refreshTime = data.refreshed_at
+        ? new Date(data.refreshed_at).toLocaleTimeString() : null;
+
+    // Save item_details for border application
+    _bpItemDetails = data.item_details || [];
+
+    // ── Edge case: all items paid ──────────────────────────────
+    if (total === 0 && tier === 'green') {
+        const badge = document.getElementById('bpBadge');
+        badge.className = 'bp-badge green';
+        document.getElementById('bpBadgeLabel').textContent = '✅ All Paid';
+
+        document.getElementById('bpBody').innerHTML = `
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+                <span style="font-size:1.2rem;">✅</span>
+                <div>
+                    <div style="font-size:0.75rem;font-weight:800;color:#16a34a;text-transform:uppercase;">
+                        All Items Paid
+                    </div>
+                    <div class="bp-meta" style="margin-top:0.25rem;">
+                        No pending items to verify — all payments received
+                    </div>
+                </div>
+            </div>`;
+
+        applyItemTierBorders(tier);
+        return;
+    }
+
+    // ── Edge case: no online-capable pending items ─────────────
+    if (total === 0 && tier === 'unknown') {
+        const badge = document.getElementById('bpBadge');
+        badge.className = 'bp-badge gray';
+        document.getElementById('bpBadgeLabel').textContent = 'N/A';
+
+        document.getElementById('bpBody').innerHTML = `
+            <div style="font-size:0.7rem;font-weight:700;color:#9ca3af;text-transform:uppercase;">
+                ${note || 'No online-capable pending items for balance check'}
+            </div>`;
+
+        applyItemTierBorders(tier);
+        return;
+    }
+
+    // ── Normal tier display ────────────────────────────────────
+    const cfg = {
         green:   { cls: 'green', icon: '✅', label: 'Can pay all items'   },
         amber:   { cls: 'amber', icon: '⚠',  label: 'Can pay some items'  },
         red:     { cls: 'red',   icon: '⛔', label: 'Cannot pay any item' },
         unknown: { cls: 'gray',  icon: '?',  label: 'Unknown'             },
     }[tier] || { cls: 'gray', icon: '?', label: 'Unknown' };
 
-    const payable    = data.items_payable ?? 0;
-    const total      = data.total_items   ?? 0;
-    const verified   = data.verified      ?? false;
-    const isExpired  = data.is_expired    ?? false;
-    const includeCod = data.include_cod   ?? false;
-    const genTime    = data.generated_at
-        ? new Date(data.generated_at).toLocaleTimeString() : null;
-
     // Update badge
     const badge = document.getElementById('bpBadge');
     badge.className = `bp-badge ${cfg.cls}`;
     document.getElementById('bpBadgeLabel').textContent = `${cfg.icon} ${cfg.label}`;
 
-    // Body — count only, zero financial figures
+    // Body
+    const timeLabel = refreshTime
+        ? `Refreshed at ${refreshTime}`
+        : (genTime ? `Checked at ${genTime}` : '—');
+
     document.getElementById('bpBody').innerHTML = `
         <div style="display:flex;align-items:flex-end;gap:0.5rem;margin-bottom:0.35rem;">
             <div class="bp-count ${cfg.cls}">${payable}</div>
             <div class="bp-count-sub" style="padding-bottom:0.2rem;">
-                of ${total} item${total !== 1 ? 's' : ''} payable
+                of ${total} pending item${total !== 1 ? 's' : ''} payable
             </div>
         </div>
         <div class="bp-meta">
             ${!verified && total > 0
                 ? '<span class="bp-unverified">⚠ Proof not independently verified</span> · '
                 : verified ? '✓ ZKP verified · ' : ''}
-            ${includeCod ? 'Includes COD items · ' : 'Online items only · '}
+            ${includeCod ? 'Includes COD items · ' : 'Online-capable items · '}
             ${isExpired
                 ? '<span class="bp-expired">Proof expired — refresh for latest</span>'
-                : genTime ? `Checked at ${genTime}` : '—'}
+                : timeLabel}
         </div>`;
 
-    // Apply tier borders to item cards in the order list
-    applyItemTierBorders(tier, payable, total);
+    applyItemTierBorders(tier);
 }
 
-function applyItemTierBorders(tier, payable, total) {
-    // Item cards have id="item-<item_id>". We colour positionally:
-    // first `payable` cards = green (cheapest items most likely covered),
-    // remaining = red for amber overall tier.
+function applyItemTierBorders(tier) {
+    /*
+     * Apply tier-coloured borders to item cards based on item_details
+     * from the Payment App.
+     *
+     * item_details = [
+     *   { shopping_order_item_id: 42, amount: 5000.0, payable: true },
+     *   { shopping_order_item_id: 43, amount: 8000.0, payable: false },
+     * ]
+     *
+     * Cards have id="item-<item_id>" (set by renderOrderItems).
+     *
+     * Logic:
+     *   - item in item_details with payable=true  → green border
+     *   - item in item_details with payable=false → red border
+     *   - item NOT in item_details (paid, or cash-only seller) → no tier border
+     *   - all-paid edge case (tier=green, details=[]) → clear all borders
+     */
+
+    // Build lookup: shopping_order_item_id → payable boolean
+    const payableMap = {};
+    _bpItemDetails.forEach(d => {
+        if (d.shopping_order_item_id != null) {
+            payableMap[d.shopping_order_item_id] = d.payable;
+        }
+    });
+
     const cards = document.querySelectorAll('#orderItems > div[id^="item-"]');
-    cards.forEach((card, idx) => {
+    cards.forEach(card => {
+        // Remove any existing tier border
         card.classList.remove(
             'item-tier-green', 'item-tier-amber',
             'item-tier-red',   'item-tier-unknown'
         );
-        let cls;
-        if (tier === 'unknown')    cls = 'item-tier-unknown';
-        else if (tier === 'green') cls = 'item-tier-green';
-        else if (tier === 'red')   cls = 'item-tier-red';
-        else /* amber */           cls = idx < payable ? 'item-tier-green' : 'item-tier-red';
-        card.classList.add(cls);
+
+        // Extract item ID from card id="item-123"
+        const idStr = card.id.replace('item-', '');
+        const itemId = parseInt(idStr, 10);
+        if (isNaN(itemId)) return;
+
+        // Check if this item is in the proof's item_details
+        if (itemId in payableMap) {
+            if (payableMap[itemId]) {
+                card.classList.add('item-tier-green');
+            } else {
+                card.classList.add('item-tier-red');
+            }
+        }
+        // Items NOT in payableMap get no border (paid items, cash-only sellers)
     });
 }
 
@@ -303,6 +392,8 @@ function showBpError(msg) {
     document.getElementById('bpBody').innerHTML =
         `<div style="color:#ef4444;font-size:0.72rem;font-weight:700;">${msg}</div>`;
 }
+
+
 
 // ════════════════════════════════════════════════════════════════════
 // ORDER ITEMS RENDER  (original, unchanged)

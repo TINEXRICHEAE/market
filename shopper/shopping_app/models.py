@@ -759,6 +759,10 @@ class BalanceProofVerification(models.Model):
 
     proof = models.JSONField(null=True, blank=True, help_text='Groth16 proof for re-verification')
     public_signals = models.JSONField(null=True, blank=True)
+    item_details = models.JSONField(
+        null=True, blank=True,
+        help_text='Per-item payability from Payment App: [{shopping_order_item_id, amount, payable}]'
+    )
 
     expires_at = models.DateTimeField(null=True, blank=True)
     refresh_count = models.IntegerField(default=0)
