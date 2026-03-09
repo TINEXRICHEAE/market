@@ -32,6 +32,7 @@
         .status-paid     { background: #d1e7dd; color: #0f5132; }
         .status-deposited{ background: #ede7f6; color: #4a148c; }
         .status-pending  { background: #fff3cd; color: #856404; }
+        .status-failed   { background: #fce4ec; color: #c0392b; }
         .item-price-section { text-align: right; flex-shrink: 0; }
         .item-unit-price { color: #666; font-size: .8rem; }
         .item-subtotal   { font-weight: bold; color: #667eea; font-size: 1rem; margin-top: .2rem; }
@@ -143,7 +144,7 @@
     <div id="orderContainer"><div class="loading">Loading order details…</div></div>
 </div>
 
-<!-- PIN Modal (unchanged) -->
+<!-- PIN Modal -->
 <div class="modal-overlay" id="pinModal">
     <div class="modal-box">
         <div class="modal-title" id="modalTitle">Confirm Payment</div>
@@ -194,7 +195,6 @@ async function loadZkpBadge(sellerId) {
                                  { headers:{'X-Requested-With':'XMLHttpRequest'} });
         const data = await r.json();
         zkpCache[sellerId] = data;
-        // Update all mini-badges for this seller (there may be >1 if seller appears in multiple sections)
         document.querySelectorAll(`.zkp-mini[data-seller-id="${sellerId}"]`).forEach(el => {
             applyZkpMini(el, data, sellerId);
         });
@@ -221,7 +221,6 @@ function applyZkpMini(el, data, sellerId) {
 
 function setZkpMiniState(el, state, text) {
     el.className = `zkp-mini state-${state}`;
-    const dot = el.querySelector('.zkp-mini-dot');
     const lbl = el.querySelector('.zkp-mini-lbl');
     if (lbl) lbl.textContent = text;
 }
@@ -261,19 +260,16 @@ async function renderProof(sellerId, sellerEmail) {
             ${ok ? '✅ This seller is identity-verified and approved to trade on the platform'
                  : '⚠ Seller verification could not be confirmed — proceed with caution'}
         </div>
-
         <div class="proof-field">
             <div class="proof-field-lbl">Seller</div>
             <div class="proof-field-val" style="font-family:inherit;">${bizName}</div>
         </div>
-
         <div class="proof-field">
             <div class="proof-field-lbl">Identity Check</div>
             <div class="proof-field-val" style="font-family:inherit;">
                 ${data.kyc_approved ? '✓ Government ID and business details reviewed and approved by platform admin' : '✗ Not yet verified'}
             </div>
         </div>
-
         <div class="proof-field">
             <div class="proof-field-lbl">Cryptographic Verification</div>
             <div class="proof-field-val" style="font-family:inherit;">
@@ -284,21 +280,20 @@ async function renderProof(sellerId, sellerEmail) {
                     : '⏳ Pending registration'}
             </div>
         </div>
-
         ${data.verified_at ? `
         <div class="proof-field">
             <div class="proof-field-lbl">Last Verified</div>
             <div class="proof-field-val" style="font-family:inherit;">${new Date(data.verified_at).toLocaleString()}</div>
         </div>` : ''}
-
         <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px solid #f0f0f0;font-size:0.72rem;color:#aaa;line-height:1.7;">
             🔒 <strong>How this works:</strong> The seller's identity documents were reviewed by a platform admin.
             After approval, a cryptographic proof was generated that confirms the seller is legitimate
             — without revealing any personal details to you. This uses zero-knowledge proof technology.
         </div>`;
 }
+
 // ═══════════════════════════════════════════════════════════════════
-// LOAD ORDER  (original)
+// LOAD ORDER
 // ═══════════════════════════════════════════════════════════════════
 async function loadOrderDetail() {
     try {
@@ -314,12 +309,14 @@ async function loadOrderDetail() {
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// RENDER  (original + ZKP injected into seller breakdown)
+// RENDER
 // ═══════════════════════════════════════════════════════════════════
 function displayOrderDetail(order) {
     const cnt = document.getElementById('orderContainer');
     const depositedItems = order.items.filter(i => i.is_deposited);
     const pendingItems   = order.items.filter(i => i.payment_status === 'pending' && i.can_pay_online);
+    const failedItems    = order.items.filter(i => i.payment_status === 'failed'  && i.can_pay_online);
+    const retryableItems = [...pendingItems, ...failedItems];
 
     const depositAlert = depositedItems.length > 0 ? `
         <div class="alert alert-deposit">
@@ -327,10 +324,10 @@ function displayOrderDetail(order) {
             <div class="alert-deposit-text">Funds are secured. Complete to send to seller, or cancel to release.</div>
         </div>` : '';
 
-    const pendingAlert = pendingItems.length > 0 ? `
+    const pendingAlert = retryableItems.length > 0 ? `
         <div class="alert alert-pending">
-            <div class="alert-pending-title">⚠️ ${pendingItems.length} item${pendingItems.length!==1?'s':''} awaiting payment</div>
-            <div class="alert-pending-text">Select items below and click Pay to complete.</div>
+            <div class="alert-pending-title">⚠️ ${retryableItems.length} item${retryableItems.length!==1?'s':''} awaiting payment</div>
+            <div class="alert-pending-text">Select items below and click Pay to complete.${failedItems.length > 0 ? ` (${failedItems.length} previously failed — retry available)` : ''}</div>
         </div>` : '';
 
     const depositedSection = depositedItems.length > 0 ? `
@@ -339,13 +336,13 @@ function displayOrderDetail(order) {
             ${depositedItems.map(item => buildDepositedItemCard(item)).join('')}
         </div>` : '';
 
-    const pendingSection = pendingItems.length > 0 ? `
+    const pendingSection = retryableItems.length > 0 ? `
         <div class="order-section">
             <div class="section-title">💳 Pay Now</div>
             <div style="margin-bottom:.75rem;padding:.65rem .9rem;background:#e7f3ff;border-radius:6px;font-size:.85rem;color:#004085;">
                 💡 Select items to pay for online
             </div>
-            ${pendingItems.map(item => buildPendingItemCard(item)).join('')}
+            ${retryableItems.map(item => buildPendingItemCard(item)).join('')}
         </div>` : '';
 
     cnt.innerHTML = `
@@ -379,11 +376,11 @@ function displayOrderDetail(order) {
                 <div class="summary-row"><span class="summary-label">Shipping</span><span class="summary-value">Free</span></div>
                 <div class="summary-row"><span class="summary-label">Tax</span><span class="summary-value">UGX 0</span></div>
                 <div class="summary-row"><span class="summary-label">Total</span><span class="summary-value total-value">UGX ${fmt(order.total_amount)}</span></div>
-                ${pendingItems.length > 0 ? `
+                ${retryableItems.length > 0 ? `
                     <div style="margin-top:1rem;padding:.9rem;background:#f8f9fa;border-radius:6px;">
                         <div style="font-size:.85rem;color:#666;margin-bottom:.4rem;">Selected for payment:</div>
-                        <div style="font-size:1.15rem;font-weight:700;color:#667eea;" id="selectedTotal">UGX ${fmt(pendingItems.reduce((s,i)=>s+parseFloat(i.subtotal),0))}</div>
-                        <div style="font-size:.8rem;color:#888;margin-top:.2rem;" id="selectedCount">${pendingItems.length} item${pendingItems.length!==1?'s':''} selected</div>
+                        <div style="font-size:1.15rem;font-weight:700;color:#667eea;" id="selectedTotal">UGX ${fmt(retryableItems.reduce((s,i)=>s+parseFloat(i.subtotal),0))}</div>
+                        <div style="font-size:.8rem;color:#888;margin-top:.2rem;" id="selectedCount">${retryableItems.length} item${retryableItems.length!==1?'s':''} selected</div>
                     </div>
                     <button class="btn-primary" id="payNowBtn" onclick="processSelectedPayment()">💳 Pay Selected Items</button>
                 ` : ''}
@@ -429,14 +426,15 @@ async function loadBalanceTier(sellerEmail, sellerId) {
     }
 }
 
-// ── Seller breakdown — ZKP mini-badge injected next to seller name ─
+// ── Seller breakdown ──────────────────────────────────────────────
 function buildSellerBreakdown(seller, order) {
     const sellerItems    = order.items.filter(i => i.seller_email === seller.seller_email);
     const paidItems      = sellerItems.filter(i => i.payment_status==='paid'      && i.payment_method==='online');
     const depositedItems = sellerItems.filter(i => i.payment_status==='deposited' && i.payment_method==='online');
     const pendingItems   = sellerItems.filter(i => i.payment_status==='pending'   && i.payment_method==='online');
+    const failedOnline   = sellerItems.filter(i => i.payment_status==='failed'    && i.payment_method==='online');
     const cashItems      = sellerItems.filter(i => i.payment_method==='cash');
-    const hasOnline = paidItems.length || depositedItems.length || pendingItems.length;
+    const hasOnline = paidItems.length || depositedItems.length || pendingItems.length || failedOnline.length;
     const hasCash   = cashItems.length;
     const badgeTxt  = hasOnline&&hasCash ? '📊 Mixed' : hasOnline ? '💳 Online' : '💵 Cash on Delivery';
     const badgeCls  = hasOnline&&hasCash ? 'payment-badge status-pending'
@@ -445,7 +443,6 @@ function buildSellerBreakdown(seller, order) {
 
     const sellerId = seller.seller_id || '';
 
-    // ZKP mini-badge HTML — populated async after render
     const zkpMiniHtml = sellerId ? `
         <span class="zkp-mini state-loading" data-seller-id="${sellerId}">
             <span class="zkp-mini-dot"></span>
@@ -457,8 +454,7 @@ function buildSellerBreakdown(seller, order) {
             View proof
         </button>
     ` : '';
-    // ── Balance tier badge (from BalanceProofVerification) ──
-    // Loaded async after render via loadBalanceTier()
+
     const tierBadgeHtml = `
         <div class="zkp-mini state-loading" id="tier-badge-${sellerId}"
              data-seller-email="${escJs(seller.seller_email)}">
@@ -473,6 +469,7 @@ function buildSellerBreakdown(seller, order) {
         else if (item.payment_method==='online'&&item.payment_status==='paid')         {icon='✅';text='Paid Online';        color='#0f5132';bg='#e7f5ed';border='#c3e6cb';}
         else if (item.payment_method==='online'&&item.payment_status==='deposited')    {icon='🔒';text='Reserved in Wallet'; color='#4a148c';bg='#f3e5f5';border='#ce93d8';}
         else if (item.payment_method==='online'&&item.payment_status==='pending')      {icon='⏳';text='Pending Payment';    color='#856404';bg='#fff3cd';border='#ffeeba';}
+        else if (item.payment_method==='online'&&item.payment_status==='failed')       {icon='❌';text='Payment Failed';     color='#c0392b';bg='#fdf0ee';border='#f5c6cb';}
         return `<div style="background:${bg};padding:.65rem .75rem;border-radius:5px;margin-bottom:.4rem;border-left:3px solid ${border};">
             <div style="display:flex;justify-content:space-between;align-items:start;gap:.5rem;">
                 <div><div style="font-size:.82rem;font-weight:600;color:#333;">${item.product_name}</div>
@@ -487,6 +484,7 @@ function buildSellerBreakdown(seller, order) {
         paidItems.length      ? `<div style="display:flex;justify-content:space-between;font-size:.75rem;margin-bottom:.2rem;"><span style="color:#0f5132;">✅ Paid (${paidItems.length})</span><span style="font-weight:700;color:#0f5132;">UGX ${fmt(paidItems.reduce((s,i)=>s+parseFloat(i.subtotal),0))}</span></div>` : '',
         depositedItems.length ? `<div style="display:flex;justify-content:space-between;font-size:.75rem;margin-bottom:.2rem;"><span style="color:#4a148c;">🔒 Reserved (${depositedItems.length})</span><span style="font-weight:700;color:#4a148c;">UGX ${fmt(depositedItems.reduce((s,i)=>s+parseFloat(i.subtotal),0))}</span></div>` : '',
         pendingItems.length   ? `<div style="display:flex;justify-content:space-between;font-size:.75rem;margin-bottom:.2rem;"><span style="color:#856404;">⏳ Pending (${pendingItems.length})</span><span style="font-weight:700;color:#856404;">UGX ${fmt(pendingItems.reduce((s,i)=>s+parseFloat(i.subtotal),0))}</span></div>` : '',
+        failedOnline.length   ? `<div style="display:flex;justify-content:space-between;font-size:.75rem;margin-bottom:.2rem;"><span style="color:#c0392b;">❌ Failed (${failedOnline.length})</span><span style="font-weight:700;color:#c0392b;">UGX ${fmt(failedOnline.reduce((s,i)=>s+parseFloat(i.subtotal),0))}</span></div>` : '',
         cashItems.length      ? `<div style="display:flex;justify-content:space-between;font-size:.75rem;"><span style="color:#004085;">💵 Cash (${cashItems.length})</span><span style="font-weight:700;color:#004085;">UGX ${fmt(cashItems.reduce((s,i)=>s+parseFloat(i.subtotal),0))}</span></div>` : '',
     ].filter(Boolean).join('');
 
@@ -512,7 +510,7 @@ function buildSellerBreakdown(seller, order) {
     </div>`;
 }
 
-// ── Deposited / Pending item cards (original, unchanged) ──────────
+// ── Item cards ────────────────────────────────────────────────────
 function buildDepositedItemCard(item) {
     return `<div class="order-item" id="item-card-${item.id}" style="border:2px solid #9c27b0;background:#fdf7ff;">
         <img src="${item.product_image||'https://via.placeholder.com/72x72?text=?'}" alt="${item.product_name}" class="item-image">
@@ -538,17 +536,21 @@ function buildDepositedItemCard(item) {
 }
 
 function buildPendingItemCard(item) {
-    return `<div class="order-item" style="border:2px solid #667eea;">
+    const isFailed = item.payment_status === 'failed';
+    const borderColor = isFailed ? '#e74c3c' : '#667eea';
+    return `<div class="order-item" style="border:2px solid ${borderColor};">
         <input type="checkbox" class="item-checkbox" data-item-id="${item.id}" data-amount="${item.subtotal}" checked style="width:18px;height:18px;cursor:pointer;margin-top:.25rem;flex-shrink:0;">
         <img src="${item.product_image||'https://via.placeholder.com/72x72?text=?'}" alt="${item.product_name}" class="item-image">
         <div class="item-details">
             <div class="item-name">${item.product_name}</div>
             <div class="item-seller">Sold by: ${item.seller_email}</div>
             <div class="item-quantity">Qty: ${item.quantity}</div>
-            <div style="margin-top:.4rem;font-size:.8rem;color:#667eea;">✓ Online payment available</div>
+            <div style="margin-top:.4rem;font-size:.8rem;color:${isFailed?'#c0392b':'#667eea'};">
+                ${isFailed ? '⚠️ Payment failed — retry available' : '✓ Online payment available'}
+            </div>
             <div class="item-payment-info">
                 <span class="payment-badge payment-${item.payment_method}">${item.payment_method}</span>
-                <span class="payment-badge status-${item.payment_status}">${item.payment_status}</span>
+                <span class="payment-badge status-${item.payment_status}">${item.payment_status_display || item.payment_status}</span>
             </div>
         </div>
         <div class="item-price-section">
@@ -558,7 +560,7 @@ function buildPendingItemCard(item) {
     </div>`;
 }
 
-// ── Pending payment flow (original, unchanged) ────────────────────
+// ── Payment flow ──────────────────────────────────────────────────
 function updateSelectedTotal() {
     const cbs   = document.querySelectorAll('.item-checkbox:checked');
     const total = Array.from(cbs).reduce((s,c)=>s+parseFloat(c.dataset.amount),0);
@@ -584,7 +586,7 @@ async function processSelectedPayment() {
     } catch { showToast('Network error','error'); btn.disabled=false; btn.textContent='💳 Pay Selected Items'; }
 }
 
-// ── PIN Modal (original, unchanged) ──────────────────────────────
+// ── PIN Modal ────────────────────────────────────────────────────
 function openModal(action,orderItemId,productName,amount) {
     modalContext = {action,orderItemId,productName,amount};
     const isComplete = action==='complete';

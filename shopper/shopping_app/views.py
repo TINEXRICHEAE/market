@@ -765,7 +765,7 @@ def get_order_detail(request, order_id):
         # Check if there are unpaid online items
         has_unpaid_online = order.items.filter(
             payment_options__contains='online',  
-            payment_status__in=['pending', 'deposited'],   
+            payment_status__in=['pending', 'deposited', 'failed'],   
         ).exists()
 
         order_data = {
@@ -807,7 +807,7 @@ def retry_online_payment(request, order_id):
         # FIX: include 'deposited' items (funds in wallet, seller not yet paid)
         unpaid_items = order.items.filter(
             payment_method='online',
-            payment_status__in=['pending', 'deposited'],
+            payment_status__in=['pending', 'deposited', 'failed'],
         ).select_related('product', 'seller')
 
         if not unpaid_items.exists():
@@ -901,7 +901,7 @@ def retry_selected_items_payment(request, order_id):
         selected_items = order.items.filter(
             id__in=item_ids,
             payment_options__contains='online',
-            payment_status__in=['pending', 'deposited'],
+            payment_status__in=['pending', 'deposited', 'failed'],
         ).select_related('product', 'seller')
 
         if not selected_items.exists():

@@ -190,7 +190,7 @@ def payment_return(request):
                     OrderItem.objects.filter(
                         id__in=online_item_ids,
                         order=order,
-                        payment_status='pending',
+                        payment_status__in=['pending', 'failed'],
                     ).update(payment_status='paid', payment_method='online')
 
                 logger.info(f"✅ Payment successful for order {order_number}")
@@ -214,7 +214,7 @@ def payment_return(request):
                     OrderItem.objects.filter(
                         id__in=online_item_ids,
                         order=order,
-                        payment_status='pending',
+                        payment_status__in=['pending', 'failed'],
                     ).update(payment_status='deposited')
 
                 logger.info(f"💰 Deposit acknowledged for order {order_number}")
