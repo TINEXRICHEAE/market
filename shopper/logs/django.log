@@ -23742,3 +23742,378 @@ INFO 2026-03-10 18:08:43,016 basehttp "GET /api/seller-verification-status/3/ HT
 INFO 2026-03-10 18:08:43,080 basehttp "GET /api/seller-verification-status/5/ HTTP/1.1" 200 204
 INFO 2026-03-10 18:08:43,234 basehttp "GET /user_profile/ HTTP/1.1" 200 88
 INFO 2026-03-10 18:08:43,341 basehttp "GET /api/cart/ HTTP/1.1" 200 337
+INFO 2026-03-11 01:09:45,695 autoreload Watching for file changes with StatReloader
+INFO 2026-03-11 01:22:08,603 autoreload /home/tinex/Desktop/projects/market/market/shopper/shopping_app/models.py changed, reloading.
+INFO 2026-03-11 01:22:12,893 autoreload Watching for file changes with StatReloader
+INFO 2026-03-11 01:33:18,426 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-11 01:33:18,834 basehttp "GET /static/css/navbar.css HTTP/1.1" 200 7526
+INFO 2026-03-11 01:33:18,858 basehttp "GET /static/js/navbar.js HTTP/1.1" 200 13400
+INFO 2026-03-11 01:33:19,175 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 01:33:19,325 views User authenticated: False
+INFO 2026-03-11 01:33:19,327 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+WARNING 2026-03-11 01:33:19,640 log Not Found: /favicon.ico
+WARNING 2026-03-11 01:33:19,641 basehttp "GET /favicon.ico HTTP/1.1" 404 18475
+INFO 2026-03-11 01:33:23,056 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-11 01:33:23,122 basehttp "GET /static/css/login.css HTTP/1.1" 200 3232
+INFO 2026-03-11 01:33:23,123 basehttp "GET /static/js/login-validation.js HTTP/1.1" 200 2795
+INFO 2026-03-11 01:33:23,180 basehttp "GET /static/image/logo.jpg HTTP/1.1" 200 16778
+INFO 2026-03-11 01:33:43,612 basehttp "POST /login_user/ HTTP/1.1" 200 93
+INFO 2026-03-11 01:33:47,947 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-11 01:33:48,056 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 01:33:48,089 views User authenticated: True
+INFO 2026-03-11 01:33:48,101 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-11 01:33:48,179 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-11 01:33:48,456 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-11 01:33:49,634 basehttp "GET /seller/orders/ HTTP/1.1" 200 16572
+INFO 2026-03-11 01:33:50,212 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 01:33:50,240 views User authenticated: True
+INFO 2026-03-11 01:33:50,256 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-11 01:33:50,345 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-11 01:33:50,490 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-11 01:33:50,757 basehttp "GET /api/seller/orders/ HTTP/1.1" 200 19106
+INFO 2026-03-11 01:34:07,035 basehttp "GET /seller/order/10/ HTTP/1.1" 200 38245
+INFO 2026-03-11 01:34:07,368 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 01:34:07,396 views User authenticated: True
+INFO 2026-03-11 01:34:07,401 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-11 01:34:07,479 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-11 01:34:07,612 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-11 01:34:07,690 basehttp "GET /api/seller/order/10/ HTTP/1.1" 200 2388
+INFO 2026-03-11 01:34:20,459 basehttp "POST /api/seller/order-item/49/update-tracking/ HTTP/1.1" 200 91
+INFO 2026-03-11 01:34:20,591 basehttp "GET /api/seller/order/10/ HTTP/1.1" 200 2511
+INFO 2026-03-11 01:34:21,158 basehttp "POST /api/seller/order-item/49/update-tracking/ HTTP/1.1" 200 91
+INFO 2026-03-11 01:34:21,302 basehttp "GET /api/seller/order/10/ HTTP/1.1" 200 2641
+INFO 2026-03-11 01:34:25,948 basehttp "POST /api/seller/order-item/49/update-tracking/ HTTP/1.1" 200 95
+INFO 2026-03-11 01:34:26,080 basehttp "GET /api/seller/order/10/ HTTP/1.1" 200 2793
+INFO 2026-03-11 01:34:30,159 order_views 📦 Delivery confirmation created for order ORD-20260308203137-HKJAOP, buyer buyer@gmail.com
+INFO 2026-03-11 01:34:30,448 basehttp "POST /api/seller/order-item/49/update-tracking/ HTTP/1.1" 200 113
+INFO 2026-03-11 01:34:30,580 basehttp "GET /api/seller/order/10/ HTTP/1.1" 200 2960
+ERROR 2026-03-11 01:34:46,321 zkp_client ZKP API timeout: POST http://localhost:1337/api/verify-balance-proof
+ERROR 2026-03-11 01:34:46,322 views_balance_proof Strapi balance proof verification error: HTTPConnectionPool(host='localhost', port=1337): Read timed out. (read timeout=30)
+ERROR 2026-03-11 01:34:46,332 views_balance_proof Store verification failed: Field 'binary_bracket' expected a number but got '0.00'.
+INFO 2026-03-11 01:34:46,398 basehttp "GET /api/buyer-balance-proof/?order_id=10 HTTP/1.1" 200 186
+ERROR 2026-03-11 01:35:10,737 zkp_client ZKP API timeout: POST http://localhost:1337/api/verify-balance-proof
+ERROR 2026-03-11 01:35:10,737 views_balance_proof Strapi balance proof verification error: HTTPConnectionPool(host='localhost', port=1337): Read timed out. (read timeout=30)
+ERROR 2026-03-11 01:35:10,741 views_balance_proof Store verification failed: Field 'binary_bracket' expected a number but got '0.00'.
+INFO 2026-03-11 01:35:10,782 basehttp "GET /api/buyer-balance-proof/?order_id=10 HTTP/1.1" 200 186
+ERROR 2026-03-11 01:35:11,462 zkp_client ZKP API timeout: POST http://localhost:1337/api/verify-balance-proof
+ERROR 2026-03-11 01:35:11,462 views_balance_proof Strapi balance proof verification error: HTTPConnectionPool(host='localhost', port=1337): Read timed out. (read timeout=30)
+ERROR 2026-03-11 01:35:11,468 views_balance_proof Store verification failed: Field 'binary_bracket' expected a number but got '0.00'.
+INFO 2026-03-11 01:35:11,516 basehttp "GET /api/buyer-balance-proof/?order_id=10 HTTP/1.1" 200 186
+ERROR 2026-03-11 01:35:16,239 zkp_client ZKP API timeout: POST http://localhost:1337/api/verify-balance-proof
+ERROR 2026-03-11 01:35:16,240 views_balance_proof Strapi balance proof verification error: HTTPConnectionPool(host='localhost', port=1337): Read timed out. (read timeout=30)
+ERROR 2026-03-11 01:35:16,247 views_balance_proof Store verification failed: Field 'binary_bracket' expected a number but got '0.00'.
+INFO 2026-03-11 01:35:16,315 basehttp "GET /api/buyer-balance-proof/?order_id=10 HTTP/1.1" 200 186
+ERROR 2026-03-11 01:35:16,564 zkp_client ZKP API timeout: POST http://localhost:1337/api/verify-balance-proof
+ERROR 2026-03-11 01:35:16,564 views_balance_proof Strapi balance proof verification error: HTTPConnectionPool(host='localhost', port=1337): Read timed out. (read timeout=30)
+ERROR 2026-03-11 01:35:16,570 views_balance_proof Store verification failed: Field 'binary_bracket' expected a number but got '0.00'.
+INFO 2026-03-11 01:35:16,626 basehttp "GET /api/buyer-balance-proof/?order_id=10 HTTP/1.1" 200 186
+ERROR 2026-03-11 01:35:37,610 views_balance_proof Refresh request failed: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
+ERROR 2026-03-11 01:35:37,612 log Bad Gateway: /api/buyer-balance-proof/refresh/
+ERROR 2026-03-11 01:35:37,640 basehttp "POST /api/buyer-balance-proof/refresh/ HTTP/1.1" 502 27
+INFO 2026-03-11 01:37:08,344 basehttp "POST /api/buyer-balance-proof/refresh/ HTTP/1.1" 200 316
+INFO 2026-03-11 01:37:36,390 basehttp "GET /seller/orders/ HTTP/1.1" 200 16572
+INFO 2026-03-11 01:37:38,554 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 01:37:38,668 views User authenticated: True
+INFO 2026-03-11 01:37:38,678 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-11 01:37:38,904 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-11 01:37:39,135 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-11 01:37:39,201 basehttp "GET /api/seller/orders/ HTTP/1.1" 200 19118
+INFO 2026-03-11 01:37:44,912 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-03-11 01:37:44,942 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-11 01:37:51,144 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-11 01:37:51,183 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 01:37:51,237 views User authenticated: False
+INFO 2026-03-11 01:37:51,238 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+INFO 2026-03-11 01:37:53,639 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-11 01:38:20,414 basehttp "POST /login_user/ HTTP/1.1" 200 90
+INFO 2026-03-11 01:38:25,026 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-11 01:38:25,114 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 01:38:25,190 views User authenticated: True
+INFO 2026-03-11 01:38:25,214 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-11 01:38:25,292 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-11 01:38:25,559 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-11 01:38:27,147 basehttp "GET /orders/ HTTP/1.1" 200 21929
+INFO 2026-03-11 01:38:27,237 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 01:38:27,322 views User authenticated: True
+INFO 2026-03-11 01:38:27,337 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-11 01:38:27,359 basehttp "GET /api/orders/ HTTP/1.1" 200 10181
+INFO 2026-03-11 01:38:27,425 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-11 01:38:27,526 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-11 01:38:31,792 basehttp "GET /orders/21/ HTTP/1.1" 200 54634
+INFO 2026-03-11 01:38:31,933 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 01:38:31,964 views User authenticated: True
+INFO 2026-03-11 01:38:31,978 basehttp "GET /api/orders/21/ HTTP/1.1" 200 2189
+INFO 2026-03-11 01:38:32,036 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-11 01:38:32,115 basehttp "GET /api/seller-verification-status/4/ HTTP/1.1" 200 310
+INFO 2026-03-11 01:38:32,129 basehttp "GET /api/seller-verification-status/11/ HTTP/1.1" 200 308
+INFO 2026-03-11 01:38:32,152 basehttp "GET /media/products/11/3594f7db-9831-4d9f-8e74-6fde759d441c.jpg HTTP/1.1" 200 1063334
+INFO 2026-03-11 01:38:34,584 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-11 01:38:35,244 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-11 01:38:43,117 views ✅ Selective payment created for order ORD-20260310111532-TR2BV6, items: [104, 105]
+INFO 2026-03-11 01:38:43,194 basehttp "POST /api/orders/21/pay-selected-items/ HTTP/1.1" 200 160
+INFO 2026-03-11 01:38:43,918 basehttp "GET /payment/process/0245affd-b33c-4ab4-adfd-827310871d38/ HTTP/1.1" 200 14399
+INFO 2026-03-11 01:39:14,279 proxy_views 📥 Payment status webhook: 0245affd-b33c-4ab4-adfd-827310871d38 — paid
+INFO 2026-03-11 01:39:14,375 proxy_views   Item 104 → paid (updated: 1)
+INFO 2026-03-11 01:39:14,379 proxy_views   Item 105 → paid (updated: 1)
+INFO 2026-03-11 01:39:14,407 basehttp "POST /api/webhook/payment-status/ HTTP/1.1" 200 81
+INFO 2026-03-11 01:39:14,417 proxy_views 📥 Payment status webhook: 0245affd-b33c-4ab4-adfd-827310871d38 — paid
+INFO 2026-03-11 01:39:14,441 proxy_views   Item 104 → paid (updated: 1)
+INFO 2026-03-11 01:39:14,444 proxy_views   Item 105 → paid (updated: 1)
+INFO 2026-03-11 01:39:14,451 basehttp "POST /api/webhook/payment-status/ HTTP/1.1" 200 81
+INFO 2026-03-11 01:39:18,219 proxy_views 🔙 Payment return: 0245affd-b33c-4ab4-adfd-827310871d38 — Status: success
+INFO 2026-03-11 01:39:18,278 proxy_views ✅ Payment successful for order ORD-20260310111532-TR2BV6
+INFO 2026-03-11 01:39:18,296 basehttp "GET /payment/return/?request_id=0245affd-b33c-4ab4-adfd-827310871d38&status=success HTTP/1.1" 302 0
+INFO 2026-03-11 01:39:18,340 basehttp "GET /orders/21/ HTTP/1.1" 200 54634
+INFO 2026-03-11 01:39:18,482 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 01:39:18,524 views User authenticated: True
+INFO 2026-03-11 01:39:18,541 basehttp "GET /api/orders/21/ HTTP/1.1" 200 2172
+INFO 2026-03-11 01:39:18,555 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-11 01:39:18,652 basehttp "GET /api/seller-verification-status/4/ HTTP/1.1" 200 310
+INFO 2026-03-11 01:39:18,718 basehttp "GET /api/seller-verification-status/11/ HTTP/1.1" 200 308
+INFO 2026-03-11 01:39:18,785 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-11 01:39:18,896 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-11 01:39:34,114 views_seller_verification ZKP verification refresh for seller5@gmail.com: valid=True, pa_verified=True, commitment_match=True
+INFO 2026-03-11 01:39:34,141 basehttp "GET /api/seller-verification-status/11/?refresh=1 HTTP/1.1" 200 385
+INFO 2026-03-11 01:39:52,832 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-03-11 01:39:52,848 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-11 01:39:55,576 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-11 01:39:55,637 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 01:39:55,680 views User authenticated: False
+INFO 2026-03-11 01:39:55,681 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+INFO 2026-03-11 01:39:58,456 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-11 01:40:30,490 basehttp "POST /login_user/ HTTP/1.1" 200 94
+INFO 2026-03-11 01:40:44,035 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-11 01:40:44,116 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 01:40:44,191 views User authenticated: True
+INFO 2026-03-11 01:40:44,201 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-11 01:40:44,280 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-11 01:40:44,368 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-11 01:40:47,818 basehttp "GET /seller/orders/ HTTP/1.1" 200 16572
+INFO 2026-03-11 01:40:48,257 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 01:40:48,298 views User authenticated: True
+INFO 2026-03-11 01:40:48,313 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-11 01:40:48,402 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-11 01:40:48,502 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-11 01:40:48,513 basehttp "GET /api/seller/orders/ HTTP/1.1" 200 2684
+INFO 2026-03-11 01:40:51,835 basehttp "GET /seller/order/21/ HTTP/1.1" 200 38245
+INFO 2026-03-11 01:40:52,180 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 01:40:52,212 views User authenticated: True
+INFO 2026-03-11 01:40:52,224 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-11 01:40:52,313 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-11 01:40:52,415 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-11 01:40:52,446 basehttp "GET /api/seller/order/21/ HTTP/1.1" 200 738
+INFO 2026-03-11 01:40:52,502 basehttp "GET /api/buyer-balance-proof/?order_id=21 HTTP/1.1" 200 192
+INFO 2026-03-11 01:40:59,637 basehttp "POST /api/seller/order-item/105/update-tracking/ HTTP/1.1" 200 95
+INFO 2026-03-11 01:40:59,714 basehttp "GET /api/seller/order/21/ HTTP/1.1" 200 883
+INFO 2026-03-11 01:40:59,825 basehttp "GET /api/buyer-balance-proof/?order_id=21 HTTP/1.1" 200 192
+INFO 2026-03-11 01:41:04,258 basehttp "POST /api/seller/order-item/105/update-tracking/ HTTP/1.1" 200 107
+INFO 2026-03-11 01:41:04,314 basehttp "GET /api/seller/order/21/ HTTP/1.1" 200 1043
+INFO 2026-03-11 01:41:04,432 basehttp "GET /api/buyer-balance-proof/?order_id=21 HTTP/1.1" 200 192
+INFO 2026-03-11 01:41:08,313 order_views 📦 Delivery confirmation created for order ORD-20260310111532-TR2BV6, buyer buyer@gmail.com
+INFO 2026-03-11 01:41:08,359 basehttp "POST /api/seller/order-item/105/update-tracking/ HTTP/1.1" 200 113
+INFO 2026-03-11 01:41:08,414 basehttp "GET /api/seller/order/21/ HTTP/1.1" 200 1204
+INFO 2026-03-11 01:41:08,581 basehttp "GET /api/buyer-balance-proof/?order_id=21 HTTP/1.1" 200 192
+INFO 2026-03-11 01:41:15,474 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-03-11 01:41:15,613 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-11 01:41:17,936 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-11 01:41:18,001 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 01:41:18,034 views User authenticated: False
+INFO 2026-03-11 01:41:18,035 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+INFO 2026-03-11 01:41:19,867 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-11 01:41:38,362 basehttp "POST /login_user/ HTTP/1.1" 200 90
+INFO 2026-03-11 01:41:42,251 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-11 01:41:42,329 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 01:41:42,407 views User authenticated: True
+INFO 2026-03-11 01:41:42,417 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-11 01:41:42,495 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-11 01:41:42,584 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-11 01:41:43,373 basehttp "GET /orders/ HTTP/1.1" 200 21929
+INFO 2026-03-11 01:41:43,474 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 01:41:43,519 views User authenticated: True
+INFO 2026-03-11 01:41:43,530 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-11 01:41:43,584 basehttp "GET /api/orders/ HTTP/1.1" 200 10181
+INFO 2026-03-11 01:41:43,618 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-11 01:41:43,706 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-11 01:41:47,029 basehttp "GET /orders/21/ HTTP/1.1" 200 54634
+INFO 2026-03-11 01:41:47,132 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 01:41:47,185 basehttp "GET /api/orders/21/ HTTP/1.1" 200 2170
+INFO 2026-03-11 01:41:47,185 views User authenticated: True
+INFO 2026-03-11 01:41:47,196 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-11 01:41:47,251 basehttp "GET /api/seller-verification-status/4/ HTTP/1.1" 200 310
+INFO 2026-03-11 01:41:47,262 basehttp "GET /api/seller-verification-status/11/ HTTP/1.1" 200 308
+INFO 2026-03-11 01:41:47,284 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-11 01:41:47,373 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-11 01:41:51,596 basehttp "GET /order/21/tracking/ HTTP/1.1" 200 18929
+INFO 2026-03-11 01:41:51,682 basehttp "GET /static/js/delivery_notifications.js HTTP/1.1" 200 5302
+INFO 2026-03-11 01:41:51,940 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 01:41:51,971 views User authenticated: True
+INFO 2026-03-11 01:41:51,985 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-11 01:41:52,063 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-11 01:41:52,174 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-11 01:41:52,274 basehttp "GET /api/order/21/tracking/ HTTP/1.1" 200 1869
+INFO 2026-03-11 01:41:52,474 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 258
+INFO 2026-03-11 01:42:05,553 basehttp "GET /order/21/confirm-delivery/ HTTP/1.1" 200 22507
+INFO 2026-03-11 01:42:05,864 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 01:42:05,894 views User authenticated: True
+INFO 2026-03-11 01:42:05,908 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-11 01:42:05,986 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-11 01:42:06,119 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-11 01:42:06,219 basehttp "GET /api/order/21/confirmation-items/ HTTP/1.1" 200 368
+INFO 2026-03-11 01:42:50,292 order_views ✅ Dispute #7 forwarded to payment app → Payment dispute #7
+INFO 2026-03-11 01:42:50,323 basehttp "POST /api/order/21/submit-confirmation/ HTTP/1.1" 200 108
+INFO 2026-03-11 01:44:08,252 order_views ✅ Dispute #7 synced from payment app: To Be Decided
+INFO 2026-03-11 01:44:08,253 basehttp "POST /api/webhook/dispute-status/ HTTP/1.1" 200 53
+ERROR 2026-03-11 01:44:27,457 order_views Error in dispute sync webhook: value too long for type character varying(30)
+Traceback (most recent call last):
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.StringDataRightTruncation: value too long for type character varying(30)
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/tinex/Desktop/projects/market/market/shopper/shopping_app/order_views.py", line 760, in dispute_status_webhook
+    OrderItemTracking.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        order_item=dispute.order_item,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        updated_by_role='system',
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/query.py", line 660, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/base.py", line 814, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/base.py", line 877, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/base.py", line 1020, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/base.py", line 1061, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/query.py", line 1810, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/models/sql/compiler.py", line 1822, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/tinex/Desktop/projects/market/market/mktenv/lib/python3.13/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.DataError: value too long for type character varying(30)
+
+ERROR 2026-03-11 01:44:27,548 log Internal Server Error: /api/webhook/dispute-status/
+ERROR 2026-03-11 01:44:27,549 basehttp "POST /api/webhook/dispute-status/ HTTP/1.1" 500 60
+INFO 2026-03-11 02:20:58,050 autoreload /home/tinex/Desktop/projects/market/market/shopper/shopping_app/models.py changed, reloading.
+INFO 2026-03-11 02:21:17,827 autoreload Watching for file changes with StatReloader
+INFO 2026-03-11 02:22:09,668 basehttp "GET /order/21/tracking/ HTTP/1.1" 200 18929
+INFO 2026-03-11 02:22:11,360 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 02:22:11,527 views User authenticated: True
+INFO 2026-03-11 02:22:11,610 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-11 02:22:11,735 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-11 02:22:12,013 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-11 02:22:12,218 basehttp "GET /api/order/21/tracking/ HTTP/1.1" 200 2495
+INFO 2026-03-11 02:22:12,465 basehttp "GET /orders/ HTTP/1.1" 200 21929
+INFO 2026-03-11 02:22:14,650 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 02:22:14,769 views User authenticated: True
+INFO 2026-03-11 02:22:14,880 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-11 02:22:15,245 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-11 02:22:15,291 basehttp "GET /api/orders/ HTTP/1.1" 200 10181
+INFO 2026-03-11 02:22:15,558 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-11 02:22:20,049 basehttp "GET /orders/21/ HTTP/1.1" 200 54634
+INFO 2026-03-11 02:22:20,670 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 02:22:20,982 views User authenticated: True
+INFO 2026-03-11 02:22:21,039 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-11 02:22:21,114 basehttp "GET /api/orders/21/ HTTP/1.1" 200 2170
+INFO 2026-03-11 02:22:21,204 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-11 02:22:21,372 basehttp "GET /api/seller-verification-status/11/ HTTP/1.1" 200 308
+INFO 2026-03-11 02:22:21,410 basehttp "GET /api/seller-verification-status/4/ HTTP/1.1" 200 310
+INFO 2026-03-11 02:22:21,646 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-11 02:22:24,293 basehttp "GET /order/21/tracking/ HTTP/1.1" 200 18929
+INFO 2026-03-11 02:22:25,543 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 02:22:25,714 views User authenticated: True
+INFO 2026-03-11 02:22:25,738 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-11 02:22:25,793 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-11 02:22:26,138 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-11 02:22:26,253 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 148
+INFO 2026-03-11 02:22:26,582 basehttp "GET /api/order/21/tracking/ HTTP/1.1" 200 2495
+INFO 2026-03-11 02:22:28,405 basehttp "GET /order/10/confirm-delivery/ HTTP/1.1" 200 22507
+INFO 2026-03-11 02:22:30,054 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 02:22:30,302 views User authenticated: True
+INFO 2026-03-11 02:22:30,366 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-11 02:22:30,516 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-11 02:22:30,689 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-11 02:22:30,938 basehttp "GET /api/order/10/confirmation-items/ HTTP/1.1" 200 390
+INFO 2026-03-11 02:22:58,345 order_views ✅ Dispute #8 forwarded to payment app → Payment dispute #8
+INFO 2026-03-11 02:22:58,376 basehttp "POST /api/order/10/submit-confirmation/ HTTP/1.1" 200 108
+INFO 2026-03-11 02:23:38,292 order_views ✅ Dispute #8 synced from payment app: To Be Decided
+INFO 2026-03-11 02:23:38,293 basehttp "POST /api/webhook/dispute-status/ HTTP/1.1" 200 53
+INFO 2026-03-11 02:23:50,514 basehttp "GET /order/10/tracking/ HTTP/1.1" 200 18929
+INFO 2026-03-11 02:23:50,962 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 02:23:51,069 views User authenticated: True
+INFO 2026-03-11 02:23:51,126 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-11 02:23:51,226 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-11 02:23:51,454 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-11 02:23:51,573 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-03-11 02:23:51,706 basehttp "GET /api/order/10/tracking/ HTTP/1.1" 200 9004
+INFO 2026-03-11 02:23:51,993 basehttp "GET /media/products/10/f5d7ec74-8c79-42f3-95c9-3759b61ada7c.jpg HTTP/1.1" 200 526380
+INFO 2026-03-11 02:24:21,477 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-03-11 02:24:36,778 order_views ✅ Dispute #8 synced from payment app: Not Refunded
+INFO 2026-03-11 02:24:36,779 basehttp "POST /api/webhook/dispute-status/ HTTP/1.1" 200 53
+INFO 2026-03-11 02:24:51,447 basehttp "GET /api/pending-deliveries/ HTTP/1.1" 200 40
+INFO 2026-03-11 02:24:51,950 basehttp "GET /order/10/tracking/ HTTP/1.1" 200 18929
+INFO 2026-03-11 02:24:53,251 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-11 02:24:53,454 views User authenticated: True
+INFO 2026-03-11 02:24:53,538 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-11 02:24:53,636 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-11 02:24:53,814 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-11 02:24:53,963 basehttp "GET /api/order/10/tracking/ HTTP/1.1" 200 9349

@@ -405,7 +405,7 @@ class OrderItemTracking(models.Model):
         on_delete=models.CASCADE,
         related_name='tracking_history'
     )
-    status = models.CharField(max_length=30)
+    status = models.CharField(max_length=50)
     notes = models.TextField(blank=True, null=True)
     updated_by_role = models.CharField(
         max_length=20,
@@ -515,9 +515,9 @@ class OrderDispute(models.Model):
         on_delete=models.CASCADE,
         related_name='shopping_disputes_received'
     )
-    complaint_type = models.CharField(max_length=30, choices=COMPLAINT_CHOICES)
+    complaint_type = models.CharField(max_length=50, choices=COMPLAINT_CHOICES)
     description = models.TextField(blank=True, null=True)
-    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='submitted')
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='submitted')
 
     # Payment app integration
     is_online_payment = models.BooleanField(default=False)
@@ -526,7 +526,7 @@ class OrderDispute(models.Model):
         help_text="Dispute ID in the payment app (Fair Cashier)"
     )
     payment_app_status = models.CharField(
-        max_length=30, blank=True, null=True,
+        max_length=50, blank=True, null=True,
         help_text="Synced status from payment app"
     )
     refund_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
