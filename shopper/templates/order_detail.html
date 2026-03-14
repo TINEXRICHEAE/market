@@ -33,6 +33,7 @@
         .status-deposited{ background: #ede7f6; color: #4a148c; }
         .status-pending  { background: #fff3cd; color: #856404; }
         .status-failed   { background: #fce4ec; color: #c0392b; }
+        .status-escrowed { background: #fff8e1; color: #e65100; }
         .item-price-section { text-align: right; flex-shrink: 0; }
         .item-unit-price { color: #666; font-size: .8rem; }
         .item-subtotal   { font-weight: bold; color: #667eea; font-size: 1rem; margin-top: .2rem; }
@@ -314,20 +315,42 @@ async function loadOrderDetail() {
 function displayOrderDetail(order) {
     const cnt = document.getElementById('orderContainer');
     const depositedItems = order.items.filter(i => i.is_deposited);
+    const escrowedItems  = order.items.filter(i => i.is_escrowed);
     const pendingItems   = order.items.filter(i => i.payment_status === 'pending' && i.can_pay_online);
     const failedItems    = order.items.filter(i => i.payment_status === 'failed'  && i.can_pay_online);
+    // escrowed = buyer already paid; do NOT include in retryable
     const retryableItems = [...pendingItems, ...failedItems];
+
+    const escrowedAlert = escrowedItems.length > 0 ? `
+        <div class="alert" style="background:#fff8e1;border-left:4px solid #ff6f00;">
+            <div style="font-weight:700;color:#e65100;margin-bottom:.3rem;font-size:.95rem;">
+                🔒 ${escrowedItems.length} item${escrowedItems.length!==1?'s':''} paid &amp; held in escrow
+            </div>
+            <div style="font-size:.85rem;color:#bf360c;">
+                Your payment is secured. Funds will be released to the seller once you confirm delivery.
+            </div>
+        </div>` : '';
 
     const depositAlert = depositedItems.length > 0 ? `
         <div class="alert alert-deposit">
             <div class="alert-deposit-title">🔒 ${depositedItems.length} item${depositedItems.length!==1?'s':''} with reserved funds</div>
-            <div class="alert-deposit-text">Funds are secured. Complete to send to seller, or cancel to release.</div>
+            <div class="alert-deposit-text">Funds are secured in your wallet. Complete to send to seller, or cancel to release.</div>
         </div>` : '';
 
     const pendingAlert = retryableItems.length > 0 ? `
         <div class="alert alert-pending">
             <div class="alert-pending-title">⚠️ ${retryableItems.length} item${retryableItems.length!==1?'s':''} awaiting payment</div>
             <div class="alert-pending-text">Select items below and click Pay to complete.${failedItems.length > 0 ? ` (${failedItems.length} previously failed — retry available)` : ''}</div>
+        </div>` : '';
+
+    const escrowedSection = escrowedItems.length > 0 ? `
+        <div class="order-section">
+            <div class="section-title">🔒 Held in Escrow — Awaiting Your Delivery Confirmation</div>
+            <p style="font-size:.85rem;color:#666;margin-bottom:.75rem;">
+                These items are paid. The seller has the money held in reserve.
+                Once you confirm delivery, funds are released to the seller.
+            </p>
+            ${escrowedItems.map(item => buildEscrowedItemCard(item)).join('')}
         </div>` : '';
 
     const depositedSection = depositedItems.length > 0 ? `
@@ -348,7 +371,7 @@ function displayOrderDetail(order) {
     cnt.innerHTML = `
         <div class="order-detail-container">
             <div>
-                ${depositAlert}${pendingAlert}
+                ${escrowedAlert}${depositAlert}${pendingAlert}
                 <div class="order-section">
                     <div class="order-header">
                         <div>
@@ -363,6 +386,7 @@ function displayOrderDetail(order) {
                         <div class="info-item"><span class="info-label">Total Amount</span><span class="info-value">UGX ${fmt(order.total_amount)}</span></div>
                     </div>
                 </div>
+                ${escrowedSection}
                 ${depositedSection}
                 ${pendingSection}
                 <div class="order-section">
@@ -383,6 +407,13 @@ function displayOrderDetail(order) {
                         <div style="font-size:.8rem;color:#888;margin-top:.2rem;" id="selectedCount">${retryableItems.length} item${retryableItems.length!==1?'s':''} selected</div>
                     </div>
                     <button class="btn-primary" id="payNowBtn" onclick="processSelectedPayment()">💳 Pay Selected Items</button>
+                ` : ''}
+                ${escrowedItems.length > 0 ? `
+                    <div style="margin-top:1rem;padding:.9rem;background:#fff8e1;border-radius:6px;border-left:3px solid #ff6f00;">
+                        <div style="font-size:.8rem;color:#e65100;font-weight:600;margin-bottom:.4rem;">🔒 Held in escrow</div>
+                        <div style="font-size:1.1rem;font-weight:700;color:#bf360c;">UGX ${fmt(escrowedItems.reduce((s,i)=>s+parseFloat(i.subtotal),0))}</div>
+                        <div style="font-size:.75rem;color:#e65100;margin-top:.3rem;">${escrowedItems.length} item${escrowedItems.length!==1?'s':''} — released to seller on delivery confirmation</div>
+                    </div>
                 ` : ''}
                 ${depositedItems.length > 0 ? `
                     <div style="margin-top:1rem;padding:.9rem;background:#ede7f6;border-radius:6px;">
@@ -430,13 +461,19 @@ async function loadBalanceTier(sellerEmail, sellerId) {
 function buildSellerBreakdown(seller, order) {
     const sellerItems    = order.items.filter(i => i.seller_email === seller.seller_email);
     const paidItems      = sellerItems.filter(i => i.payment_status==='paid'      && i.payment_method==='online');
+    const escrowedItems  = sellerItems.filter(i => i.payment_status==='escrowed'  && i.payment_method==='online');
     const depositedItems = sellerItems.filter(i => i.payment_status==='deposited' && i.payment_method==='online');
     const pendingItems   = sellerItems.filter(i => i.payment_status==='pending'   && i.payment_method==='online');
     const failedOnline   = sellerItems.filter(i => i.payment_status==='failed'    && i.payment_method==='online');
     const cashItems      = sellerItems.filter(i => i.payment_method==='cash');
-    const hasOnline = paidItems.length || depositedItems.length || pendingItems.length || failedOnline.length;
+    const hasOnline = paidItems.length || escrowedItems.length || depositedItems.length || pendingItems.length || failedOnline.length;
     const hasCash   = cashItems.length;
-    const badgeTxt  = hasOnline&&hasCash ? '📊 Mixed' : hasOnline ? '💳 Online' : '💵 Cash on Delivery';
+    const allPaidOrEscrowed = sellerItems.every(i =>
+        i.payment_status === 'paid' || i.payment_status === 'escrowed' || i.payment_method === 'cash'
+    );
+    const badgeTxt  = hasOnline&&hasCash ? '📊 Mixed'
+                    : escrowedItems.length && !pendingItems.length && !failedOnline.length ? '🔒 Escrowed'
+                    : hasOnline ? '💳 Online' : '💵 Cash on Delivery';
     const badgeCls  = hasOnline&&hasCash ? 'payment-badge status-pending'
                     : hasOnline          ? 'payment-badge payment-online'
                     :                      'payment-badge payment-cash';
@@ -465,11 +502,12 @@ function buildSellerBreakdown(seller, order) {
 
     const itemRows = sellerItems.map(item => {
         let icon='',text='',color='',bg='',border='';
-        if      (item.payment_method==='cash')                                         {icon='💵';text='Cash on Delivery';  color='#004085';bg='#e7f3ff';border='#b8daff';}
-        else if (item.payment_method==='online'&&item.payment_status==='paid')         {icon='✅';text='Paid Online';        color='#0f5132';bg='#e7f5ed';border='#c3e6cb';}
-        else if (item.payment_method==='online'&&item.payment_status==='deposited')    {icon='🔒';text='Reserved in Wallet'; color='#4a148c';bg='#f3e5f5';border='#ce93d8';}
-        else if (item.payment_method==='online'&&item.payment_status==='pending')      {icon='⏳';text='Pending Payment';    color='#856404';bg='#fff3cd';border='#ffeeba';}
-        else if (item.payment_method==='online'&&item.payment_status==='failed')       {icon='❌';text='Payment Failed';     color='#c0392b';bg='#fdf0ee';border='#f5c6cb';}
+        if      (item.payment_method==='cash')                                         {icon='💵';text='Cash on Delivery';      color='#004085';bg='#e7f3ff';border='#b8daff';}
+        else if (item.payment_method==='online'&&item.payment_status==='paid')         {icon='✅';text='Paid Online';            color='#0f5132';bg='#e7f5ed';border='#c3e6cb';}
+        else if (item.payment_method==='online'&&item.payment_status==='escrowed')     {icon='🔒';text='Paid — Held in Escrow'; color='#e65100';bg='#fff8e1';border='#ffcc80';}
+        else if (item.payment_method==='online'&&item.payment_status==='deposited')    {icon='🔒';text='Reserved in Wallet';    color='#4a148c';bg='#f3e5f5';border='#ce93d8';}
+        else if (item.payment_method==='online'&&item.payment_status==='pending')      {icon='⏳';text='Pending Payment';        color='#856404';bg='#fff3cd';border='#ffeeba';}
+        else if (item.payment_method==='online'&&item.payment_status==='failed')       {icon='❌';text='Payment Failed';         color='#c0392b';bg='#fdf0ee';border='#f5c6cb';}
         return `<div style="background:${bg};padding:.65rem .75rem;border-radius:5px;margin-bottom:.4rem;border-left:3px solid ${border};">
             <div style="display:flex;justify-content:space-between;align-items:start;gap:.5rem;">
                 <div><div style="font-size:.82rem;font-weight:600;color:#333;">${item.product_name}</div>
@@ -482,6 +520,7 @@ function buildSellerBreakdown(seller, order) {
 
     const summaryRows = [
         paidItems.length      ? `<div style="display:flex;justify-content:space-between;font-size:.75rem;margin-bottom:.2rem;"><span style="color:#0f5132;">✅ Paid (${paidItems.length})</span><span style="font-weight:700;color:#0f5132;">UGX ${fmt(paidItems.reduce((s,i)=>s+parseFloat(i.subtotal),0))}</span></div>` : '',
+        escrowedItems.length  ? `<div style="display:flex;justify-content:space-between;font-size:.75rem;margin-bottom:.2rem;"><span style="color:#e65100;">🔒 In Escrow (${escrowedItems.length})</span><span style="font-weight:700;color:#e65100;">UGX ${fmt(escrowedItems.reduce((s,i)=>s+parseFloat(i.subtotal),0))}</span></div>` : '',
         depositedItems.length ? `<div style="display:flex;justify-content:space-between;font-size:.75rem;margin-bottom:.2rem;"><span style="color:#4a148c;">🔒 Reserved (${depositedItems.length})</span><span style="font-weight:700;color:#4a148c;">UGX ${fmt(depositedItems.reduce((s,i)=>s+parseFloat(i.subtotal),0))}</span></div>` : '',
         pendingItems.length   ? `<div style="display:flex;justify-content:space-between;font-size:.75rem;margin-bottom:.2rem;"><span style="color:#856404;">⏳ Pending (${pendingItems.length})</span><span style="font-weight:700;color:#856404;">UGX ${fmt(pendingItems.reduce((s,i)=>s+parseFloat(i.subtotal),0))}</span></div>` : '',
         failedOnline.length   ? `<div style="display:flex;justify-content:space-between;font-size:.75rem;margin-bottom:.2rem;"><span style="color:#c0392b;">❌ Failed (${failedOnline.length})</span><span style="font-weight:700;color:#c0392b;">UGX ${fmt(failedOnline.reduce((s,i)=>s+parseFloat(i.subtotal),0))}</span></div>` : '',
@@ -534,6 +573,37 @@ function buildDepositedItemCard(item) {
         </div>
     </div>`;
 }
+
+
+function buildEscrowedItemCard(item) {
+    return `<div class="order-item" id="item-card-${item.id}"
+                 style="border:2px solid #ff6f00;background:#fffde7;">
+        <img src="${item.product_image||'https://via.placeholder.com/72x72?text=?'}"
+             alt="${item.product_name}" class="item-image">
+        <div class="item-details">
+            <div class="item-name">${item.product_name}</div>
+            <div class="item-seller">Sold by: ${item.seller_email}</div>
+            <div class="item-quantity">Qty: ${item.quantity}</div>
+            <div style="margin-top:.4rem;font-size:.8rem;color:#e65100;font-weight:600;">
+                🔒 UGX ${fmt(item.subtotal)} held in escrow
+            </div>
+            <div style="font-size:.78rem;color:#bf360c;margin-top:.25rem;">
+                Funds will be released to the seller when you confirm delivery at the
+                <a href="/order/${ORDER_ID}/confirm-delivery/" style="color:#e65100;font-weight:700;">
+                    delivery confirmation page</a>.
+            </div>
+            <div class="item-payment-info">
+                <span class="payment-badge payment-online">online</span>
+                <span class="payment-badge" style="background:#fff8e1;color:#e65100;">escrowed</span>
+            </div>
+        </div>
+        <div class="item-price-section">
+            <div class="item-unit-price">UGX ${fmt(item.price)} each</div>
+            <div class="item-subtotal">UGX ${fmt(item.subtotal)}</div>
+        </div>
+    </div>`;
+}
+
 
 function buildPendingItemCard(item) {
     const isFailed = item.payment_status === 'failed';

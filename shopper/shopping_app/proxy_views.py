@@ -178,22 +178,41 @@ def payment_return(request):
     order_number = pending_payment.get('order_number')
     online_item_ids = pending_payment.get('online_item_ids', [])
 
-    if status == 'success':
+    if status in ('success', 'escrowed', 'paid'):
+        # 'escrowed'  = buyer paid → funds held in seller's reserved balance
+        # 'success'   = legacy/direct pay (should not reach here for new flow)
         if order_id:
             try:
                 order = Order.objects.get(id=order_id)
-                order.online_payment_status = 'completed'
-                order.status = 'processing'
-                order.save()
-
-                if online_item_ids:
-                    OrderItem.objects.filter(
-                        id__in=online_item_ids,
-                        order=order,
-                        payment_status__in=['pending', 'failed'],
-                    ).update(payment_status='paid', payment_method='online')
-
-                logger.info(f"✅ Payment successful for order {order_number}")
+                if status == 'escrowed':
+                    order.online_payment_status = 'escrowed'
+                    order.status = 'processing'
+                    order.save()
+                    # Fallback: mark online items as 'escrowed' (webhook should have done this)
+                    if online_item_ids:
+                        OrderItem.objects.filter(
+                            id__in=online_item_ids,
+                            order=order,
+                            payment_status__in=['pending', 'failed'],
+                        ).update(payment_status='escrowed', payment_method='online')
+                    logger.info(f"✅ Payment escrowed for order {order_number}")
+                    from django.contrib import messages
+                    messages.success(
+                        request,
+                        'Payment received and held securely. '
+                        'Funds will be released to the seller once you confirm delivery.'
+                    )
+                else:
+                    order.online_payment_status = 'completed'
+                    order.status = 'processing'
+                    order.save()
+                    if online_item_ids:
+                        OrderItem.objects.filter(
+                            id__in=online_item_ids,
+                            order=order,
+                            payment_status__in=['pending', 'failed'],
+                        ).update(payment_status='paid', payment_method='online')
+                    logger.info(f"✅ Payment successful for order {order_number}")
                 return redirect('view_order_detail', order_id=order_id)
             except Order.DoesNotExist:
                 logger.error(f"Order {order_id} not found")
@@ -201,25 +220,23 @@ def payment_return(request):
         return redirect('view_orders')
 
     elif status == 'deposited':
-        # Buyer deposited funds to wallet but did not yet pay sellers
+        # Old buyer-wallet-reserve flow (buyer's own wallet holds funds)
         if order_id:
             try:
                 order = Order.objects.get(id=order_id)
-                # Leave online_payment_status as 'pending' — funds are in wallet, not settled
                 order.save()
-
-                # Mark items that were "deposited" — webhook will have already done this;
-                # but as fallback, mark pending online items as deposited here too
                 if online_item_ids:
                     OrderItem.objects.filter(
                         id__in=online_item_ids,
                         order=order,
                         payment_status__in=['pending', 'failed'],
                     ).update(payment_status='deposited')
-
                 logger.info(f"💰 Deposit acknowledged for order {order_number}")
                 from django.contrib import messages
-                messages.success(request, 'Funds deposited to your wallet. Seller can see your payment is secured.')
+                messages.success(
+                    request,
+                    'Funds reserved in your wallet. Seller can see payment is secured.'
+                )
                 return redirect('view_order_detail', order_id=order_id)
             except Order.DoesNotExist:
                 return redirect('view_orders')
@@ -313,24 +330,36 @@ def payment_status_webhook(request):
 
         with db_transaction.atomic():
             for update in item_updates:
-                item_id = update.get('shopping_order_item_id')
+                item_id    = update.get('shopping_order_item_id')
                 new_status = update.get('status')
-                print(f"Updating item {item_id} to status {new_status}")
-                
+
                 if not item_id or not new_status:
                     continue
 
+                # Ensure online items stay marked as online payment
                 try:
                     item = OrderItem.objects.get(id=item_id, order=order)
-                    if new_status in ('paid', 'deposited') and item.payment_method != 'online':
+                    if new_status in ('paid', 'deposited', 'escrowed') \
+                            and item.payment_method != 'online':
                         item.payment_method = 'online'
                         item.save(update_fields=['payment_method'])
                 except OrderItem.DoesNotExist:
                     logger.warning(f"Item {item_id} not found in order {order.id}")
                     continue
 
-                if new_status not in ('paid', 'deposited', 'failed', 'pending'):
-                    logger.warning(f"Unknown status '{new_status}' for item {item_id}")
+                # Map payment-app status to shopping-app OrderItem.payment_status
+                # ┌─────────────────┬───────────────────────────────────────────┐
+                # │ payment-app     │ meaning                                   │
+                # ├─────────────────┼───────────────────────────────────────────┤
+                # │ escrowed        │ buyer paid → seller reserved (awaiting    │
+                # │                 │ delivery confirmation to release to free) │
+                # │ deposited       │ buyer reserved in OWN wallet (old flow)  │
+                # │ paid            │ escrow released — seller has free funds  │
+                # │ failed/pending  │ no payment yet                           │
+                # └─────────────────┴───────────────────────────────────────────┘
+                allowed = ('paid', 'deposited', 'escrowed', 'failed', 'pending')
+                if new_status not in allowed:
+                    logger.warning(f"Unknown payment status '{new_status}' for item {item_id}")
                     continue
 
                 updated = OrderItem.objects.filter(
@@ -340,16 +369,21 @@ def payment_status_webhook(request):
 
                 logger.info(f"  Item {item_id} → {new_status} (updated: {updated})")
 
-            # Update order-level status
+            # Update order-level online_payment_status
             if overall_status == 'paid':
+                # All escrows released — fully settled
                 order.online_payment_status = 'completed'
                 order.status = 'processing'
+            elif overall_status == 'escrowed':
+                # Buyer paid; funds sitting in seller's reserved balance
+                order.online_payment_status = 'escrowed'
+                order.status = 'processing'    # order IS being processed
             elif overall_status == 'deposited':
-                # Funds in wallet, not yet settled
+                # Old buyer-reserve flow
                 order.online_payment_status = 'deposited'
             elif overall_status == 'partial':
-                # Mix of paid + deposited — keep as processing
-                order.online_payment_status = 'completed'
+                # Mix of statuses — order is in flight
+                order.online_payment_status = 'escrowed'
                 order.status = 'processing'
             elif overall_status == 'failed':
                 order.online_payment_status = 'failed'

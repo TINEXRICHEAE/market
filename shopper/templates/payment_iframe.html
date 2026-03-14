@@ -340,11 +340,25 @@
                 }, 2500);
             }
 
-            else if (data.type === 'payment_deposited') {
-                // Items deposited to wallet (not yet paid to seller)
+            else if (data.type === 'payment_escrowed') {
+                // Buyer paid → funds held in seller's reserved balance until delivery confirmed
                 paymentCompleted = true;
                 showStatus(
-                    'success', '💰', 'Funds Deposited!',
+                    'success', '🔒', 'Payment Secured!',
+                    'Funds are held safely in escrow. The seller will be paid once you confirm delivery.',
+                    'View Order',
+                    () => { window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=escrowed`; }
+                );
+                setTimeout(() => {
+                    window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=escrowed`;
+                }, 3000);
+            }
+
+            else if (data.type === 'payment_deposited') {
+                // Buyer reserved funds in own wallet (old flow)
+                paymentCompleted = true;
+                showStatus(
+                    'success', '💰', 'Funds Reserved!',
                     'Money has been secured in your wallet. The seller can see your funds are ready.',
                     'View Order',
                     () => { window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=deposited`; }
@@ -355,16 +369,16 @@
             }
 
             else if (data.type === 'payment_mixed') {
-                // Some items paid, some deposited
+                // Mix of escrowed + deposited items
                 paymentCompleted = true;
                 showStatus(
-                    'success', '✅', 'Order Updated!',
-                    'Payment processed. Some items paid, others have funds deposited.',
+                    'success', '✅', 'Payment Processed!',
+                    'Your payment has been secured. Funds are held until you confirm delivery.',
                     'View Order',
-                    () => { window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=success`; }
+                    () => { window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=escrowed`; }
                 );
                 setTimeout(() => {
-                    window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=success`;
+                    window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=escrowed`;
                 }, 2500);
             }
 

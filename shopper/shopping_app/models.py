@@ -289,7 +289,7 @@ class Order(models.Model):
     online_payment_status = models.CharField(
         max_length=20,
         choices=[('pending', 'Pending'), ('completed', 'Completed'), 
-                 ('failed', 'Failed'), ('partial', 'Partial')],
+                 ('failed', 'Failed'), ('partial', 'Partial'), ('escrowed', 'Escrowed')],
         default='pending'
     )
 
@@ -339,7 +339,7 @@ class OrderItem(models.Model):
     )
     payment_status = models.CharField(
         max_length=20,
-        choices=[('pending', 'Pending'), ('paid', 'Paid'), ('failed', 'Failed'), ('deposited', 'Payment Reseved')],
+        choices=[('pending', 'Pending'), ('paid', 'Paid'), ('failed', 'Failed'), ('deposited', 'Payment Reseved'), ('escrowed', 'Escrowed')],
         default='pending'
     )
     payment_options = models.JSONField(
@@ -558,10 +558,16 @@ class OrderDispute(models.Model):
 
     @property
     def needs_payment_app(self):
-        """Whether this dispute should be forwarded to the payment app."""
+        """Whether this dispute should be forwarded to the payment app.
+
+        Covers both:
+        'paid'     — escrow was already released to seller free balance
+        'escrowed' — funds still held in seller reserved balance
+        Both cases require the payment app to act on the funds.
+        """
         return (
             self.order_item.payment_method == 'online'
-            and self.order_item.payment_status == 'paid'
+            and self.order_item.payment_status in ('paid', 'escrowed')
         )
 
 

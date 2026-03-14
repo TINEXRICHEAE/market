@@ -681,24 +681,27 @@ def get_order_detail(request, order_id):
         order_items = []
         for item in order.items.select_related('product', 'seller'):
             order_items.append({
-                'id': item.id,
-                'product_id': item.product.id,
-                'product_name': item.product.name,
-                'product_image': item.product.image_display_url or item.product.image_url,
-                'quantity': item.quantity,
-                'price': str(item.price),
-                'subtotal': str(item.subtotal),
-                'seller_email': item.seller.email,
-                'payment_method': item.payment_method,
+                'id':                   item.id,
+                'product_id':           item.product.id,
+                'product_name':         item.product.name,
+                'product_image':        item.product.image_display_url or item.product.image_url,
+                'quantity':             item.quantity,
+                'price':                str(item.price),
+                'subtotal':             str(item.subtotal),
+                'seller_email':         item.seller.email,
+                'payment_method':       item.payment_method,
                 'payment_method_display': item.get_payment_method_display(),
-                'payment_status': item.payment_status,
+                'payment_status':       item.payment_status,
                 'payment_status_display': item.get_payment_status_display(),
-                'payment_options': item.payment_options,  
-                'can_pay_online': item.can_pay_online,                  
+                'payment_options':      item.payment_options,
+                'can_pay_online':       item.can_pay_online,
+                # Buyer-wallet reservation (old "deposit" flow)
                 'is_deposited': item.payment_status == 'deposited',
-                'fair_cashier_request_id':    str(order.fair_cashier_request_id)
-                                            if order.fair_cashier_request_id else None,
-                'order_item_id_for_deposit':  item.id,    
+                # Seller-wallet reservation (new "escrow" / "pay now" flow)
+                'is_escrowed':  item.payment_status == 'escrowed',
+                'fair_cashier_request_id':   str(order.fair_cashier_request_id)
+                                             if order.fair_cashier_request_id else None,
+                'order_item_id_for_deposit': item.id,    
             })
 
         # Get seller payment summaries (no longer using SellerPayment model)
@@ -731,7 +734,8 @@ def get_order_detail(request, order_id):
             if item.payment_method == 'online':
                 seller_summaries[seller_key]['online_amount'] += item.subtotal
                 seller_summaries[seller_key]['has_online_items'] = True
-                if item.payment_status == 'paid':
+                # 'escrowed' means buyer paid (funds held for seller) — show as paid
+                if item.payment_status in ('paid', 'escrowed'):
                     seller_summaries[seller_key]['online_paid'] = True
             else:
                 seller_summaries[seller_key]['cash_amount'] += item.subtotal
@@ -764,29 +768,33 @@ def get_order_detail(request, order_id):
 
         # Check if there are unpaid online items
         has_unpaid_online = order.items.filter(
-            payment_options__contains='online',  
-            payment_status__in=['pending', 'deposited', 'failed'],   
+            payment_options__contains='online',
+            payment_status__in=['pending', 'deposited', 'failed'],
         ).exists()
 
         order_data = {
-            'id': order.id,
-            'order_number': order.order_number,
-            'total_amount': str(order.total_amount),
-            'status': order.status,
-            'status_display': order.get_status_display(),
-            'payment_method': order.payment_method,
-            'payment_method_display': order.get_payment_method_display(),
-            'online_payment_status': order.online_payment_status,
+            'id':                           order.id,
+            'order_number':                 order.order_number,
+            'total_amount':                 str(order.total_amount),
+            'status':                       order.status,
+            'status_display':               order.get_status_display(),
+            'payment_method':               order.payment_method,
+            'payment_method_display':       order.get_payment_method_display(),
+            'online_payment_status':        order.online_payment_status,
             'online_payment_status_display': order.get_online_payment_status_display(),
-            'fair_cashier_request_id': str(order.fair_cashier_request_id) if order.fair_cashier_request_id else None,
-            'items': order_items,
+            'fair_cashier_request_id':      str(order.fair_cashier_request_id)
+                                            if order.fair_cashier_request_id else None,
+            'items':           order_items,
             'seller_payments': seller_payments,
             'has_unpaid_online': has_unpaid_online,
-            'pending_online_count':  order.items.filter(payment_method='online', payment_status='pending').count(),
-            'deposited_count':       order.items.filter(payment_method='online', payment_status='deposited').count(),
+            'pending_online_count':  order.items.filter(
+                payment_method='online', payment_status='pending').count(),
+            'deposited_count':       order.items.filter(
+                payment_method='online', payment_status='deposited').count(),
+            'escrowed_count':        order.items.filter(
+                payment_method='online', payment_status='escrowed').count(),
             'created_at': order.created_at.strftime('%Y-%m-%d %H:%M:%S'),
             'updated_at': order.updated_at.strftime('%Y-%m-%d %H:%M:%S'),
-            
         }
 
         return Response({'order': order_data})

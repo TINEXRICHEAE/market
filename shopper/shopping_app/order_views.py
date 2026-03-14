@@ -244,12 +244,12 @@ def update_order_item_tracking(request, item_id):
                 order_item.dispatch_date = timezone.now()
             if new_status == 'delivered_by_seller':
                 order_item.delivery_marked_at = timezone.now()
-                if order_item.payment_method == 'online' and order_item.payment_status != 'paid':
-                    order_item.payment_method = 'cash'
-                    order_item.payment_status = 'paid'
-                    order_item.delivery_notes = (order_item.delivery_notes or '') + \
-                        '\nOnline payment not completed — switched to cash on delivery.'
-                elif order_item.payment_status != 'paid':
+                if order_item.payment_status not in ('paid', 'escrowed'):
+                    if order_item.payment_method == 'online':
+                        # Online payment not completed — fall back to cash on delivery
+                        order_item.payment_method = 'cash'
+                        order_item.delivery_notes = (order_item.delivery_notes or '') + \
+                            '\nOnline payment not completed — switched to cash on delivery.'
                     order_item.payment_status = 'paid'
             if notes:
                 order_item.delivery_notes = notes
@@ -325,12 +325,12 @@ def bulk_update_tracking(request, order_id):
                     item.dispatch_date = timezone.now()
                 if new_status == 'delivered_by_seller':
                     item.delivery_marked_at = timezone.now()
-                    if item.payment_method == 'online' and item.payment_status != 'paid':
-                        item.payment_method = 'cash'
-                        item.payment_status = 'paid'
-                        item.delivery_notes = (item.delivery_notes or '') + \
-                            '\nOnline payment not completed — switched to cash on delivery.'
-                    elif item.payment_status != 'paid':
+                    if item.payment_status not in ('paid', 'escrowed'):
+                        if item.payment_method == 'online':
+                            # Online payment not completed — fall back to cash on delivery
+                            item.payment_method = 'cash'
+                            item.delivery_notes = (item.delivery_notes or '') + \
+                                '\nOnline payment not completed — switched to cash on delivery.'
                         item.payment_status = 'paid'
                 item.save()
 
@@ -521,6 +521,49 @@ def get_delivery_confirmation_items(request, order_id):
         return Response({'error': str(e)}, status=500)
 
 
+
+def _release_escrow_for_item(order, order_item):
+    """
+    Tell the payment app to release the seller's reserved (escrow) funds
+    for a confirmed-delivered order item.
+
+    Called after buyer confirms delivery in submit_delivery_confirmation.
+    Failure is non-blocking — logs a warning but does not roll back the
+    delivery confirmation.
+    """
+    try:
+        url = (
+            f"{FAIR_CASHIER_URL}"
+            f"/payment/{order.fair_cashier_request_id}"
+            f"/release-seller-funds/shopping-item/{order_item.id}/"
+        )
+        resp = http_requests.post(
+            url,
+            json={'api_key': FAIR_CASHIER_API_KEY},
+            headers={'Content-Type': 'application/json'},
+            timeout=10,
+        )
+        if resp.status_code == 200 and resp.json().get('success'):
+            logger.info(
+                f"✅ Escrow released for order item {order_item.id} "
+                f"(order {order.order_number})"
+            )
+        elif resp.status_code == 404:
+            # Item may have already been released (idempotent)
+            logger.info(
+                f"ℹ️ release_escrow: item {order_item.id} already released or not in escrow"
+            )
+        else:
+            logger.warning(
+                f"⚠️ release_escrow failed for item {order_item.id}: "
+                f"{resp.status_code} — {resp.text[:200]}"
+            )
+    except http_requests.exceptions.RequestException as e:
+        logger.warning(f"⚠️ release_escrow network error for item {order_item.id}: {e}")
+    except Exception as e:
+        logger.error(f"❌ release_escrow unexpected error: {e}", exc_info=True)
+
+
 @login_required(login_url='login_user')
 @api_view(['POST'])
 def submit_delivery_confirmation(request, order_id):
@@ -563,7 +606,7 @@ def submit_delivery_confirmation(request, order_id):
 
                 if confirmed:
                     # Buyer confirms delivery
-                    order_item.tracking_status = 'delivered'
+                    order_item.tracking_status      = 'delivered'
                     order_item.delivery_confirmed_at = timezone.now()
                     order_item.save()
 
@@ -575,6 +618,17 @@ def submit_delivery_confirmation(request, order_id):
                         updated_by=request.user,
                     )
                     confirmed_count += 1
+
+                    # Release seller's escrowed funds → free balance
+                    # 'escrowed' = buyer paid, funds held in seller's reserved wallet.
+                    # 'paid'     = already released (idempotent call is safe).
+                    # 'deposited'= old buyer-reserve flow (no seller escrow to release).
+                    if (
+                        order_item.payment_method == 'online'
+                        and order_item.payment_status == 'escrowed'
+                        and order.fair_cashier_request_id
+                    ):
+                        _release_escrow_for_item(order, order_item)
 
                 else:
                     # Buyer disputes this item
@@ -595,7 +649,7 @@ def submit_delivery_confirmation(request, order_id):
                         description=description,
                         is_online_payment=(
                             order_item.payment_method == 'online'
-                            and order_item.payment_status == 'paid'
+                            and order_item.payment_status in ('paid', 'escrowed')
                         ),
                     )
 

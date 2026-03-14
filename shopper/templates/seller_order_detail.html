@@ -419,9 +419,16 @@ function renderOrderItems(items) {
                 <div>
                     <p class="text-xs text-gray-500 uppercase font-bold mb-1">Payment</p>
                     <p class="text-sm">${item.payment_method_display}</p>
-                    <span class="text-xs px-2 py-0.5 rounded ${item.payment_status==='paid'
-                        ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}">
-                        ${item.payment_status_display}
+                    <span class="text-xs px-2 py-0.5 rounded ${
+                        item.payment_status === 'paid'     ? 'bg-green-100 text-green-700'  :
+                        item.payment_status === 'escrowed' ? 'bg-orange-100 text-orange-700' :
+                        item.payment_status === 'deposited'? 'bg-purple-100 text-purple-700' :
+                        item.payment_status === 'failed'   ? 'bg-red-100 text-red-700'       :
+                                                              'bg-yellow-100 text-yellow-700'
+                    }">
+                        ${item.payment_status === 'escrowed'
+                            ? '🔒 Funds held until buyer confirms delivery'
+                            : item.payment_status_display}
                     </span>
                 </div>
 
