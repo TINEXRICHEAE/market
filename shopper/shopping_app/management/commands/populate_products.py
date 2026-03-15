@@ -1,205 +1,168 @@
-# shopping_app/management/commands/populate_products.py
-
 from django.core.management.base import BaseCommand
-from shopping_app.models import Users, Category, Product
+from shopping_app.models import Users, Category, Product, SellerVerification
+import json
+from django.utils import timezone
+from pathlib import Path
 
 
 class Command(BaseCommand):
-    help = 'Populates the database with sample products'
+    help = "Populate sellers, products, and seller KYC data"
 
     def handle(self, *args, **kwargs):
-        # Create sample sellers
+
+        # -------------------------------
+        # Load KYC dataset
+        # -------------------------------
+        BASE_DIR = Path(__file__).resolve().parents[3]
+        kyc_file = BASE_DIR / "shopping_app/dev_seed_data/sellers_kyc.json"
+        with open(kyc_file, "r") as f:
+            kyc_data = json.load(f)
+
         sellers = []
+
         seller_emails = [
-            'seller1@gmail.com',
-            'seller2@gmail.com',
-            'seller3@gmail.com'
+            f"seller{i}@gmail.com"
+            for i in range(1, 11)
         ]
 
-        for email in seller_emails:
+        # -------------------------------
+        # Create sellers
+        # -------------------------------
+        for i, email in enumerate(seller_emails):
+
             seller, created = Users.objects.get_or_create(
                 email=email,
                 defaults={
-                    'role': 'seller',
-                    'is_staff': False,
-                    'is_superuser': False
-                }
+                    "role": "seller",
+                    "is_staff": False,
+                    "is_superuser": False,
+                },
             )
+
             if created:
-                seller.set_password('Seller.123')
+                seller.set_password("Seller.123")
                 seller.save()
-                self.stdout.write(self.style.SUCCESS(
-                    f'Created seller: {email}'))
+                self.stdout.write(self.style.SUCCESS(f"Created seller {email}"))
+
             sellers.append(seller)
 
+            # -------------------------------
+            # Create KYC record
+            # -------------------------------
+            kyc = kyc_data[i]
+
+            SellerVerification.objects.get_or_create(
+                seller=seller,
+                defaults={
+                    "full_legal_name": kyc["full_legal_name"],
+                    "national_id_number": kyc["national_id_number"],
+                    "date_of_birth": kyc["date_of_birth"],
+                    "phone_number": kyc["phone_number"],
+                    "physical_address": kyc["physical_address"],
+                    "district": kyc["district"],
+                    "country": kyc["country"],
+
+                    "business_name": kyc["business"]["business_name"],
+                    "business_registration_no": kyc["business"]["business_registration_no"],
+                    "business_type": "individual",
+                    "business_address": kyc["business"]["business_address"],
+                    "tin_number": kyc["business"]["tin_number"],
+
+                    "national_id_front": kyc["documents"]["national_id_front"],
+                    "national_id_back": kyc["documents"]["national_id_back"],
+                    "selfie_with_id": kyc["documents"]["selfie_with_id"],
+                    "business_cert": kyc["documents"]["business_cert"],
+                    "proof_of_address": kyc["documents"]["proof_of_address"],
+
+                    "status": "pending",
+                    "zkp_status": "not_registered",
+                }
+            )
+
+        # -------------------------------
         # Create categories
+        # -------------------------------
         categories_data = [
-            {'name': 'Electronics', 'description': 'Electronic devices and accessories'},
-            {'name': 'Clothing', 'description': 'Fashion and apparel'},
-            {'name': 'Home & Garden',
-                'description': 'Home improvement and garden supplies'},
-            {'name': 'Books', 'description': 'Books and reading materials'},
-            {'name': 'Sports', 'description': 'Sports equipment and accessories'},
+            ("Electronics", "Electronic devices"),
+            ("Clothing", "Fashion items"),
+            ("Home & Garden", "Home improvement"),
+            ("Books", "Educational materials"),
+            ("Sports", "Sports equipment"),
         ]
 
         categories = {}
-        for cat_data in categories_data:
-            category, created = Category.objects.get_or_create(
-                name=cat_data['name'],
-                defaults={'description': cat_data['description']}
-            )
-            categories[cat_data['name']] = category
-            if created:
-                self.stdout.write(self.style.SUCCESS(
-                    f'Created category: {cat_data["name"]}'))
 
-        # Create sample products (prices in UGX)
-        products_data = [
-            {
-                'name': 'Wireless Bluetooth Headphones',
-                'description': 'High-quality wireless headphones with noise cancellation and 30-hour battery life. Perfect for music lovers and professionals.',
-                'price': 290000,
-                'stock_quantity': 50,
-                'category': 'Electronics',
-                'image_url': 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500'
-            },
-            {
-                'name': 'Smart Watch Pro',
-                'description': 'Feature-packed smartwatch with fitness tracking, heart rate monitor, and smartphone notifications.',
-                'price': 1100000,
-                'stock_quantity': 30,
-                'category': 'Electronics',
-                'image_url': 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500'
-            },
-            {
-                'name': 'Laptop Stand Adjustable',
-                'description': 'Ergonomic aluminum laptop stand with multiple angle adjustments for comfortable working.',
-                'price': 145000,
-                'stock_quantity': 100,
-                'category': 'Electronics',
-                'image_url': 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500'
-            },
-            {
-                'name': 'Cotton T-Shirt Pack',
-                'description': 'Premium quality 100% cotton t-shirts in various colors. Pack of 3. Comfortable and durable.',
-                'price': 110000,
-                'stock_quantity': 200,
-                'category': 'Clothing',
-                'image_url': 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500'
-            },
-            {
-                'name': 'Denim Jeans Classic',
-                'description': 'Classic fit denim jeans with modern styling. Available in multiple sizes.',
-                'price': 220000,
-                'stock_quantity': 75,
-                'category': 'Clothing',
-                'image_url': 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=500'
-            },
-            {
-                'name': 'Winter Jacket',
-                'description': 'Warm and stylish winter jacket with water-resistant outer layer. Perfect for cold weather.',
-                'price': 475000,
-                'stock_quantity': 40,
-                'category': 'Clothing',
-                'image_url': 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500'
-            },
-            {
-                'name': 'Indoor Plant Collection',
-                'description': 'Set of 3 easy-care indoor plants including pots. Brings life to any room.',
-                'price': 165000,
-                'stock_quantity': 60,
-                'category': 'Home & Garden',
-                'image_url': 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=500'
-            },
-            {
-                'name': 'LED Desk Lamp',
-                'description': 'Modern LED desk lamp with adjustable brightness and color temperature. USB charging port included.',
-                'price': 128000,
-                'stock_quantity': 80,
-                'category': 'Home & Garden',
-                'image_url': 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500'
-            },
-            {
-                'name': 'Kitchen Knife Set',
-                'description': 'Professional 8-piece kitchen knife set with wooden block. Made from high-carbon stainless steel.',
-                'price': 330000,
-                'stock_quantity': 45,
-                'category': 'Home & Garden',
-                'image_url': 'https://images.unsplash.com/photo-1593618998160-e34014e67546?w=500'
-            },
-            {
-                'name': 'Programming in Python',
-                'description': 'Comprehensive guide to Python programming. Perfect for beginners and intermediate learners.',
-                'price': 145000,
-                'stock_quantity': 120,
-                'category': 'Books',
-                'image_url': 'https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=500'
-            },
-            {
-                'name': 'The Art of Web Design',
-                'description': 'Learn modern web design principles and best practices. Includes case studies and examples.',
-                'price': 165000,
-                'stock_quantity': 90,
-                'category': 'Books',
-                'image_url': 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=500'
-            },
-            {
-                'name': 'Yoga Mat Premium',
-                'description': 'Extra thick yoga mat with carrying strap. Non-slip surface for safe practice.',
-                'price': 110000,
-                'stock_quantity': 150,
-                'category': 'Sports',
-                'image_url': 'https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=500'
-            },
-            {
-                'name': 'Resistance Bands Set',
-                'description': 'Set of 5 resistance bands with different resistance levels. Perfect for home workouts.',
-                'price': 90000,
-                'stock_quantity': 200,
-                'category': 'Sports',
-                'image_url': 'https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=500'
-            },
-            {
-                'name': 'Basketball Official Size',
-                'description': 'Official size and weight basketball. Suitable for indoor and outdoor use.',
-                'price': 128000,
-                'stock_quantity': 85,
-                'category': 'Sports',
-                'image_url': 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=500'
-            },
-            {
-                'name': 'Running Shoes Pro',
-                'description': 'Lightweight running shoes with advanced cushioning technology. Available in multiple sizes.',
-                'price': 435000,
-                'stock_quantity': 65,
-                'category': 'Sports',
-                'image_url': 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500'
-            },
+        for name, desc in categories_data:
+            category, _ = Category.objects.get_or_create(
+                name=name,
+                defaults={"description": desc}
+            )
+            categories[name] = category
+
+        # -------------------------------
+        # Product templates
+        # -------------------------------
+        base_products = [
+            ("Bluetooth Headphones", "Electronics", 290000, "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"),
+            ("Smart Watch", "Electronics", 1100000, "https://images.unsplash.com/photo-1523275335684-37898b6baf30"),
+            ("Laptop Stand", "Electronics", 145000, "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46"),
+            ("Wireless Mouse", "Electronics", 95000, "https://images.unsplash.com/photo-1587829741301-dc798b83add3"),
+            ("Mechanical Keyboard", "Electronics", 345000, "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae"),
+
+            ("Cotton T Shirt", "Clothing", 110000, "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"),
+            ("Denim Jeans", "Clothing", 220000, "https://images.unsplash.com/photo-1542272604-787c3835535d"),
+            ("Winter Jacket", "Clothing", 475000, "https://images.unsplash.com/photo-1551028719-00167b16eac5"),
+            ("Running Shoes", "Clothing", 435000, "https://images.unsplash.com/photo-1542291026-7eec264c27ff"),
+            ("Baseball Cap", "Clothing", 85000, "https://images.unsplash.com/photo-1521369909029-2afed882baee"),
+
+            ("Indoor Plant", "Home & Garden", 165000, "https://images.unsplash.com/photo-1485955900006-10f4d324d411"),
+            ("LED Desk Lamp", "Home & Garden", 128000, "https://images.unsplash.com/photo-1507473885765-e6ed057f782c"),
+            ("Kitchen Knife Set", "Home & Garden", 330000, "https://images.unsplash.com/photo-1593618998160-e34014e67546"),
+            ("Office Chair", "Home & Garden", 890000, "https://images.unsplash.com/photo-1580480055273-228ff5388ef8"),
+            ("Coffee Maker", "Home & Garden", 650000, "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085"),
+
+            ("Python Programming Book", "Books", 145000, "https://images.unsplash.com/photo-1516979187457-637abb4f9353"),
+            ("Web Design Book", "Books", 165000, "https://images.unsplash.com/photo-1512820790803-83ca734da794"),
+            ("Data Science Handbook", "Books", 175000, "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f"),
+            ("Machine Learning Guide", "Books", 195000, "https://images.unsplash.com/photo-1532012197267-da84d127e765"),
+            ("Startup Business Book", "Books", 155000, "https://images.unsplash.com/photo-1519681393784-d120267933ba"),
+
+            ("Yoga Mat", "Sports", 110000, "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f"),
+            ("Resistance Bands", "Sports", 90000, "https://images.unsplash.com/photo-1599058917765-a780eda07a3e"),
+            ("Basketball", "Sports", 128000, "https://images.unsplash.com/photo-1519861531473-9200262188bf"),
+            ("Football", "Sports", 120000, "https://images.unsplash.com/photo-1574629810360-7efbbe195018"),
+            ("Dumbbell Set", "Sports", 280000, "https://images.unsplash.com/photo-1517838277536-f5f99be501cd"),
         ]
 
-        # Distribute products among sellers
-        for i, product_data in enumerate(products_data):
-            seller = sellers[i % len(sellers)]
-            category = categories[product_data.pop('category')]
+        # -------------------------------
+        # Create 5 products per seller
+        # -------------------------------
+        product_count = 0
 
-            product, created = Product.objects.get_or_create(
-                name=product_data['name'],
-                seller=seller,
-                defaults={
-                    **product_data,
-                    'category': category
-                }
-            )
+        for seller_index, seller in enumerate(sellers):
 
-            if created:
-                self.stdout.write(
-                    self.style.SUCCESS(
-                        f'Created product: {product.name} (Seller: {seller.email})'
-                    )
+            for i in range(5):
+
+                template = base_products[(seller_index * 5 + i) % len(base_products)]
+
+                name, category_name, price, image = template
+
+                Product.objects.get_or_create(
+                    seller=seller,
+                    name=f"{name} - Seller {seller_index+1}-{i+1}",
+                    defaults={
+                        "description": f"{name} sold by seller {seller_index+1}",
+                        "price": price,
+                        "stock_quantity": 50 + i * 10,
+                        "category": categories[category_name],
+                        "image_url": image,
+                    }
                 )
+
+                product_count += 1
 
         self.stdout.write(
             self.style.SUCCESS(
-                f'\nSuccessfully populated database with {len(products_data)} products!'
+                f"\nCreated {len(sellers)} sellers and {product_count} products."
             )
         )

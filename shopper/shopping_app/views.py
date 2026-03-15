@@ -31,6 +31,7 @@ from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
 from django.contrib.auth import update_session_auth_hash
+from django.core.paginator import Paginator
 
 logger = logging.getLogger(__name__)
 
@@ -199,13 +200,29 @@ def product_list(request):
     return render(request, 'product_list.html')
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# get_products — paginated + lazy-load friendly
+# ─────────────────────────────────────────────────────────────────────────────
 @api_view(['GET'])
 def get_products(request):
-    try:
-        category = request.GET.get('category')
-        search = request.GET.get('search')
+    """
+    Returns a paginated page of active products.
 
-        products = Product.objects.filter(is_active=True)
+    Query params:
+        page      (int, default 1)       – page number
+        per_page  (int, default 8)       – products per page (max 50)
+        category  (str, optional)        – filter by category name
+        search    (str, optional)        – filter by name / description
+    """
+    try:
+        category   = request.GET.get('category')
+        search     = request.GET.get('search')
+        page       = max(1, int(request.GET.get('page', 1)))
+        per_page   = min(50, max(1, int(request.GET.get('per_page', 8))))
+
+        products = Product.objects.filter(is_active=True).select_related(
+            'category', 'seller'
+        ).order_by('id')
 
         if category:
             products = products.filter(category__name=category)
@@ -215,22 +232,39 @@ def get_products(request):
                 Q(name__icontains=search) | Q(description__icontains=search)
             )
 
-        products_data = [{
-            'id': p.id,
-            'name': p.name,
-            'description': p.description,
-            'price': str(p.price),
-            'stock_quantity': p.stock_quantity,
-            'image_url': p.image_display_url or p.image_url,
-            'category': p.category.name if p.category else None,
-            'seller_email': p.seller.email,
-            'in_stock': p.in_stock
-        } for p in products]
+        paginator   = Paginator(products, per_page)
+        page_obj    = paginator.get_page(page)
 
-        return Response({'products': products_data})
+        products_data = [{
+            'id':            p.id,
+            'name':          p.name,
+            'description':   p.description,
+            'price':         str(p.price),
+            'stock_quantity': p.stock_quantity,
+            'image_url':     p.image_display_url or p.image_url,
+            'category':      p.category.name if p.category else None,
+            'seller_email':  p.seller.email,
+            'in_stock':      p.in_stock,
+        } for p in page_obj]
+
+        return Response({
+            'products':     products_data,
+            'page':         page,
+            'per_page':     per_page,
+            'total_pages':  paginator.num_pages,
+            'total_count':  paginator.count,
+            'has_next':     page_obj.has_next(),
+            'has_previous': page_obj.has_previous(),
+        })
+
     except Exception as e:
         logger.error(f"Error fetching products: {str(e)}")
         return Response({'error': str(e)}, status=500)
+
+
+
+
+
 
 
 # Product Detail View

@@ -60,7 +60,7 @@ class ZKPClient:
 
     def _request(self, method, path, **kwargs):
         url = f"{self.base_url}{path}"
-        timeout = kwargs.pop('timeout', 30)
+        timeout = kwargs.pop('timeout', 120)
         try:
             resp = getattr(requests, method)(url, timeout=timeout, **kwargs)
             resp.raise_for_status()

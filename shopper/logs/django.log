@@ -25978,3 +25978,1045 @@ INFO 2026-03-14 18:58:26,871 basehttp "GET /api/seller-verification-status/5/ HT
 INFO 2026-03-14 18:58:26,880 basehttp "GET /api/seller-verification-status/3/ HTTP/1.1" 200 305
 INFO 2026-03-14 18:58:26,891 basehttp "GET /user_profile/ HTTP/1.1" 200 88
 INFO 2026-03-14 18:58:26,980 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-14 20:32:24,023 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-03-14 20:32:24,048 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-14 20:32:25,785 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-14 20:32:25,847 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-14 20:32:25,877 views User authenticated: False
+INFO 2026-03-14 20:32:25,881 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+INFO 2026-03-14 20:32:27,217 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-14 20:32:42,117 basehttp "POST /login_user/ HTTP/1.1" 200 93
+INFO 2026-03-14 20:32:45,752 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-14 20:32:45,841 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-14 20:32:45,881 views User authenticated: True
+INFO 2026-03-14 20:32:45,896 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-14 20:32:45,984 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-14 20:32:46,085 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-14 20:32:47,652 basehttp "GET /seller/products/ HTTP/1.1" 200 22562
+INFO 2026-03-14 20:32:47,741 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-14 20:32:47,818 views User authenticated: True
+INFO 2026-03-14 20:32:47,830 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-14 20:32:47,841 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-14 20:32:47,885 basehttp "GET /api/seller/products/ HTTP/1.1" 200 1792
+INFO 2026-03-14 20:32:47,918 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-14 20:32:48,063 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-14 20:32:50,108 basehttp "GET /seller/dashboard/ HTTP/1.1" 200 25888
+INFO 2026-03-14 20:32:50,186 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-14 20:32:50,274 views User authenticated: True
+INFO 2026-03-14 20:32:50,276 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-14 20:32:50,349 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-14 20:32:50,375 basehttp "GET /api/seller/recent-sales/ HTTP/1.1" 200 2830
+INFO 2026-03-14 20:32:50,386 basehttp "GET /api/seller/dashboard-stats/ HTTP/1.1" 200 106
+INFO 2026-03-14 20:32:50,401 basehttp "GET /api/seller/products/?limit=6 HTTP/1.1" 200 1792
+INFO 2026-03-14 20:32:50,490 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-14 20:32:50,597 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-14 20:32:52,091 seller_proxy_views ✅ Generated seller access token for seller2@gmail.com
+INFO 2026-03-14 20:32:52,091 seller_proxy_views 📊 Seller finances page loaded for seller2@gmail.com
+INFO 2026-03-14 20:32:52,142 basehttp "GET /seller/finances/ HTTP/1.1" 200 18702
+INFO 2026-03-14 20:32:52,317 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-14 20:32:52,454 views User authenticated: True
+INFO 2026-03-14 20:32:52,465 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-14 20:32:53,610 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-14 20:32:53,866 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-14 21:48:28,335 basehttp "GET /seller/dashboard/ HTTP/1.1" 200 25888
+INFO 2026-03-14 21:48:28,434 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-14 21:48:28,482 views User authenticated: True
+INFO 2026-03-14 21:48:28,493 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-14 21:48:28,501 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-14 21:48:28,581 basehttp "GET /api/seller/recent-sales/ HTTP/1.1" 200 2830
+INFO 2026-03-14 21:48:28,594 basehttp "GET /api/seller/dashboard-stats/ HTTP/1.1" 200 106
+INFO 2026-03-14 21:48:28,603 basehttp "GET /api/seller/products/?limit=6 HTTP/1.1" 200 1792
+INFO 2026-03-14 21:48:28,646 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-14 21:48:28,734 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-14 21:48:34,813 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-14 21:48:34,913 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-14 21:48:34,957 views User authenticated: True
+INFO 2026-03-14 21:48:34,969 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-14 21:48:35,046 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-14 21:48:35,136 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-14 21:48:46,793 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-03-14 21:48:46,809 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-14 21:49:08,229 basehttp "POST /login_user/ HTTP/1.1" 200 90
+INFO 2026-03-14 21:49:26,320 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-14 21:49:26,398 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-14 21:49:26,473 views User authenticated: True
+INFO 2026-03-14 21:49:26,486 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-14 21:49:26,575 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-14 21:49:26,676 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-14 23:09:57,092 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-14 23:09:57,188 basehttp "GET /static/css/navbar.css HTTP/1.1" 200 7526
+INFO 2026-03-14 23:09:57,201 basehttp "GET /static/js/navbar.js HTTP/1.1" 200 13400
+INFO 2026-03-14 23:09:57,345 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-14 23:09:57,484 views User authenticated: False
+INFO 2026-03-14 23:09:57,487 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+WARNING 2026-03-14 23:09:57,508 log Not Found: /favicon.ico
+WARNING 2026-03-14 23:09:57,508 basehttp "GET /favicon.ico HTTP/1.1" 404 18475
+INFO 2026-03-14 23:10:08,119 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-14 23:10:08,189 basehttp "GET /static/css/login.css HTTP/1.1" 200 3232
+INFO 2026-03-14 23:10:08,190 basehttp "GET /static/js/login-validation.js HTTP/1.1" 200 2795
+INFO 2026-03-14 23:10:08,254 basehttp "GET /static/image/logo.jpg HTTP/1.1" 200 16778
+INFO 2026-03-14 23:10:32,401 basehttp "POST /login_user/ HTTP/1.1" 200 93
+INFO 2026-03-14 23:10:36,390 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-14 23:10:36,479 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-14 23:10:36,552 views User authenticated: True
+INFO 2026-03-14 23:10:36,556 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-14 23:10:36,635 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-14 23:10:36,723 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-14 23:10:43,868 basehttp "GET /seller/dashboard/ HTTP/1.1" 200 25888
+INFO 2026-03-14 23:10:43,958 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-14 23:10:44,051 views User authenticated: True
+INFO 2026-03-14 23:10:44,102 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-14 23:10:44,117 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-14 23:10:44,180 basehttp "GET /api/seller/recent-sales/ HTTP/1.1" 200 2830
+INFO 2026-03-14 23:10:44,192 basehttp "GET /api/seller/dashboard-stats/ HTTP/1.1" 200 106
+INFO 2026-03-14 23:10:44,202 basehttp "GET /api/seller/products/?limit=6 HTTP/1.1" 200 1792
+INFO 2026-03-14 23:10:44,213 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-14 23:10:44,313 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-14 23:11:54,919 seller_proxy_views ✅ Generated seller access token for seller2@gmail.com
+INFO 2026-03-14 23:11:54,919 seller_proxy_views 📊 Seller finances page loaded for seller2@gmail.com
+INFO 2026-03-14 23:11:54,955 basehttp "GET /seller/finances/ HTTP/1.1" 200 18702
+INFO 2026-03-14 23:11:55,078 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-14 23:11:55,125 views User authenticated: True
+INFO 2026-03-14 23:11:55,189 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-14 23:11:55,289 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-14 23:11:55,378 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-15 01:36:33,205 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-15 01:36:33,265 basehttp "GET /static/css/navbar.css HTTP/1.1" 200 7526
+INFO 2026-03-15 01:36:33,287 basehttp "GET /static/js/navbar.js HTTP/1.1" 200 13400
+INFO 2026-03-15 01:36:33,318 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 01:36:33,611 views User authenticated: False
+INFO 2026-03-15 01:36:33,616 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+WARNING 2026-03-15 01:36:33,657 log Not Found: /favicon.ico
+WARNING 2026-03-15 01:36:33,657 basehttp "GET /favicon.ico HTTP/1.1" 404 18475
+INFO 2026-03-15 01:36:37,585 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-15 01:36:37,632 basehttp "GET /static/css/login.css HTTP/1.1" 200 3232
+INFO 2026-03-15 01:36:37,638 basehttp "GET /static/js/login-validation.js HTTP/1.1" 200 2795
+INFO 2026-03-15 01:36:37,713 basehttp "GET /static/image/logo.jpg HTTP/1.1" 200 16778
+INFO 2026-03-15 01:36:59,119 basehttp "POST /login_user/ HTTP/1.1" 200 93
+INFO 2026-03-15 01:37:02,375 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-15 01:37:02,454 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 01:37:02,528 views User authenticated: True
+INFO 2026-03-15 01:37:02,542 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 01:37:02,620 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 01:37:02,709 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-15 01:37:04,442 basehttp "GET /seller/dashboard/ HTTP/1.1" 200 25888
+INFO 2026-03-15 01:37:04,531 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 01:37:04,618 views User authenticated: True
+INFO 2026-03-15 01:37:04,621 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 01:37:04,638 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 01:37:04,702 basehttp "GET /api/seller/recent-sales/ HTTP/1.1" 200 2830
+INFO 2026-03-15 01:37:04,711 basehttp "GET /api/seller/dashboard-stats/ HTTP/1.1" 200 106
+INFO 2026-03-15 01:37:04,721 basehttp "GET /api/seller/products/?limit=6 HTTP/1.1" 200 1792
+INFO 2026-03-15 01:37:04,731 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 01:37:04,842 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-15 01:37:06,861 seller_proxy_views ✅ Generated seller access token for seller2@gmail.com
+INFO 2026-03-15 01:37:06,861 seller_proxy_views 📊 Seller finances page loaded for seller2@gmail.com
+INFO 2026-03-15 01:37:06,909 basehttp "GET /seller/finances/ HTTP/1.1" 200 18702
+INFO 2026-03-15 01:37:07,032 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 01:37:07,084 views User authenticated: True
+INFO 2026-03-15 01:37:07,120 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 01:37:07,221 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 01:37:07,354 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+WARNING 2026-03-15 01:50:39,957 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-15 01:50:39,978 basehttp "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 18586
+INFO 2026-03-15 01:54:08,445 seller_proxy_views ✅ Generated seller access token for seller2@gmail.com
+INFO 2026-03-15 01:54:08,470 seller_proxy_views 📊 Seller finances page loaded for seller2@gmail.com
+INFO 2026-03-15 01:54:08,608 basehttp "GET /seller/finances/ HTTP/1.1" 200 18702
+INFO 2026-03-15 01:54:11,106 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+WARNING 2026-03-15 01:54:11,979 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-15 01:54:12,047 basehttp "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 18586
+INFO 2026-03-15 01:54:12,450 views User authenticated: True
+INFO 2026-03-15 01:54:12,520 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 01:54:14,054 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 01:54:18,155 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-15 02:08:37,899 basehttp "GET /seller/dashboard/ HTTP/1.1" 200 25888
+INFO 2026-03-15 02:08:38,092 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+WARNING 2026-03-15 02:08:38,104 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-03-15 02:08:38,105 basehttp "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 18586
+INFO 2026-03-15 02:08:38,164 views User authenticated: True
+INFO 2026-03-15 02:08:38,166 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 02:08:38,178 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 02:08:38,266 basehttp "GET /api/seller/recent-sales/ HTTP/1.1" 200 2830
+INFO 2026-03-15 02:08:38,278 basehttp "GET /api/seller/dashboard-stats/ HTTP/1.1" 200 106
+INFO 2026-03-15 02:08:38,289 basehttp "GET /api/seller/products/?limit=6 HTTP/1.1" 200 1792
+INFO 2026-03-15 02:08:38,300 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 02:08:38,399 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-15 11:05:46,114 autoreload Watching for file changes with StatReloader
+INFO 2026-03-15 11:55:40,889 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-15 11:55:42,398 basehttp "GET /static/css/navbar.css HTTP/1.1" 200 7526
+INFO 2026-03-15 11:55:42,401 basehttp "GET /static/js/navbar.js HTTP/1.1" 200 13400
+INFO 2026-03-15 11:55:43,378 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 11:55:45,176 views User authenticated: False
+INFO 2026-03-15 11:55:45,185 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+WARNING 2026-03-15 11:55:45,923 log Not Found: /favicon.ico
+WARNING 2026-03-15 11:55:45,955 basehttp "GET /favicon.ico HTTP/1.1" 404 18475
+INFO 2026-03-15 11:56:49,948 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-15 11:56:50,677 basehttp "GET /static/css/login.css HTTP/1.1" 200 3232
+INFO 2026-03-15 11:56:50,682 basehttp "GET /static/js/login-validation.js HTTP/1.1" 200 2795
+INFO 2026-03-15 11:56:51,570 basehttp "GET /static/image/logo.jpg HTTP/1.1" 200 16778
+WARNING 2026-03-15 11:57:31,568 log Unauthorized: /login_user/
+WARNING 2026-03-15 11:57:31,576 basehttp "POST /login_user/ HTTP/1.1" 401 38
+INFO 2026-03-15 11:57:42,496 basehttp "POST /login_user/ HTTP/1.1" 200 90
+INFO 2026-03-15 11:57:49,658 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-15 11:57:51,687 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 11:57:52,453 views User authenticated: True
+INFO 2026-03-15 11:57:52,478 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 11:57:52,905 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-15 11:57:54,267 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-15 12:11:36,773 autoreload Watching for file changes with StatReloader
+INFO 2026-03-15 12:19:25,706 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-15 12:19:26,963 basehttp "GET /static/css/navbar.css HTTP/1.1" 200 7526
+INFO 2026-03-15 12:19:27,144 basehttp "GET /static/js/navbar.js HTTP/1.1" 200 13400
+INFO 2026-03-15 12:19:34,493 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:19:34,968 views User authenticated: False
+INFO 2026-03-15 12:19:34,973 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+WARNING 2026-03-15 12:19:36,332 log Not Found: /favicon.ico
+WARNING 2026-03-15 12:19:36,337 basehttp "GET /favicon.ico HTTP/1.1" 404 18475
+INFO 2026-03-15 12:19:55,782 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-15 12:19:56,247 basehttp "GET /static/css/login.css HTTP/1.1" 200 3232
+INFO 2026-03-15 12:19:56,252 basehttp "GET /static/js/login-validation.js HTTP/1.1" 200 2795
+INFO 2026-03-15 12:19:57,348 basehttp "GET /static/image/logo.jpg HTTP/1.1" 200 16778
+INFO 2026-03-15 12:20:27,933 basehttp "POST /login_user/ HTTP/1.1" 200 90
+INFO 2026-03-15 12:20:33,473 basehttp "GET /products/ HTTP/1.1" 200 18343
+INFO 2026-03-15 12:20:35,393 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:20:35,863 views User authenticated: True
+INFO 2026-03-15 12:20:35,878 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 12:20:36,965 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-15 12:20:38,322 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-15 12:20:39,689 basehttp "GET /api/products/ HTTP/1.1" 200 5594
+INFO 2026-03-15 12:20:41,745 basehttp "GET /media/products/10/f5d7ec74-8c79-42f3-95c9-3759b61ada7c.jpg HTTP/1.1" 200 526380
+INFO 2026-03-15 12:20:42,287 basehttp "GET /media/products/11/3594f7db-9831-4d9f-8e74-6fde759d441c.jpg HTTP/1.1" 200 1063334
+INFO 2026-03-15 12:23:28,140 basehttp "POST /api/cart/add/ HTTP/1.1" 200 60
+INFO 2026-03-15 12:23:28,395 basehttp "GET /api/cart/ HTTP/1.1" 200 340
+INFO 2026-03-15 12:23:32,196 basehttp "POST /api/cart/add/ HTTP/1.1" 200 60
+INFO 2026-03-15 12:23:32,382 basehttp "GET /api/cart/ HTTP/1.1" 200 626
+INFO 2026-03-15 12:23:34,056 basehttp "POST /api/cart/add/ HTTP/1.1" 200 60
+INFO 2026-03-15 12:23:34,732 basehttp "GET /api/cart/ HTTP/1.1" 200 913
+INFO 2026-03-15 12:23:36,302 basehttp "GET /cart/ HTTP/1.1" 200 25004
+INFO 2026-03-15 12:23:37,589 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:23:37,722 basehttp "GET /api/cart/ HTTP/1.1" 200 913
+INFO 2026-03-15 12:23:37,978 views User authenticated: True
+INFO 2026-03-15 12:23:38,069 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 12:23:38,759 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-15 12:23:39,504 basehttp "GET /api/cart/ HTTP/1.1" 200 913
+INFO 2026-03-15 12:23:43,692 basehttp "GET /checkout/ HTTP/1.1" 302 0
+INFO 2026-03-15 12:23:47,297 basehttp "GET /payment/select/ HTTP/1.1" 200 45355
+INFO 2026-03-15 12:23:48,723 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:23:49,329 basehttp "GET /api/seller-verification-status/3/ HTTP/1.1" 200 305
+INFO 2026-03-15 12:23:49,386 basehttp "GET /api/seller-verification-status/4/ HTTP/1.1" 200 310
+INFO 2026-03-15 12:23:49,387 basehttp "GET /api/seller-verification-status/5/ HTTP/1.1" 200 204
+INFO 2026-03-15 12:23:50,098 views User authenticated: True
+INFO 2026-03-15 12:23:50,174 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 12:23:52,544 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-15 12:23:53,058 basehttp "GET /api/cart/ HTTP/1.1" 200 913
+INFO 2026-03-15 12:24:27,303 views_seller_verification ZKP verification refresh for seller2@gmail.com: valid=True, pa_verified=True, commitment_match=True
+INFO 2026-03-15 12:24:27,412 basehttp "GET /api/seller-verification-status/4/?refresh=1 HTTP/1.1" 200 387
+INFO 2026-03-15 12:24:59,299 views_seller_verification ZKP verification refresh for seller2@gmail.com: valid=True, pa_verified=True, commitment_match=True
+INFO 2026-03-15 12:24:59,382 basehttp "GET /api/seller-verification-status/4/?refresh=1 HTTP/1.1" 200 387
+INFO 2026-03-15 12:25:56,668 views_balance_proof Balance proofs for ORD-20260315092513-IRQEK6: 3/3 verified via Strapi
+INFO 2026-03-15 12:25:56,683 views ✅ Balance proofs generated for order ORD-20260315092513-IRQEK6: 3 seller(s)
+INFO 2026-03-15 12:25:59,316 basehttp "POST /api/process-payment-selection/ HTTP/1.1" 200 164
+INFO 2026-03-15 12:26:01,708 basehttp "GET /payment/process/c7eeba83-e268-4152-8cc2-5b5a22b72aa7/ HTTP/1.1" 200 15148
+INFO 2026-03-15 12:27:03,080 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:28:04,985 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:29:04,682 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:30:03,355 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:31:02,927 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:32:02,674 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:33:03,129 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:34:03,726 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:35:03,455 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:35:25,272 proxy_views 📥 Payment status webhook: c7eeba83-e268-4152-8cc2-5b5a22b72aa7 — partial
+INFO 2026-03-15 12:35:25,966 proxy_views   Item 137 → escrowed (updated: 1)
+INFO 2026-03-15 12:35:26,092 proxy_views   Item 138 → failed (updated: 1)
+INFO 2026-03-15 12:35:26,109 proxy_views   Item 139 → escrowed (updated: 1)
+INFO 2026-03-15 12:35:26,132 basehttp "POST /api/webhook/payment-status/ HTTP/1.1" 200 81
+INFO 2026-03-15 12:35:26,478 proxy_views 📥 Payment status webhook: c7eeba83-e268-4152-8cc2-5b5a22b72aa7 — partial
+INFO 2026-03-15 12:35:27,653 proxy_views   Item 137 → escrowed (updated: 1)
+INFO 2026-03-15 12:35:28,330 proxy_views   Item 138 → failed (updated: 1)
+INFO 2026-03-15 12:35:28,352 proxy_views   Item 139 → escrowed (updated: 1)
+INFO 2026-03-15 12:35:28,373 basehttp "POST /api/webhook/payment-status/ HTTP/1.1" 200 81
+INFO 2026-03-15 12:35:34,543 proxy_views 🔙 Payment return: c7eeba83-e268-4152-8cc2-5b5a22b72aa7 — Status: escrowed
+INFO 2026-03-15 12:35:34,900 proxy_views ✅ Payment escrowed for order ORD-20260315092513-IRQEK6
+INFO 2026-03-15 12:35:35,168 basehttp "GET /payment/return/?request_id=c7eeba83-e268-4152-8cc2-5b5a22b72aa7&status=escrowed HTTP/1.1" 302 0
+INFO 2026-03-15 12:35:36,546 basehttp "GET /orders/25/ HTTP/1.1" 200 59237
+INFO 2026-03-15 12:35:40,317 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:35:41,786 views User authenticated: True
+INFO 2026-03-15 12:35:42,180 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 12:35:42,701 basehttp "GET /api/orders/25/ HTTP/1.1" 200 3152
+INFO 2026-03-15 12:35:44,543 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-15 12:35:44,570 basehttp "GET /api/seller-verification-status/4/ HTTP/1.1" 200 310
+INFO 2026-03-15 12:35:44,720 basehttp "GET /api/seller-verification-status/3/ HTTP/1.1" 200 305
+INFO 2026-03-15 12:35:45,236 basehttp "GET /api/seller-verification-status/5/ HTTP/1.1" 200 204
+INFO 2026-03-15 12:35:46,244 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-15 12:37:01,662 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-15 12:37:16,560 basehttp "GET /static/css/navbar.css HTTP/1.1" 200 7526
+INFO 2026-03-15 12:37:16,924 basehttp "GET /static/js/navbar.js HTTP/1.1" 200 13400
+WARNING 2026-03-15 12:37:21,764 log Not Found: /favicon.ico
+WARNING 2026-03-15 12:37:21,784 basehttp "GET /favicon.ico HTTP/1.1" 404 18475
+INFO 2026-03-15 12:37:28,086 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:37:28,611 views User authenticated: False
+INFO 2026-03-15 12:37:28,614 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+INFO 2026-03-15 12:37:34,869 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-15 12:37:38,755 basehttp "GET /static/css/login.css HTTP/1.1" 200 3232
+INFO 2026-03-15 12:37:38,903 basehttp "GET /static/js/login-validation.js HTTP/1.1" 200 2795
+INFO 2026-03-15 12:37:40,270 basehttp "GET /static/image/logo.jpg HTTP/1.1" 200 16778
+INFO 2026-03-15 12:38:04,541 basehttp "POST /login_user/ HTTP/1.1" 200 93
+INFO 2026-03-15 12:38:11,374 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-15 12:38:15,644 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:38:16,482 views User authenticated: True
+INFO 2026-03-15 12:38:16,533 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 12:38:17,228 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 12:38:17,904 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-15 12:38:23,255 basehttp "GET /seller/orders/ HTTP/1.1" 200 16572
+INFO 2026-03-15 12:38:57,811 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:38:59,580 views User authenticated: True
+INFO 2026-03-15 12:38:59,769 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 12:39:01,149 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 12:39:01,811 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-15 12:39:02,169 basehttp "GET /api/seller/orders/ HTTP/1.1" 200 24936
+INFO 2026-03-15 12:39:09,728 basehttp "GET /seller/orders/ HTTP/1.1" 200 16572
+INFO 2026-03-15 12:40:18,936 basehttp "GET /seller/orders/ HTTP/1.1" 200 16572
+INFO 2026-03-15 12:40:37,070 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:40:37,818 views User authenticated: True
+INFO 2026-03-15 12:40:37,858 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 12:40:39,718 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 12:40:41,265 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-15 12:40:41,788 basehttp "GET /api/seller/orders/ HTTP/1.1" 200 24936
+INFO 2026-03-15 12:40:55,843 basehttp "GET /seller/order/25/ HTTP/1.1" 200 38764
+INFO 2026-03-15 12:41:13,038 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:41:14,097 views User authenticated: True
+INFO 2026-03-15 12:41:14,179 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 12:41:14,877 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 12:41:16,668 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-15 12:41:16,892 basehttp "GET /api/seller/order/25/ HTTP/1.1" 200 769
+INFO 2026-03-15 12:41:19,256 basehttp "GET /api/buyer-balance-proof/?order_id=25 HTTP/1.1" 200 220
+INFO 2026-03-15 12:42:00,157 views_balance_proof No pending eligible items for seller2@gmail.com in order ORD-20260315092513-IRQEK6
+INFO 2026-03-15 12:42:00,883 basehttp "POST /api/buyer-balance-proof/refresh/ HTTP/1.1" 200 226
+INFO 2026-03-15 12:42:35,711 basehttp "POST /api/seller/order-item/138/update-tracking/ HTTP/1.1" 200 87
+INFO 2026-03-15 12:42:37,505 basehttp "GET /api/seller/order/25/ HTTP/1.1" 200 884
+INFO 2026-03-15 12:42:39,279 basehttp "GET /api/buyer-balance-proof/?order_id=25 HTTP/1.1" 200 220
+INFO 2026-03-15 12:42:47,646 basehttp "POST /api/seller/order-item/138/update-tracking/ HTTP/1.1" 200 95
+INFO 2026-03-15 12:42:49,946 basehttp "GET /api/seller/order/25/ HTTP/1.1" 200 1038
+INFO 2026-03-15 12:42:53,745 basehttp "GET /api/buyer-balance-proof/?order_id=25 HTTP/1.1" 200 220
+INFO 2026-03-15 12:43:01,943 order_views 📦 Delivery confirmation created for order ORD-20260315092513-IRQEK6, buyer buyer@gmail.com
+INFO 2026-03-15 12:43:02,182 basehttp "POST /api/seller/order-item/138/update-tracking/ HTTP/1.1" 200 113
+INFO 2026-03-15 12:43:03,884 basehttp "GET /api/seller/order/25/ HTTP/1.1" 200 1205
+INFO 2026-03-15 12:43:05,335 basehttp "GET /api/buyer-balance-proof/?order_id=25 HTTP/1.1" 200 220
+INFO 2026-03-15 12:43:26,779 basehttp "GET /order/25/tracking/ HTTP/1.1" 200 18929
+INFO 2026-03-15 12:43:28,601 basehttp "GET /static/js/delivery_notifications.js HTTP/1.1" 200 5302
+INFO 2026-03-15 12:43:42,188 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:43:43,278 views User authenticated: True
+INFO 2026-03-15 12:43:43,411 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 12:43:44,326 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-15 12:43:45,445 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-15 12:43:46,983 basehttp "GET /api/order/25/tracking/ HTTP/1.1" 200 2466
+INFO 2026-03-15 12:46:09,885 basehttp "GET /order/25/confirm-delivery/ HTTP/1.1" 200 22507
+INFO 2026-03-15 12:46:23,785 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:46:24,968 views User authenticated: True
+INFO 2026-03-15 12:46:25,024 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 12:46:26,262 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-15 12:46:27,897 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-15 12:46:29,198 basehttp "GET /api/order/25/confirmation-items/ HTTP/1.1" 200 395
+INFO 2026-03-15 12:46:57,390 order_views ℹ️ release_escrow: item 138 already released or not in escrow
+INFO 2026-03-15 12:46:58,366 basehttp "POST /api/order/25/submit-confirmation/ HTTP/1.1" 200 107
+INFO 2026-03-15 12:47:08,592 basehttp "GET /order/25/tracking/ HTTP/1.1" 200 18929
+INFO 2026-03-15 12:47:23,595 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:47:24,051 views User authenticated: True
+INFO 2026-03-15 12:47:24,156 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 12:47:25,655 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-15 12:47:27,690 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-15 12:47:29,408 basehttp "GET /api/order/25/tracking/ HTTP/1.1" 200 2605
+INFO 2026-03-15 12:47:53,046 basehttp "GET /orders/ HTTP/1.1" 200 21929
+INFO 2026-03-15 12:47:56,809 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:47:57,951 views User authenticated: True
+INFO 2026-03-15 12:47:58,104 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 12:47:59,159 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-15 12:48:00,443 basehttp "GET /api/orders/ HTTP/1.1" 200 12629
+INFO 2026-03-15 12:48:00,605 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-15 12:48:08,569 basehttp "GET /orders/25/ HTTP/1.1" 200 59237
+INFO 2026-03-15 12:48:12,067 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:48:12,908 basehttp "GET /api/orders/25/ HTTP/1.1" 200 3170
+INFO 2026-03-15 12:48:13,063 views User authenticated: True
+INFO 2026-03-15 12:48:13,209 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 12:48:14,766 basehttp "GET /api/seller-verification-status/4/ HTTP/1.1" 200 310
+INFO 2026-03-15 12:48:15,498 basehttp "GET /api/seller-verification-status/5/ HTTP/1.1" 200 204
+INFO 2026-03-15 12:48:16,734 basehttp "GET /api/seller-verification-status/3/ HTTP/1.1" 200 305
+INFO 2026-03-15 12:48:16,979 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-15 12:48:18,235 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-15 12:49:41,367 basehttp "GET /seller/order/25/ HTTP/1.1" 200 38764
+INFO 2026-03-15 12:49:55,079 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:49:57,082 views User authenticated: True
+INFO 2026-03-15 12:49:57,335 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 12:49:58,784 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 12:50:00,123 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-15 12:50:00,535 basehttp "GET /api/seller/order/25/ HTTP/1.1" 200 1346
+INFO 2026-03-15 12:50:02,102 basehttp "GET /api/buyer-balance-proof/?order_id=25 HTTP/1.1" 200 220
+INFO 2026-03-15 12:50:18,661 basehttp "GET /seller/orders/ HTTP/1.1" 200 16572
+INFO 2026-03-15 12:50:31,636 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:50:32,939 views User authenticated: True
+INFO 2026-03-15 12:50:32,991 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 12:50:33,652 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 12:50:35,010 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-15 12:50:36,611 basehttp "GET /api/seller/orders/ HTTP/1.1" 200 24960
+INFO 2026-03-15 12:50:53,972 basehttp "GET /seller/order/23/ HTTP/1.1" 200 38764
+INFO 2026-03-15 12:51:04,975 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:51:07,383 views User authenticated: True
+INFO 2026-03-15 12:51:07,507 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 12:51:08,330 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 12:51:09,849 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-15 12:51:11,490 basehttp "GET /api/seller/order/23/ HTTP/1.1" 200 4623
+INFO 2026-03-15 12:51:13,178 basehttp "GET /api/buyer-balance-proof/?order_id=23 HTTP/1.1" 200 255
+INFO 2026-03-15 12:51:45,463 basehttp "POST /api/buyer-balance-proof/refresh/ HTTP/1.1" 200 246
+INFO 2026-03-15 12:52:24,987 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-03-15 12:52:28,586 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-15 12:53:07,121 basehttp "POST /login_user/ HTTP/1.1" 200 93
+INFO 2026-03-15 12:53:11,107 basehttp "GET /seller/order/23/ HTTP/1.1" 200 38764
+INFO 2026-03-15 12:53:38,710 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:53:40,179 views User authenticated: True
+INFO 2026-03-15 12:53:40,216 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 12:53:41,447 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 12:53:42,556 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 53
+INFO 2026-03-15 12:53:42,991 basehttp "GET /api/seller/order/23/ HTTP/1.1" 200 5928
+INFO 2026-03-15 12:53:44,511 basehttp "GET /api/buyer-balance-proof/?order_id=23 HTTP/1.1" 200 255
+INFO 2026-03-15 12:53:57,799 basehttp "GET /seller/orders/ HTTP/1.1" 200 16572
+INFO 2026-03-15 12:54:36,204 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:54:44,446 views User authenticated: True
+INFO 2026-03-15 12:54:44,835 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 12:54:47,363 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 12:54:51,005 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 53
+INFO 2026-03-15 12:54:53,808 basehttp "GET /api/seller/orders/ HTTP/1.1" 200 25360
+INFO 2026-03-15 12:56:31,965 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-03-15 12:56:32,878 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+WARNING 2026-03-15 12:57:20,603 log Unauthorized: /login_user/
+WARNING 2026-03-15 12:57:20,613 basehttp "POST /login_user/ HTTP/1.1" 401 38
+INFO 2026-03-15 12:57:53,089 basehttp "POST /login_user/ HTTP/1.1" 200 93
+WARNING 2026-03-15 12:57:58,185 log Not Found: /orders/25/
+WARNING 2026-03-15 12:57:58,186 basehttp "GET /orders/25/ HTTP/1.1" 404 6727
+INFO 2026-03-15 12:58:27,608 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-15 12:58:31,363 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 12:58:31,791 views User authenticated: True
+INFO 2026-03-15 12:58:31,844 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 12:58:33,842 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 12:58:35,302 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 53
+INFO 2026-03-15 13:05:13,961 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-15 13:05:23,942 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:05:26,963 views User authenticated: True
+INFO 2026-03-15 13:05:27,068 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 13:05:29,772 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 13:05:32,781 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 53
+INFO 2026-03-15 13:05:33,019 basehttp "GET /register_user/ HTTP/1.1" 200 5763
+INFO 2026-03-15 13:05:35,234 basehttp "GET /static/css/signup.css HTTP/1.1" 200 6996
+INFO 2026-03-15 13:05:35,255 basehttp "GET /static/js/signup-validation.js HTTP/1.1" 200 4230
+INFO 2026-03-15 13:05:46,141 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-15 13:05:51,885 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:05:53,274 views User authenticated: True
+INFO 2026-03-15 13:05:53,467 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 13:05:55,075 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 13:05:56,978 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 53
+INFO 2026-03-15 13:06:01,157 basehttp "GET /seller/dashboard/ HTTP/1.1" 200 25888
+INFO 2026-03-15 13:06:04,069 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:06:06,065 views User authenticated: True
+INFO 2026-03-15 13:06:06,242 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:06:06,539 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 13:06:09,973 basehttp "GET /api/seller/products/?limit=6 HTTP/1.1" 200 1797
+INFO 2026-03-15 13:06:10,098 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 13:06:10,708 basehttp "GET /api/seller/recent-sales/ HTTP/1.1" 200 2819
+INFO 2026-03-15 13:06:10,739 basehttp "GET /api/seller/dashboard-stats/ HTTP/1.1" 200 106
+INFO 2026-03-15 13:06:14,033 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 53
+INFO 2026-03-15 13:06:23,176 seller_proxy_views ✅ Generated seller access token for seller3@gmail.com
+INFO 2026-03-15 13:06:23,251 seller_proxy_views 📊 Seller finances page loaded for seller3@gmail.com
+INFO 2026-03-15 13:06:23,869 basehttp "GET /seller/finances/ HTTP/1.1" 200 18702
+INFO 2026-03-15 13:06:27,895 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:06:38,979 views User authenticated: True
+INFO 2026-03-15 13:06:39,120 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 13:06:40,887 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 13:06:42,282 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 53
+INFO 2026-03-15 13:07:15,378 basehttp "GET /internal/seller-zkp-proof/seller3@gmail.com/ HTTP/1.1" 200 205
+INFO 2026-03-15 13:19:59,179 basehttp "GET /internal/seller-zkp-proof/seller3@gmail.com/ HTTP/1.1" 200 205
+INFO 2026-03-15 13:20:08,411 basehttp "GET /seller/dashboard/ HTTP/1.1" 200 25888
+INFO 2026-03-15 13:20:10,509 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:20:11,765 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:20:11,833 views User authenticated: True
+INFO 2026-03-15 13:20:12,438 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 13:20:13,323 basehttp "GET /api/seller/recent-sales/ HTTP/1.1" 200 2819
+INFO 2026-03-15 13:20:13,448 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 13:20:13,580 basehttp "GET /api/seller/products/?limit=6 HTTP/1.1" 200 1797
+INFO 2026-03-15 13:20:13,689 basehttp "GET /api/seller/dashboard-stats/ HTTP/1.1" 200 106
+INFO 2026-03-15 13:20:15,084 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 53
+INFO 2026-03-15 13:20:34,149 seller_proxy_views ✅ Generated seller access token for seller3@gmail.com
+INFO 2026-03-15 13:20:34,150 seller_proxy_views 📊 Seller finances page loaded for seller3@gmail.com
+INFO 2026-03-15 13:20:34,267 basehttp "GET /seller/finances/ HTTP/1.1" 200 18702
+INFO 2026-03-15 13:20:35,802 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:20:36,946 views User authenticated: True
+INFO 2026-03-15 13:20:36,998 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 13:20:38,810 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 13:20:44,618 basehttp "GET /internal/seller-zkp-proof/seller3@gmail.com/ HTTP/1.1" 200 205
+INFO 2026-03-15 13:20:44,727 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 53
+INFO 2026-03-15 13:27:45,098 basehttp "GET /seller/dashboard/ HTTP/1.1" 200 25888
+INFO 2026-03-15 13:27:50,613 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:27:54,324 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:27:54,342 views User authenticated: True
+INFO 2026-03-15 13:27:54,720 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 13:27:57,076 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 13:27:58,158 basehttp "GET /api/seller/products/?limit=6 HTTP/1.1" 200 1797
+INFO 2026-03-15 13:27:58,204 basehttp "GET /api/seller/recent-sales/ HTTP/1.1" 200 2819
+INFO 2026-03-15 13:27:59,245 basehttp "GET /api/seller/dashboard-stats/ HTTP/1.1" 200 106
+INFO 2026-03-15 13:27:59,507 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 53
+INFO 2026-03-15 13:28:01,184 basehttp "GET /seller/orders/ HTTP/1.1" 200 16572
+INFO 2026-03-15 13:28:23,319 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:28:25,271 views User authenticated: True
+INFO 2026-03-15 13:28:25,447 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 13:28:26,557 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 13:28:29,185 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 53
+INFO 2026-03-15 13:28:31,135 basehttp "GET /api/seller/orders/ HTTP/1.1" 200 25360
+INFO 2026-03-15 13:28:43,135 basehttp "GET /seller/order/25/ HTTP/1.1" 200 38764
+INFO 2026-03-15 13:29:04,055 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:29:07,046 views User authenticated: True
+INFO 2026-03-15 13:29:07,370 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 13:29:09,742 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 13:29:11,668 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 53
+INFO 2026-03-15 13:29:15,741 basehttp "GET /api/seller/order/25/ HTTP/1.1" 200 782
+INFO 2026-03-15 13:29:18,973 basehttp "GET /api/buyer-balance-proof/?order_id=25 HTTP/1.1" 200 220
+INFO 2026-03-15 13:29:28,610 views_balance_proof No pending eligible items for seller3@gmail.com in order ORD-20260315092513-IRQEK6
+INFO 2026-03-15 13:29:29,671 basehttp "POST /api/buyer-balance-proof/refresh/ HTTP/1.1" 200 226
+INFO 2026-03-15 13:29:52,698 basehttp "POST /api/seller/order-item/137/update-tracking/ HTTP/1.1" 200 95
+INFO 2026-03-15 13:29:56,818 basehttp "GET /api/seller/order/25/ HTTP/1.1" 200 927
+INFO 2026-03-15 13:29:59,483 basehttp "GET /api/buyer-balance-proof/?order_id=25 HTTP/1.1" 200 220
+INFO 2026-03-15 13:30:10,469 order_views 📦 Delivery confirmation created for order ORD-20260315092513-IRQEK6, buyer buyer@gmail.com
+INFO 2026-03-15 13:30:10,555 basehttp "POST /api/seller/order-item/137/update-tracking/ HTTP/1.1" 200 113
+INFO 2026-03-15 13:30:13,298 basehttp "GET /api/seller/order/25/ HTTP/1.1" 200 1096
+INFO 2026-03-15 13:30:16,952 basehttp "GET /api/buyer-balance-proof/?order_id=25 HTTP/1.1" 200 220
+INFO 2026-03-15 13:30:32,316 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-03-15 13:30:34,561 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-15 13:31:52,685 basehttp "POST /login_user/ HTTP/1.1" 200 90
+INFO 2026-03-15 13:32:10,070 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-15 13:32:14,119 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:32:16,572 views User authenticated: True
+INFO 2026-03-15 13:32:17,119 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 13:32:18,343 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-15 13:32:21,514 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-15 13:34:50,675 basehttp "GET /orders/ HTTP/1.1" 200 21929
+INFO 2026-03-15 13:34:55,262 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:34:56,334 views User authenticated: True
+INFO 2026-03-15 13:34:56,898 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 13:34:57,917 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-15 13:35:00,246 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-15 13:35:01,294 basehttp "GET /api/orders/ HTTP/1.1" 200 12629
+INFO 2026-03-15 13:35:14,018 basehttp "GET /orders/25/ HTTP/1.1" 200 59237
+INFO 2026-03-15 13:35:17,504 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:35:18,838 views User authenticated: True
+INFO 2026-03-15 13:35:19,023 basehttp "GET /api/orders/25/ HTTP/1.1" 200 3170
+INFO 2026-03-15 13:35:19,091 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 13:35:22,585 basehttp "GET /api/seller-verification-status/5/ HTTP/1.1" 200 204
+INFO 2026-03-15 13:35:22,749 basehttp "GET /api/seller-verification-status/4/ HTTP/1.1" 200 310
+INFO 2026-03-15 13:35:22,764 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-15 13:35:22,939 basehttp "GET /api/seller-verification-status/3/ HTTP/1.1" 200 305
+INFO 2026-03-15 13:35:28,393 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-15 13:35:41,385 basehttp "GET /order/25/tracking/ HTTP/1.1" 200 18929
+INFO 2026-03-15 13:36:11,421 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:36:12,922 views User authenticated: True
+INFO 2026-03-15 13:36:13,022 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 13:36:15,114 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-15 13:36:16,297 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-15 13:36:18,948 basehttp "GET /api/order/25/tracking/ HTTP/1.1" 200 2921
+INFO 2026-03-15 13:36:29,786 basehttp "GET /order/25/confirm-delivery/ HTTP/1.1" 200 22507
+INFO 2026-03-15 13:36:49,119 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:36:51,109 views User authenticated: True
+INFO 2026-03-15 13:36:51,120 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 13:36:52,689 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-15 13:36:54,101 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-15 13:36:59,442 basehttp "GET /api/order/25/confirmation-items/ HTTP/1.1" 200 390
+INFO 2026-03-15 13:37:12,622 proxy_views 📥 Payment status webhook: c7eeba83-e268-4152-8cc2-5b5a22b72aa7 — paid
+WARNING 2026-03-15 13:37:20,961 order_views ⚠️ release_escrow network error for item 137: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=10)
+INFO 2026-03-15 13:37:22,804 proxy_views   Item 137 → paid (updated: 1)
+INFO 2026-03-15 13:37:23,105 proxy_views 📥 Payment status webhook: c7eeba83-e268-4152-8cc2-5b5a22b72aa7 — paid
+INFO 2026-03-15 13:37:23,297 basehttp "POST /api/order/25/submit-confirmation/ HTTP/1.1" 200 107
+INFO 2026-03-15 13:37:25,044 proxy_views   Item 137 → paid (updated: 1)
+INFO 2026-03-15 13:37:25,617 basehttp "POST /api/webhook/payment-status/ HTTP/1.1" 200 81
+INFO 2026-03-15 13:37:35,919 basehttp "GET /order/25/tracking/ HTTP/1.1" 200 18929
+INFO 2026-03-15 13:37:55,377 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:37:56,234 views User authenticated: True
+INFO 2026-03-15 13:37:56,640 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 13:37:58,151 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-15 13:38:01,690 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-15 13:38:04,319 basehttp "GET /api/order/25/tracking/ HTTP/1.1" 200 3014
+INFO 2026-03-15 13:39:08,463 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-03-15 13:39:09,337 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-15 13:39:18,886 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-15 13:39:21,047 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:39:22,141 views User authenticated: False
+INFO 2026-03-15 13:39:22,154 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+INFO 2026-03-15 13:39:33,929 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-15 13:40:24,995 basehttp "POST /login_user/ HTTP/1.1" 200 93
+INFO 2026-03-15 13:40:34,560 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-15 13:40:48,005 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-15 13:40:52,642 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:40:54,842 views User authenticated: True
+INFO 2026-03-15 13:40:55,835 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 13:40:57,830 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 13:40:59,603 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-15 13:41:36,781 basehttp "GET /seller/orders/ HTTP/1.1" 200 16572
+INFO 2026-03-15 13:42:01,666 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:42:03,287 views User authenticated: True
+INFO 2026-03-15 13:42:03,615 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 13:42:06,017 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 13:42:09,428 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-15 13:42:12,259 basehttp "GET /api/seller/orders/ HTTP/1.1" 200 21944
+INFO 2026-03-15 13:42:44,300 basehttp "GET /seller/order/25/ HTTP/1.1" 200 38764
+INFO 2026-03-15 13:43:02,740 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:43:03,869 views User authenticated: True
+INFO 2026-03-15 13:43:04,043 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 13:43:06,059 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-15 13:43:09,235 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-15 13:43:09,355 basehttp "GET /api/seller/order/25/ HTTP/1.1" 200 769
+INFO 2026-03-15 13:43:11,040 basehttp "GET /api/buyer-balance-proof/?order_id=25 HTTP/1.1" 200 220
+INFO 2026-03-15 13:43:25,529 views_balance_proof No pending eligible items for seller1@gmail.com in order ORD-20260315092513-IRQEK6
+INFO 2026-03-15 13:43:26,448 basehttp "POST /api/buyer-balance-proof/refresh/ HTTP/1.1" 200 226
+INFO 2026-03-15 13:43:39,588 basehttp "POST /api/seller/order-item/139/update-tracking/ HTTP/1.1" 200 91
+INFO 2026-03-15 13:43:44,306 basehttp "GET /api/seller/order/25/ HTTP/1.1" 200 910
+INFO 2026-03-15 13:43:50,427 basehttp "GET /api/buyer-balance-proof/?order_id=25 HTTP/1.1" 200 220
+INFO 2026-03-15 13:43:59,246 basehttp "POST /api/seller/order-item/139/update-tracking/ HTTP/1.1" 200 95
+INFO 2026-03-15 13:44:02,112 basehttp "GET /api/seller/order/25/ HTTP/1.1" 200 1062
+INFO 2026-03-15 13:44:07,423 basehttp "GET /api/buyer-balance-proof/?order_id=25 HTTP/1.1" 200 220
+INFO 2026-03-15 13:44:15,539 order_views 📦 Delivery confirmation created for order ORD-20260315092513-IRQEK6, buyer buyer@gmail.com
+INFO 2026-03-15 13:44:16,029 basehttp "POST /api/seller/order-item/139/update-tracking/ HTTP/1.1" 200 113
+INFO 2026-03-15 13:44:19,143 basehttp "GET /api/seller/order/25/ HTTP/1.1" 200 1231
+INFO 2026-03-15 13:44:24,561 basehttp "GET /api/buyer-balance-proof/?order_id=25 HTTP/1.1" 200 220
+INFO 2026-03-15 13:44:40,616 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-03-15 13:44:43,362 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-15 13:44:59,337 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-15 13:45:01,323 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:45:05,422 views User authenticated: False
+INFO 2026-03-15 13:45:05,718 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+INFO 2026-03-15 13:45:16,208 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-15 13:47:07,794 basehttp "POST /login_user/ HTTP/1.1" 200 90
+INFO 2026-03-15 13:48:03,186 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-15 13:48:10,318 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-15 13:48:15,571 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:48:17,378 views User authenticated: True
+INFO 2026-03-15 13:48:17,683 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 13:48:19,863 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-15 13:48:22,722 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-15 13:48:26,899 basehttp "GET /orders/ HTTP/1.1" 200 21929
+INFO 2026-03-15 13:48:31,213 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:48:33,560 views User authenticated: True
+INFO 2026-03-15 13:48:33,727 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 13:48:36,895 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-15 13:48:40,391 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-15 13:48:44,037 basehttp "GET /api/orders/ HTTP/1.1" 200 12629
+INFO 2026-03-15 13:48:50,991 basehttp "GET /orders/25/ HTTP/1.1" 200 59237
+INFO 2026-03-15 13:48:55,232 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:48:56,425 views User authenticated: True
+INFO 2026-03-15 13:48:56,798 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 13:48:57,262 basehttp "GET /api/orders/25/ HTTP/1.1" 200 3161
+INFO 2026-03-15 13:48:59,106 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-15 13:49:01,429 basehttp "GET /api/seller-verification-status/5/ HTTP/1.1" 200 204
+INFO 2026-03-15 13:49:01,490 basehttp "GET /api/seller-verification-status/4/ HTTP/1.1" 200 310
+INFO 2026-03-15 13:49:01,847 basehttp "GET /api/seller-verification-status/3/ HTTP/1.1" 200 305
+INFO 2026-03-15 13:49:03,491 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-15 13:49:08,647 basehttp "GET /order/25/tracking/ HTTP/1.1" 200 18929
+INFO 2026-03-15 13:49:40,063 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:49:42,235 views User authenticated: True
+INFO 2026-03-15 13:49:42,350 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 13:49:44,432 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-15 13:49:47,491 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-15 13:49:49,429 basehttp "GET /api/order/25/tracking/ HTTP/1.1" 200 3478
+INFO 2026-03-15 13:50:08,673 basehttp "GET /order/25/confirm-delivery/ HTTP/1.1" 200 22507
+INFO 2026-03-15 13:50:27,212 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:50:28,702 views User authenticated: True
+INFO 2026-03-15 13:50:28,821 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 13:50:31,488 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-15 13:50:33,343 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-15 13:50:36,349 basehttp "GET /api/order/25/confirmation-items/ HTTP/1.1" 200 395
+INFO 2026-03-15 13:50:48,682 proxy_views 📥 Payment status webhook: c7eeba83-e268-4152-8cc2-5b5a22b72aa7 — paid
+WARNING 2026-03-15 13:50:56,183 order_views ⚠️ release_escrow network error for item 139: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=10)
+INFO 2026-03-15 13:50:56,744 proxy_views   Item 139 → paid (updated: 1)
+INFO 2026-03-15 13:50:56,993 basehttp "POST /api/webhook/payment-status/ HTTP/1.1" 200 81
+INFO 2026-03-15 13:50:57,028 basehttp "POST /api/order/25/submit-confirmation/ HTTP/1.1" 200 107
+INFO 2026-03-15 13:50:57,686 proxy_views 📥 Payment status webhook: c7eeba83-e268-4152-8cc2-5b5a22b72aa7 — paid
+INFO 2026-03-15 13:50:58,880 proxy_views   Item 139 → paid (updated: 1)
+INFO 2026-03-15 13:50:59,179 basehttp "POST /api/webhook/payment-status/ HTTP/1.1" 200 81
+INFO 2026-03-15 13:51:39,873 basehttp "GET /order/25/tracking/ HTTP/1.1" 200 18929
+INFO 2026-03-15 13:51:59,272 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 13:52:01,517 views User authenticated: True
+INFO 2026-03-15 13:52:01,900 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-15 13:52:03,509 basehttp "GET /user_profile/ HTTP/1.1" 200 98
+INFO 2026-03-15 13:52:06,254 basehttp "GET /api/cart/ HTTP/1.1" 200 51
+INFO 2026-03-15 13:52:08,565 basehttp "GET /api/order/25/tracking/ HTTP/1.1" 200 3571
+INFO 2026-03-15 22:31:23,994 autoreload Watching for file changes with StatReloader
+INFO 2026-03-15 23:01:23,527 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-15 23:01:27,147 basehttp "GET /static/css/navbar.css HTTP/1.1" 200 7526
+INFO 2026-03-15 23:01:27,182 basehttp "GET /static/js/navbar.js HTTP/1.1" 200 13400
+INFO 2026-03-15 23:01:27,933 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+WARNING 2026-03-15 23:01:28,976 log Not Found: /favicon.ico
+INFO 2026-03-15 23:01:41,536 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+WARNING 2026-03-15 23:01:41,790 log Not Found: /favicon.ico
+WARNING 2026-03-15 23:01:41,791 basehttp "GET /favicon.ico HTTP/1.1" 404 18475
+INFO 2026-03-15 23:01:42,285 views User authenticated: False
+INFO 2026-03-15 23:01:42,286 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+INFO 2026-03-15 23:01:45,984 basehttp "GET /admin HTTP/1.1" 301 0
+INFO 2026-03-15 23:01:46,050 basehttp "GET /admin/ HTTP/1.1" 302 0
+INFO 2026-03-15 23:01:46,532 basehttp "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4190
+INFO 2026-03-15 23:01:46,767 basehttp "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2929
+INFO 2026-03-15 23:01:46,768 basehttp "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2694
+INFO 2026-03-15 23:01:46,768 basehttp "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+INFO 2026-03-15 23:01:46,768 basehttp "GET /static/admin/js/theme.js HTTP/1.1" 200 1943
+INFO 2026-03-15 23:01:46,769 basehttp "GET /static/admin/css/login.css HTTP/1.1" 200 958
+INFO 2026-03-15 23:01:46,796 basehttp "GET /static/admin/css/responsive.css HTTP/1.1" 200 18559
+INFO 2026-03-15 23:01:46,797 basehttp "GET /static/admin/css/base.css HTTP/1.1" 200 21310
+INFO 2026-03-15 23:02:05,656 basehttp "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2026-03-15 23:02:05,811 basehttp "GET /admin/ HTTP/1.1" 200 9822
+INFO 2026-03-15 23:02:06,023 basehttp "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+INFO 2026-03-15 23:02:06,055 basehttp "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO 2026-03-15 23:02:06,058 basehttp "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+INFO 2026-03-15 23:02:10,191 basehttp "GET /admin/shopping_app/sellerverification/ HTTP/1.1" 200 23626
+INFO 2026-03-15 23:02:10,335 basehttp "GET /static/admin/css/changelists.css HTTP/1.1" 200 6566
+INFO 2026-03-15 23:02:10,349 basehttp "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 292458
+INFO 2026-03-15 23:02:10,413 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2026-03-15 23:02:10,439 basehttp "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+INFO 2026-03-15 23:02:10,462 basehttp "GET /static/admin/js/actions.js HTTP/1.1" 200 7872
+INFO 2026-03-15 23:02:10,482 basehttp "GET /static/admin/js/filters.js HTTP/1.1" 200 978
+INFO 2026-03-15 23:02:10,496 basehttp "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 232381
+INFO 2026-03-15 23:02:10,517 basehttp "GET /static/admin/js/core.js HTTP/1.1" 200 5682
+INFO 2026-03-15 23:02:10,520 basehttp "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+INFO 2026-03-15 23:02:10,520 basehttp "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 8943
+INFO 2026-03-15 23:02:10,521 basehttp "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+INFO 2026-03-15 23:02:10,573 basehttp "GET /static/admin/img/search.svg HTTP/1.1" 200 458
+INFO 2026-03-15 23:02:10,669 basehttp "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+INFO 2026-03-15 23:02:10,672 basehttp "GET /static/admin/img/sorting-icons.svg HTTP/1.1" 200 1097
+INFO 2026-03-15 23:06:00,158 basehttp "GET /admin/shopping_app/sellerverification/ HTTP/1.1" 200 23704
+INFO 2026-03-15 23:06:00,326 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+WARNING 2026-03-15 23:06:00,504 log Not Found: /favicon.ico
+WARNING 2026-03-15 23:06:00,505 basehttp "GET /favicon.ico HTTP/1.1" 404 18475
+INFO 2026-03-15 23:09:10,073 basehttp "GET /admin/shopping_app/sellerverification/ HTTP/1.1" 302 0
+INFO 2026-03-15 23:09:10,123 basehttp "GET /admin/login/?next=/admin/shopping_app/sellerverification/ HTTP/1.1" 200 4254
+INFO 2026-03-15 23:09:26,352 basehttp "POST /admin/login/?next=/admin/shopping_app/sellerverification/ HTTP/1.1" 302 0
+INFO 2026-03-15 23:09:26,430 basehttp "GET /admin/shopping_app/sellerverification/ HTTP/1.1" 200 23686
+INFO 2026-03-15 23:09:26,576 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2026-03-15 23:09:29,443 basehttp "GET /admin/shopping_app/sellerverification/ HTTP/1.1" 200 23686
+INFO 2026-03-15 23:09:29,576 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2026-03-15 23:09:36,066 basehttp "GET /admin/shopping_app/sellerverification/1/change/ HTTP/1.1" 200 36072
+INFO 2026-03-15 23:09:36,182 basehttp "GET /static/admin/css/forms.css HTTP/1.1" 200 9090
+INFO 2026-03-15 23:09:36,186 basehttp "GET /static/admin/js/collapse.js HTTP/1.1" 200 1803
+INFO 2026-03-15 23:09:36,186 basehttp "GET /static/admin/js/calendar.js HTTP/1.1" 200 8466
+INFO 2026-03-15 23:09:36,188 basehttp "GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 200 19319
+INFO 2026-03-15 23:09:36,200 basehttp "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+INFO 2026-03-15 23:09:36,202 basehttp "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+INFO 2026-03-15 23:09:36,243 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2026-03-15 23:09:36,244 basehttp "GET /static/admin/css/widgets.css HTTP/1.1" 200 11921
+INFO 2026-03-15 23:09:36,388 basehttp "GET /static/admin/img/icon-calendar.svg HTTP/1.1" 200 1086
+INFO 2026-03-15 23:09:36,393 basehttp "GET /static/admin/img/icon-clock.svg HTTP/1.1" 200 677
+WARNING 2026-03-15 23:09:50,946 log Not Found: /media/https:/images.unsplash.com/photo-1544005313-94ddf0286df2
+WARNING 2026-03-15 23:09:50,947 basehttp "GET /media/https%3A/images.unsplash.com/photo-1544005313-94ddf0286df2 HTTP/1.1" 404 18764
+INFO 2026-03-15 23:09:56,937 basehttp "GET /admin/shopping_app/sellerverification/1/change/ HTTP/1.1" 200 36072
+WARNING 2026-03-15 23:10:00,948 log Not Found: /media/https:/images.unsplash.com/photo-1527980965255-d3b416303d12
+WARNING 2026-03-15 23:10:00,949 basehttp "GET /media/https%3A/images.unsplash.com/photo-1527980965255-d3b416303d12 HTTP/1.1" 404 18776
+INFO 2026-03-15 23:11:47,538 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-15 23:11:47,618 basehttp "GET /static/css/navbar.css HTTP/1.1" 200 7526
+INFO 2026-03-15 23:11:47,687 basehttp "GET /static/js/navbar.js HTTP/1.1" 200 13400
+INFO 2026-03-15 23:11:47,932 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 23:11:47,951 views User authenticated: False
+INFO 2026-03-15 23:11:47,953 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+WARNING 2026-03-15 23:11:47,966 log Not Found: /favicon.ico
+WARNING 2026-03-15 23:11:47,966 basehttp "GET /favicon.ico HTTP/1.1" 404 18475
+INFO 2026-03-15 23:11:51,218 basehttp "GET /products/ HTTP/1.1" 200 18343
+INFO 2026-03-15 23:11:51,274 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 23:11:51,304 views User authenticated: False
+INFO 2026-03-15 23:11:51,307 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+INFO 2026-03-15 23:11:51,502 basehttp "GET /api/products/ HTTP/1.1" 200 14194
+INFO 2026-03-15 23:21:43,212 basehttp "GET /products/ HTTP/1.1" 200 18343
+INFO 2026-03-15 23:21:43,403 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 23:21:43,413 views User authenticated: False
+INFO 2026-03-15 23:21:43,414 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+INFO 2026-03-15 23:21:43,593 basehttp "GET /api/products/ HTTP/1.1" 200 14222
+INFO 2026-03-15 23:25:24,716 basehttp "GET /products/ HTTP/1.1" 200 18343
+INFO 2026-03-15 23:25:26,025 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 23:25:26,031 views User authenticated: False
+INFO 2026-03-15 23:25:26,032 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+INFO 2026-03-15 23:25:26,645 basehttp "GET /api/products/ HTTP/1.1" 200 14222
+INFO 2026-03-15 23:26:19,172 basehttp "GET /products/46/ HTTP/1.1" 200 22226
+INFO 2026-03-15 23:27:26,146 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 23:27:26,872 views User authenticated: False
+INFO 2026-03-15 23:27:26,874 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+INFO 2026-03-15 23:27:27,144 basehttp "GET /api/products/46/ HTTP/1.1" 200 306
+INFO 2026-03-15 23:50:05,565 autoreload /home/tinex/Desktop/projects/market/market/shopper/shopping_app/views.py changed, reloading.
+INFO 2026-03-15 23:50:33,036 autoreload Watching for file changes with StatReloader
+INFO 2026-03-15 23:53:11,923 autoreload /home/tinex/Desktop/projects/market/market/shopper/shopping_app/views.py changed, reloading.
+INFO 2026-03-15 23:53:19,510 autoreload Watching for file changes with StatReloader
+INFO 2026-03-15 23:54:12,999 basehttp "GET /products/ HTTP/1.1" 200 35792
+INFO 2026-03-15 23:54:13,968 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-15 23:54:14,353 views User authenticated: False
+INFO 2026-03-15 23:54:14,363 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+INFO 2026-03-15 23:54:14,662 basehttp "GET /api/products/?page=1&per_page=8 HTTP/1.1" 200 2375
+INFO 2026-03-15 23:54:25,790 basehttp "GET /api/products/?page=2&per_page=8 HTTP/1.1" 200 2390
+INFO 2026-03-15 23:54:33,581 basehttp "GET /api/products/?page=3&per_page=8 HTTP/1.1" 200 2366
+INFO 2026-03-15 23:54:44,883 basehttp "GET /api/products/?page=4&per_page=8 HTTP/1.1" 200 2381
+INFO 2026-03-15 23:54:48,676 basehttp "GET /api/products/?page=5&per_page=8 HTTP/1.1" 200 2371
+INFO 2026-03-15 23:55:12,680 basehttp "GET /api/products/?page=6&per_page=8 HTTP/1.1" 200 2404
+INFO 2026-03-15 23:55:18,384 basehttp "GET /api/products/?page=7&per_page=8 HTTP/1.1" 200 658
+INFO 2026-03-15 23:55:40,804 basehttp "GET /api/products/?page=1&per_page=8&search=wa HTTP/1.1" 200 667
+INFO 2026-03-15 23:55:56,463 basehttp "GET /api/products/?page=1&per_page=8 HTTP/1.1" 200 2375
+INFO 2026-03-15 23:55:58,741 basehttp "GET /api/products/?page=2&per_page=8 HTTP/1.1" 200 2390
+INFO 2026-03-15 23:56:08,325 basehttp "GET /api/products/?page=1&per_page=8&search=ball HTTP/1.1" 200 1752
+INFO 2026-03-15 23:56:49,396 basehttp "GET /api/products/?page=1&per_page=8 HTTP/1.1" 200 2375
+INFO 2026-03-15 23:56:55,889 basehttp "GET /api/products/?page=2&per_page=8 HTTP/1.1" 200 2390
+INFO 2026-03-15 23:57:07,501 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-15 23:57:08,154 basehttp "GET /static/js/login-validation.js HTTP/1.1" 200 2795
+INFO 2026-03-15 23:57:08,168 basehttp "GET /static/css/login.css HTTP/1.1" 200 3232
+INFO 2026-03-15 23:57:08,641 basehttp "GET /static/image/logo.jpg HTTP/1.1" 200 16778
+WARNING 2026-03-15 23:57:30,214 log Unauthorized: /login_user/
+WARNING 2026-03-15 23:57:30,216 basehttp "POST /login_user/ HTTP/1.1" 401 38
+WARNING 2026-03-15 23:57:43,005 log Unauthorized: /login_user/
+WARNING 2026-03-15 23:57:43,006 basehttp "POST /login_user/ HTTP/1.1" 401 38
+INFO 2026-03-16 00:02:00,463 basehttp "POST /login_user/ HTTP/1.1" 200 92
+INFO 2026-03-16 00:02:02,096 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:02:02,129 views User authenticated: True
+INFO 2026-03-16 00:02:02,141 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-16 00:02:02,218 basehttp "GET /user_profile/ HTTP/1.1" 200 88
+INFO 2026-03-16 00:02:02,318 basehttp "GET /api/cart/ HTTP/1.1" 200 1465
+INFO 2026-03-16 00:02:02,418 basehttp "GET /api/products/?page=1&per_page=8 HTTP/1.1" 200 2375
+INFO 2026-03-16 00:02:11,530 basehttp "GET /api/products/?page=2&per_page=8 HTTP/1.1" 200 2390
+INFO 2026-03-16 00:02:13,253 basehttp "GET /api/products/?page=3&per_page=8 HTTP/1.1" 200 2366
+INFO 2026-03-16 00:02:15,719 basehttp "GET /api/products/?page=4&per_page=8 HTTP/1.1" 200 2381
+INFO 2026-03-16 00:02:26,352 basehttp "GET /wishlist/ HTTP/1.1" 200 22394
+INFO 2026-03-16 00:02:26,443 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:02:26,497 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:02:26,498 views User authenticated: True
+INFO 2026-03-16 00:02:26,563 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-16 00:02:26,574 basehttp "GET /api/wishlist/ HTTP/1.1" 200 1870
+INFO 2026-03-16 00:02:26,641 basehttp "GET /user_profile/ HTTP/1.1" 200 88
+INFO 2026-03-16 00:02:26,931 basehttp "GET /api/cart/ HTTP/1.1" 200 1465
+INFO 2026-03-16 00:02:56,919 basehttp "POST /api/cart/add/ HTTP/1.1" 200 61
+INFO 2026-03-16 00:02:58,452 basehttp "POST /api/cart/add/ HTTP/1.1" 200 61
+INFO 2026-03-16 00:03:00,063 basehttp "POST /api/cart/add/ HTTP/1.1" 200 61
+INFO 2026-03-16 00:03:04,696 basehttp "GET /orders/ HTTP/1.1" 200 21929
+INFO 2026-03-16 00:03:04,841 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:03:04,907 basehttp "GET /api/orders/ HTTP/1.1" 200 30
+INFO 2026-03-16 00:03:04,913 views User authenticated: True
+INFO 2026-03-16 00:03:04,974 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-16 00:03:05,052 basehttp "GET /user_profile/ HTTP/1.1" 200 88
+INFO 2026-03-16 00:03:05,163 basehttp "GET /api/cart/ HTTP/1.1" 200 2333
+INFO 2026-03-16 00:03:07,537 basehttp "GET /products/ HTTP/1.1" 200 35792
+INFO 2026-03-16 00:03:07,641 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:03:07,672 views User authenticated: True
+INFO 2026-03-16 00:03:07,685 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-16 00:03:07,763 basehttp "GET /user_profile/ HTTP/1.1" 200 88
+INFO 2026-03-16 00:03:07,863 basehttp "GET /api/cart/ HTTP/1.1" 200 2333
+INFO 2026-03-16 00:03:07,963 basehttp "GET /api/products/?page=1&per_page=8 HTTP/1.1" 200 2375
+INFO 2026-03-16 00:03:14,419 basehttp "GET /api/products/?page=2&per_page=8 HTTP/1.1" 200 2390
+INFO 2026-03-16 00:03:43,446 basehttp "GET /orders/ HTTP/1.1" 200 21929
+INFO 2026-03-16 00:03:44,045 basehttp "GET /api/orders/ HTTP/1.1" 200 30
+INFO 2026-03-16 00:03:44,062 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:03:44,320 views User authenticated: True
+INFO 2026-03-16 00:03:44,363 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-16 00:03:44,479 basehttp "GET /user_profile/ HTTP/1.1" 200 88
+INFO 2026-03-16 00:03:44,558 basehttp "GET /api/cart/ HTTP/1.1" 200 2333
+INFO 2026-03-16 00:03:46,046 basehttp "GET /cart/ HTTP/1.1" 200 25004
+INFO 2026-03-16 00:03:46,222 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:03:46,314 basehttp "GET /api/cart/ HTTP/1.1" 200 2333
+INFO 2026-03-16 00:03:46,339 views User authenticated: True
+INFO 2026-03-16 00:03:46,400 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-16 00:03:46,782 basehttp "GET /user_profile/ HTTP/1.1" 200 88
+INFO 2026-03-16 00:03:49,003 basehttp "GET /api/cart/ HTTP/1.1" 200 2333
+INFO 2026-03-16 00:04:41,047 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-03-16 00:04:41,072 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-16 00:04:49,940 basehttp "GET /admin HTTP/1.1" 301 0
+INFO 2026-03-16 00:04:50,014 basehttp "GET /admin/ HTTP/1.1" 302 0
+INFO 2026-03-16 00:04:50,217 basehttp "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4190
+INFO 2026-03-16 00:04:50,319 basehttp "GET /static/admin/css/base.css HTTP/1.1" 200 21310
+INFO 2026-03-16 00:04:50,321 basehttp "GET /static/admin/css/responsive.css HTTP/1.1" 200 18559
+INFO 2026-03-16 00:04:50,322 basehttp "GET /static/admin/css/login.css HTTP/1.1" 200 958
+INFO 2026-03-16 00:04:50,322 basehttp "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2694
+INFO 2026-03-16 00:04:50,323 basehttp "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2929
+INFO 2026-03-16 00:04:50,358 basehttp "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+INFO 2026-03-16 00:04:50,358 basehttp "GET /static/admin/js/theme.js HTTP/1.1" 200 1943
+INFO 2026-03-16 00:05:18,941 basehttp "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2026-03-16 00:05:19,063 basehttp "GET /admin/ HTTP/1.1" 200 9822
+INFO 2026-03-16 00:05:19,184 basehttp "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+INFO 2026-03-16 00:05:19,196 basehttp "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO 2026-03-16 00:05:19,198 basehttp "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+INFO 2026-03-16 00:05:25,798 basehttp "GET /admin/shopping_app/sellerverification/ HTTP/1.1" 200 23668
+INFO 2026-03-16 00:05:25,836 basehttp "GET /static/admin/css/changelists.css HTTP/1.1" 200 6566
+INFO 2026-03-16 00:05:25,870 basehttp "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 8943
+INFO 2026-03-16 00:05:25,872 basehttp "GET /static/admin/js/core.js HTTP/1.1" 200 5682
+INFO 2026-03-16 00:05:25,884 basehttp "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+INFO 2026-03-16 00:05:25,895 basehttp "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 292458
+INFO 2026-03-16 00:05:25,931 basehttp "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+INFO 2026-03-16 00:05:25,931 basehttp "GET /static/admin/js/actions.js HTTP/1.1" 200 7872
+INFO 2026-03-16 00:05:25,934 basehttp "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+INFO 2026-03-16 00:05:25,936 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2026-03-16 00:05:25,938 basehttp "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 232381
+INFO 2026-03-16 00:05:25,979 basehttp "GET /static/admin/img/search.svg HTTP/1.1" 200 458
+INFO 2026-03-16 00:05:26,001 basehttp "GET /static/admin/js/filters.js HTTP/1.1" 200 978
+INFO 2026-03-16 00:05:26,025 basehttp "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+INFO 2026-03-16 00:05:26,028 basehttp "GET /static/admin/img/sorting-icons.svg HTTP/1.1" 200 1097
+INFO 2026-03-16 00:05:59,681 basehttp "POST /admin/shopping_app/sellerverification/ HTTP/1.1" 302 0
+INFO 2026-03-16 00:05:59,769 basehttp "GET /admin/shopping_app/sellerverification/ HTTP/1.1" 200 23793
+INFO 2026-03-16 00:05:59,880 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2026-03-16 00:05:59,992 basehttp "GET /static/admin/img/icon-alert.svg HTTP/1.1" 200 504
+INFO 2026-03-16 00:08:20,054 admin Auto ZKP registration OK: seller1@gmail.com, leaf=0, commitment=18263623300827219331...
+INFO 2026-03-16 00:08:20,087 basehttp "POST /admin/shopping_app/sellerverification/ HTTP/1.1" 302 0
+INFO 2026-03-16 00:08:20,408 basehttp "GET /admin/shopping_app/sellerverification/ HTTP/1.1" 200 23946
+INFO 2026-03-16 00:08:20,636 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2026-03-16 00:08:20,764 basehttp "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+INFO 2026-03-16 00:09:08,581 autoreload /home/tinex/Desktop/projects/market/market/shopper/shopping_app/zkp_client.py changed, reloading.
+INFO 2026-03-16 00:09:09,625 autoreload Watching for file changes with StatReloader
+INFO 2026-03-16 00:10:56,344 admin Auto ZKP registration OK: seller5@gmail.com, leaf=1, commitment=37132501365940269771...
+INFO 2026-03-16 00:11:46,228 admin Auto ZKP registration OK: seller3@gmail.com, leaf=2, commitment=54299153958455780674...
+INFO 2026-03-16 00:11:46,323 basehttp "POST /admin/shopping_app/sellerverification/ HTTP/1.1" 302 0
+INFO 2026-03-16 00:11:46,865 basehttp "GET /admin/shopping_app/sellerverification/ HTTP/1.1" 200 24105
+INFO 2026-03-16 00:11:47,297 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2026-03-16 00:13:35,443 admin Auto ZKP registration OK: seller9@gmail.com, leaf=3, commitment=43638659351082728236...
+INFO 2026-03-16 00:14:24,716 admin Auto ZKP registration OK: seller7@gmail.com, leaf=4, commitment=36527330695617923142...
+INFO 2026-03-16 00:14:24,767 basehttp "POST /admin/shopping_app/sellerverification/ HTTP/1.1" 302 0
+INFO 2026-03-16 00:14:25,415 basehttp "GET /admin/shopping_app/sellerverification/ HTTP/1.1" 200 24165
+INFO 2026-03-16 00:14:26,017 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2026-03-16 00:14:57,371 basehttp "POST /admin/shopping_app/sellerverification/ HTTP/1.1" 302 0
+INFO 2026-03-16 00:14:57,460 basehttp "GET /admin/shopping_app/sellerverification/ HTTP/1.1" 200 24023
+INFO 2026-03-16 00:14:57,571 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2026-03-16 00:15:59,615 basehttp "POST /admin/logout/ HTTP/1.1" 200 3589
+INFO 2026-03-16 00:16:07,782 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-16 00:16:07,848 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:16:07,872 views User authenticated: False
+INFO 2026-03-16 00:16:07,876 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+INFO 2026-03-16 00:16:10,584 basehttp "GET /products/ HTTP/1.1" 200 35792
+INFO 2026-03-16 00:16:10,672 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:16:10,698 views User authenticated: False
+INFO 2026-03-16 00:16:10,701 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+INFO 2026-03-16 00:16:10,782 basehttp "GET /api/products/?page=1&per_page=8 HTTP/1.1" 200 2375
+INFO 2026-03-16 00:16:12,944 basehttp "GET /api/products/?page=2&per_page=8 HTTP/1.1" 200 2390
+INFO 2026-03-16 00:16:21,638 basehttp "GET /api/products/?page=3&per_page=8 HTTP/1.1" 200 2366
+INFO 2026-03-16 00:16:36,683 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-16 00:17:05,656 basehttp "POST /login_user/ HTTP/1.1" 200 92
+INFO 2026-03-16 00:17:07,289 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:17:07,317 views User authenticated: True
+INFO 2026-03-16 00:17:07,322 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-16 00:17:07,400 basehttp "GET /user_profile/ HTTP/1.1" 200 88
+INFO 2026-03-16 00:17:07,500 basehttp "GET /api/cart/ HTTP/1.1" 200 2333
+INFO 2026-03-16 00:17:07,589 basehttp "GET /api/products/?page=1&per_page=8 HTTP/1.1" 200 2375
+INFO 2026-03-16 00:17:12,212 basehttp "GET /api/products/?page=2&per_page=8 HTTP/1.1" 200 2390
+INFO 2026-03-16 00:17:16,679 basehttp "GET /wishlist/ HTTP/1.1" 200 22394
+INFO 2026-03-16 00:17:16,779 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:17:16,824 views User authenticated: True
+INFO 2026-03-16 00:17:16,834 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:17:16,846 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-16 00:17:16,879 basehttp "GET /api/wishlist/ HTTP/1.1" 200 1870
+INFO 2026-03-16 00:17:16,923 basehttp "GET /user_profile/ HTTP/1.1" 200 88
+INFO 2026-03-16 00:17:17,081 basehttp "GET /api/cart/ HTTP/1.1" 200 2333
+INFO 2026-03-16 00:17:24,635 basehttp "GET /cart/ HTTP/1.1" 200 25004
+INFO 2026-03-16 00:17:24,757 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:17:24,805 views User authenticated: True
+INFO 2026-03-16 00:17:24,868 basehttp "GET /api/cart/ HTTP/1.1" 200 2333
+INFO 2026-03-16 00:17:24,880 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-16 00:17:24,980 basehttp "GET /user_profile/ HTTP/1.1" 200 88
+INFO 2026-03-16 00:17:25,136 basehttp "GET /api/cart/ HTTP/1.1" 200 2333
+INFO 2026-03-16 00:17:45,392 basehttp "POST /logout_user/ HTTP/1.1" 200 32
+INFO 2026-03-16 00:17:45,406 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-16 00:17:49,499 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-16 00:17:49,546 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:17:49,569 views User authenticated: False
+INFO 2026-03-16 00:17:49,570 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+INFO 2026-03-16 00:17:51,637 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-16 00:18:09,993 basehttp "POST /login_user/ HTTP/1.1" 200 93
+INFO 2026-03-16 00:18:14,615 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-16 00:18:14,704 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:18:14,744 views User authenticated: True
+INFO 2026-03-16 00:18:14,759 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-16 00:18:14,871 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-16 00:18:14,960 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-16 00:18:28,660 basehttp "GET /seller/kyc/ HTTP/1.1" 302 0
+INFO 2026-03-16 00:18:28,771 basehttp "GET /seller/kyc/status/ HTTP/1.1" 200 17017
+INFO 2026-03-16 00:18:30,271 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:18:30,378 views User authenticated: True
+INFO 2026-03-16 00:18:30,405 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-16 00:18:30,449 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-16 00:18:30,549 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-16 00:18:38,772 basehttp "GET /seller/dashboard/ HTTP/1.1" 200 25888
+INFO 2026-03-16 00:18:38,947 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:18:38,990 views User authenticated: True
+INFO 2026-03-16 00:18:39,005 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:18:39,027 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-16 00:18:39,128 basehttp "GET /api/seller/products/?limit=6 HTTP/1.1" 200 1555
+INFO 2026-03-16 00:18:39,205 basehttp "GET /api/seller/recent-sales/ HTTP/1.1" 200 12
+INFO 2026-03-16 00:18:39,261 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-16 00:18:39,327 basehttp "GET /api/seller/dashboard-stats/ HTTP/1.1" 200 98
+INFO 2026-03-16 00:18:39,350 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-16 00:18:42,196 seller_proxy_views ✅ Generated seller access token for seller1@gmail.com
+INFO 2026-03-16 00:18:42,196 seller_proxy_views 📊 Seller finances page loaded for seller1@gmail.com
+INFO 2026-03-16 00:18:42,295 basehttp "GET /seller/finances/ HTTP/1.1" 200 18702
+INFO 2026-03-16 00:18:42,461 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:18:42,492 views User authenticated: True
+INFO 2026-03-16 00:18:42,539 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-16 00:18:42,672 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-16 00:18:42,816 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-16 00:20:10,166 basehttp "GET /seller/dashboard/ HTTP/1.1" 200 25888
+INFO 2026-03-16 00:20:10,267 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:20:10,319 views User authenticated: True
+INFO 2026-03-16 00:20:10,322 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:20:10,335 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-16 00:20:10,403 basehttp "GET /api/seller/products/?limit=6 HTTP/1.1" 200 1555
+INFO 2026-03-16 00:20:10,411 basehttp "GET /api/seller/dashboard-stats/ HTTP/1.1" 200 98
+INFO 2026-03-16 00:20:10,422 basehttp "GET /api/seller/recent-sales/ HTTP/1.1" 200 12
+INFO 2026-03-16 00:20:10,433 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-16 00:20:10,521 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-16 00:28:41,191 autoreload /home/tinex/Desktop/projects/market/market/shopper/shopping_app/views.py changed, reloading.
+INFO 2026-03-16 00:28:42,056 autoreload Watching for file changes with StatReloader
+INFO 2026-03-16 00:28:55,359 basehttp "GET /seller/dashboard/ HTTP/1.1" 200 25888
+INFO 2026-03-16 00:28:55,481 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:28:55,539 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:28:55,544 views User authenticated: True
+INFO 2026-03-16 00:28:55,565 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-16 00:28:55,663 basehttp "GET /api/seller/recent-sales/ HTTP/1.1" 200 12
+INFO 2026-03-16 00:28:55,671 basehttp "GET /api/seller/dashboard-stats/ HTTP/1.1" 200 98
+INFO 2026-03-16 00:28:55,681 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-16 00:28:55,692 basehttp "GET /api/seller/products/?limit=6 HTTP/1.1" 200 1555
+INFO 2026-03-16 00:28:55,792 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-16 00:29:13,414 seller_proxy_views ✅ Generated seller access token for seller1@gmail.com
+INFO 2026-03-16 00:29:13,414 seller_proxy_views 📊 Seller finances page loaded for seller1@gmail.com
+INFO 2026-03-16 00:29:13,470 basehttp "GET /seller/finances/ HTTP/1.1" 200 18702
+INFO 2026-03-16 00:29:13,647 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:29:13,682 views User authenticated: True
+INFO 2026-03-16 00:29:13,747 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-16 00:29:13,870 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-16 00:29:14,270 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-16 00:29:44,455 autoreload Watching for file changes with StatReloader
+INFO 2026-03-16 00:51:28,156 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-16 00:51:28,225 basehttp "GET /static/js/navbar.js HTTP/1.1" 200 13400
+INFO 2026-03-16 00:51:28,251 basehttp "GET /static/css/navbar.css HTTP/1.1" 200 7526
+INFO 2026-03-16 00:51:28,442 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:51:28,573 views User authenticated: False
+INFO 2026-03-16 00:51:28,574 basehttp "GET /check_auth/ HTTP/1.1" 200 27
+WARNING 2026-03-16 00:51:28,790 log Not Found: /favicon.ico
+WARNING 2026-03-16 00:51:28,790 basehttp "GET /favicon.ico HTTP/1.1" 404 18475
+INFO 2026-03-16 00:51:31,563 basehttp "GET /login_user/ HTTP/1.1" 200 3487
+INFO 2026-03-16 00:51:31,615 basehttp "GET /static/css/login.css HTTP/1.1" 200 3232
+INFO 2026-03-16 00:51:31,616 basehttp "GET /static/js/login-validation.js HTTP/1.1" 200 2795
+INFO 2026-03-16 00:51:31,714 basehttp "GET /static/image/logo.jpg HTTP/1.1" 200 16778
+INFO 2026-03-16 00:51:58,469 basehttp "POST /login_user/ HTTP/1.1" 200 93
+INFO 2026-03-16 00:52:03,433 basehttp "GET / HTTP/1.1" 200 29978
+INFO 2026-03-16 00:52:03,512 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:52:03,586 views User authenticated: True
+INFO 2026-03-16 00:52:03,600 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-16 00:52:03,688 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-16 00:52:03,777 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-16 00:52:07,364 basehttp "GET /seller/dashboard/ HTTP/1.1" 200 25888
+INFO 2026-03-16 00:52:07,442 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:52:07,533 views User authenticated: True
+INFO 2026-03-16 00:52:07,564 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:52:07,577 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-16 00:52:07,665 basehttp "GET /api/seller/dashboard-stats/ HTTP/1.1" 200 98
+INFO 2026-03-16 00:52:07,676 basehttp "GET /api/seller/recent-sales/ HTTP/1.1" 200 12
+INFO 2026-03-16 00:52:07,687 basehttp "GET /api/seller/products/?limit=6 HTTP/1.1" 200 1555
+INFO 2026-03-16 00:52:07,697 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-16 00:52:07,831 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-16 00:52:11,255 seller_proxy_views ✅ Generated seller access token for seller1@gmail.com
+INFO 2026-03-16 00:52:11,255 seller_proxy_views 📊 Seller finances page loaded for seller1@gmail.com
+INFO 2026-03-16 00:52:11,285 basehttp "GET /seller/finances/ HTTP/1.1" 200 18702
+INFO 2026-03-16 00:52:11,429 basehttp "GET /api/csrf/ HTTP/1.1" 200 80
+INFO 2026-03-16 00:52:11,467 views User authenticated: True
+INFO 2026-03-16 00:52:11,540 basehttp "GET /check_auth/ HTTP/1.1" 200 26
+INFO 2026-03-16 00:52:11,718 basehttp "GET /user_profile/ HTTP/1.1" 200 90
+INFO 2026-03-16 00:52:11,840 basehttp "GET /api/seller/kyc-status/ HTTP/1.1" 200 50
+INFO 2026-03-16 00:52:24,412 basehttp "GET /internal/seller-zkp-proof/seller1@gmail.com/ HTTP/1.1" 200 2691
+INFO 2026-03-16 00:52:32,980 basehttp "GET /internal/seller-zkp-proof/seller1@gmail.com/ HTTP/1.1" 200 2691

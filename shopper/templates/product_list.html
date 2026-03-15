@@ -5,276 +5,723 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products - Multi-Vendor Marketplace</title>
-    
+
     <!-- Navbar Styles -->
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
-    
-    <!-- Page-specific Styles -->
+
+    <!-- Google Font: Sora for a clean, modern feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 2rem;
+        /* ── Reset & Base ─────────────────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --brand:        #667eea;
+            --brand-dark:   #764ba2;
+            --surface:      #ffffff;
+            --bg:           #f4f6fb;
+            --text:         #1a1d23;
+            --muted:        #6b7280;
+            --border:       #e5e8ef;
+            --radius:       12px;
+            --shadow-sm:    0 2px 8px rgba(0,0,0,.07);
+            --shadow-md:    0 6px 24px rgba(0,0,0,.11);
+            --transition:   .25s cubic-bezier(.4,0,.2,1);
         }
 
-        .search-bar {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        body {
+            font-family: 'Sora', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ── Layout ───────────────────────────────────────────────── */
+        .page-wrapper {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+
+        /* ── Page Header ──────────────────────────────────────────── */
+        .page-header {
             margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-weight: 700;
+            letter-spacing: -.03em;
+            background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header p {
+            color: var(--muted);
+            font-size: .9rem;
+            margin-top: .35rem;
+        }
+
+        /* ── Search Bar ───────────────────────────────────────────── */
+        .search-wrap {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            pointer-events: none;
+            width: 18px;
+            height: 18px;
         }
 
         .search-input {
             width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 5px;
-            font-size: 1rem;
+            padding: .85rem 1rem .85rem 2.8rem;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 50px;
+            font-family: inherit;
+            font-size: .95rem;
+            color: var(--text);
+            box-shadow: var(--shadow-sm);
+            transition: border-color var(--transition), box-shadow var(--transition);
+            outline: none;
         }
+
+        .search-input::placeholder { color: var(--muted); }
 
         .search-input:focus {
-            outline: none;
-            border-color: #667eea;
+            border-color: var(--brand);
+            box-shadow: 0 0 0 4px rgba(102,126,234,.15);
         }
 
+        /* ── Products Grid ────────────────────────────────────────── */
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 1.5rem;
         }
 
+        /* ── Product Card ─────────────────────────────────────────── */
         .product-card {
-            background: white;
-            border-radius: 10px;
+            background: var(--surface);
+            border-radius: var(--radius);
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: var(--shadow-sm);
+            transition: transform var(--transition), box-shadow var(--transition);
             cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            /* Fade-in animation when cards are appended */
+            animation: cardIn .35s ease both;
+        }
+
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ── Product Image ────────────────────────────────────────── */
+        .product-image-wrap {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            background: #eef0f5;
+            overflow: hidden;
+            flex-shrink: 0;
         }
 
         .product-image {
             width: 100%;
-            height: 200px;
+            height: 100%;
             object-fit: cover;
-            background: #f0f0f0;
+            /*
+             * loading="lazy" is set in JS on each <img>.
+             * This CSS handles the blur-up reveal transition once loaded.
+             */
+            transition: opacity .4s ease, filter .4s ease;
+            opacity: 0;
+            filter: blur(6px);
         }
 
+        .product-image.loaded {
+            opacity: 1;
+            filter: blur(0);
+        }
+
+        /* Skeleton shimmer shown before image loads */
+        .product-image-wrap::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, #eef0f5 25%, #dde0e8 50%, #eef0f5 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.4s infinite;
+            border-radius: 0;
+        }
+
+        .product-image-wrap.img-loaded::before {
+            display: none;
+        }
+
+        @keyframes shimmer {
+            0%   { background-position: -200% 0; }
+            100% { background-position:  200% 0; }
+        }
+
+        /* Category badge on image */
+        .category-badge {
+            position: absolute;
+            top: .65rem;
+            left: .65rem;
+            background: rgba(255,255,255,.92);
+            color: var(--brand-dark);
+            font-size: .72rem;
+            font-weight: 600;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            padding: .22rem .55rem;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Out-of-stock overlay */
+        .oos-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 600;
+            font-size: .85rem;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+        }
+
+        /* ── Product Info ─────────────────────────────────────────── */
         .product-info {
-            padding: 1.5rem;
+            padding: 1.2rem 1.2rem 1.4rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
         }
 
         .product-name {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #333;
-        }
-
-        .product-description {
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
+            color: var(--text);
+            margin-bottom: .35rem;
+            line-height: 1.35;
+            /* Clamp to 2 lines */
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
 
+        .product-description {
+            color: var(--muted);
+            font-size: .83rem;
+            line-height: 1.55;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex: 1;
+        }
+
         .product-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: .5rem;
+            margin-top: auto;
         }
 
         .product-price {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #667eea;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--brand);
         }
 
+        .stock-info {
+            font-size: .78rem;
+            color: var(--muted);
+            margin-top: .45rem;
+        }
+
+        .stock-info.out { color: #ef4444; }
+
+        /* ── Buttons ──────────────────────────────────────────────── */
         .btn {
-            padding: 0.6rem 1.2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            padding: .55rem 1.1rem;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: .83rem;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s;
+            transition: all var(--transition);
+            white-space: nowrap;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+            color: #fff;
+            box-shadow: 0 3px 10px rgba(102,126,234,.35);
         }
 
-        .btn-primary:hover {
-            transform: scale(1.05);
+        .btn-primary:hover:not(:disabled) {
+            transform: scale(1.04);
+            box-shadow: 0 5px 16px rgba(102,126,234,.45);
         }
 
         .btn-primary:disabled {
-            background: #ccc;
+            background: #d1d5db;
+            color: #9ca3af;
             cursor: not-allowed;
-            transform: none;
+            box-shadow: none;
         }
 
-        .stock-status {
-            font-size: 0.85rem;
-            color: #666;
-            margin-top: 0.5rem;
+        /* ── Infinite Scroll Sentinel & Spinner ───────────────────── */
+        #loadMoreSentinel {
+            height: 1px;
+            margin-top: 1rem;
         }
 
-        .out-of-stock {
-            color: #ff4757;
-        }
-
-        .loading {
+        #loadingSpinner {
+            display: none;
             text-align: center;
-            padding: 3rem;
-            font-size: 1.2rem;
-            color: #666;
+            padding: 2.5rem 0;
         }
 
-        .no-products {
+        .spinner-ring {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border);
+            border-top-color: var(--brand);
+            border-radius: 50%;
+            animation: spin .75s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── Empty / Error States ─────────────────────────────────── */
+        .state-message {
+            grid-column: 1 / -1;
             text-align: center;
-            padding: 3rem;
-            color: #666;
+            padding: 4rem 2rem;
+            color: var(--muted);
+        }
+
+        .state-message svg {
+            width: 52px;
+            height: 52px;
+            margin-bottom: 1rem;
+            opacity: .4;
+        }
+
+        .state-message p {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .state-message small {
+            font-size: .85rem;
+            opacity: .7;
+        }
+
+        /* ── End-of-results banner ────────────────────────────────── */
+        #endBanner {
+            display: none;
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--muted);
+            font-size: .85rem;
+        }
+
+        #endBanner span {
+            display: inline-block;
+            padding: .4rem 1.2rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+        }
+
+        /* ── Responsive ───────────────────────────────────────────── */
+        @media (max-width: 480px) {
+            .page-wrapper { padding: 1rem 1rem 3rem; }
+            .products-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+            .product-image-wrap { height: 150px; }
         }
     </style>
 </head>
 <body>
-    <!-- Include Navbar -->
+
+    <!-- Navbar -->
     {% include "navbar_base.html" %}
 
-    <!-- Page Content -->
-    <div class="container">
-        <div class="search-bar">
-            <input type="text" class="search-input" id="searchInput" placeholder="Search products...">
+    <div class="page-wrapper">
+
+        <!-- Header -->
+        <div class="page-header">
+            <h1>Marketplace</h1>
+            <p>Browse products from our sellers — new items added every day.</p>
         </div>
 
-        <div id="productsContainer" class="products-grid">
-            <div class="loading">Loading products...</div>
+        <!-- Search -->
+        <div class="search-wrap">
+            <!-- Search icon (inline SVG, zero extra request) -->
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" id="searchInput" class="search-input"
+                   placeholder="Search products by name or description…"
+                   autocomplete="off">
         </div>
-    </div>
 
-    <!-- Navbar JavaScript -->
+        <!-- Product Cards Grid -->
+        <div id="productsGrid" class="products-grid">
+            <!-- Cards are injected here by JS -->
+        </div>
+
+        <!-- Intersection-observer target: when this enters the viewport, load next page -->
+        <div id="loadMoreSentinel"></div>
+
+        <!-- Spinner shown while fetching -->
+        <div id="loadingSpinner">
+            <div class="spinner-ring"></div>
+        </div>
+
+        <!-- End of results -->
+        <div id="endBanner">
+            <span>✓ All products loaded</span>
+        </div>
+
+    </div><!-- /page-wrapper -->
+
+    <!-- Navbar JS (sets up isAuthenticated, csrfToken, loadCartCount, showToast) -->
     <script src="{% static 'js/navbar.js' %}"></script>
-    
-    <!-- Page-specific JavaScript -->
+
     <script>
-        let searchTimeout;
+    /* ═══════════════════════════════════════════════════════════════
+       Infinite-scroll product loader
+       ─────────────────────────────────────────────────────────────
+       How it works:
+       1.  An IntersectionObserver watches a 1-pixel sentinel div at
+           the bottom of the page.
+       2.  Whenever the sentinel enters the viewport (or is within
+           200 px of it) the observer fires and we fetch the next
+           page from /api/products/?page=N&per_page=8
+       3.  Cards are appended to the grid DOM node — never replaced —
+           so existing cards remain visible while new ones load.
+       4.  Each <img> gets loading="lazy" so the browser only
+           downloads images that are close to (or in) the viewport.
+       5.  A blur-up transition reveals images smoothly once they load.
+       6.  Searching resets the state to page 1 and clears the grid.
+    ═══════════════════════════════════════════════════════════════ */
 
-        // This function is called by navbar.js after initialization
-        async function childInit() {
-            await loadProducts();
-            setupSearchListener();
+    const GRID      = document.getElementById('productsGrid');
+    const SENTINEL  = document.getElementById('loadMoreSentinel');
+    const SPINNER   = document.getElementById('loadingSpinner');
+    const END_BANNER = document.getElementById('endBanner');
+
+    const PER_PAGE  = 8;   // products per batch – keep low for fast first paint
+
+    let state = {
+        page:        1,
+        isLoading:   false,
+        hasMore:     true,
+        searchQuery: '',
+    };
+
+    let searchTimer = null;
+    let observer    = null;
+
+
+    /* ── Called by navbar.js after it finishes initialising ── */
+    async function childInit() {
+        setupSearch();
+        setupObserver();
+    }
+
+
+    /* ── Search ─────────────────────────────────────────────── */
+    function setupSearch() {
+        const input = document.getElementById('searchInput');
+        if (!input) return;
+
+        input.addEventListener('input', (e) => {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(() => {
+                const q = e.target.value.trim();
+                if (q === state.searchQuery) return; // nothing changed
+                resetGrid(q);
+            }, 450);
+        });
+    }
+
+    /* Clear everything and restart from page 1 with a new query */
+    function resetGrid(newQuery = '') {
+        state.page        = 1;
+        state.hasMore     = true;
+        state.isLoading   = false;
+        state.searchQuery = newQuery;
+
+        GRID.innerHTML    = '';
+        END_BANNER.style.display = 'none';
+
+        // Restart the observer cycle — fetchNextBatch checks hasMore itself
+        fetchNextBatch();
+    }
+
+
+    /* ── IntersectionObserver ───────────────────────────────── */
+    function setupObserver() {
+        observer = new IntersectionObserver(onSentinelVisible, {
+            rootMargin: '200px',   // pre-fetch 200 px before sentinel is visible
+        });
+        observer.observe(SENTINEL);
+
+        // Kick off the very first load
+        fetchNextBatch();
+    }
+
+    function onSentinelVisible(entries) {
+        if (entries[0].isIntersecting && !state.isLoading && state.hasMore) {
+            fetchNextBatch();
         }
+    }
 
-        function setupSearchListener() {
-            const searchInput = document.getElementById('searchInput');
-            if (searchInput) {
-                searchInput.addEventListener('input', (e) => {
-                    clearTimeout(searchTimeout);
-                    searchTimeout = setTimeout(() => {
-                        loadProducts(e.target.value);
-                    }, 500);
-                });
+
+    /* ── Fetch one page from the API ─────────────────────────── */
+    async function fetchNextBatch() {
+        if (state.isLoading || !state.hasMore) return;
+
+        state.isLoading = true;
+        SPINNER.style.display = 'block';
+
+        try {
+            let url = `/api/products/?page=${state.page}&per_page=${PER_PAGE}`;
+            if (state.searchQuery) {
+                url += `&search=${encodeURIComponent(state.searchQuery)}`;
             }
-        }
 
-        async function loadProducts(searchQuery = '') {
-            try {
-                let url = '/api/products/';
-                if (searchQuery) {
-                    url += `?search=${encodeURIComponent(searchQuery)}`;
-                }
-                
-                const response = await fetch(url);
-                const data = await response.json();
-                displayProducts(data.products);
-            } catch (error) {
-                console.error('Failed to load products:', error);
+            const res  = await fetch(url);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const data = await res.json();
+
+            appendCards(data.products || []);
+
+            state.hasMore = data.has_next === true;
+            state.page    = (data.page || state.page) + 1;
+
+            // Show "all loaded" banner once every product has arrived
+            if (!state.hasMore) {
+                END_BANNER.style.display = 'block';
+            }
+
+            // If this was the first page and nothing came back, show empty state
+            if (state.page === 2 && (!data.products || data.products.length === 0)) {
+                showEmptyState();
+            }
+
+        } catch (err) {
+            console.error('Failed to load products:', err);
+            if (typeof showToast === 'function') {
                 showToast('Failed to load products', 'error');
             }
+        } finally {
+            state.isLoading = false;
+            SPINNER.style.display = 'none';
         }
+    }
 
-        function displayProducts(products) {
-            const container = document.getElementById('productsContainer');
-            
-            if (!products || products.length === 0) {
-                container.innerHTML = '<div class="no-products">No products found</div>';
-                return;
-            }
 
-            container.innerHTML = products.map(product => `
-                <div class="product-card" onclick="viewProduct(${product.id})">
-                    <img src="${product.image_url || 'https://via.placeholder.com/280x200?text=No+Image'}" 
-                         alt="${product.name}" 
-                         class="product-image">
-                    <div class="product-info">
-                        <h3 class="product-name">${product.name}</h3>
-                        <p class="product-description">${product.description}</p>
-                        <div class="product-footer">
-                            <span class="product-price">UGX ${Number(product.price).toLocaleString()}</span>
-                            <button class="btn btn-primary" 
-                                    onclick="addToCart(event, ${product.id})"
-                                    ${!product.in_stock ? 'disabled' : ''}>
-                                ${product.in_stock ? 'Add to Cart' : 'Out of Stock'}
-                            </button>
-                        </div>
-                        <div class="stock-status ${!product.in_stock ? 'out-of-stock' : ''}">
-                            ${product.stock_quantity} in stock
-                        </div>
-                    </div>
+    /* ── Build & append product cards ───────────────────────── */
+    function appendCards(products) {
+        if (!products || products.length === 0) return;
+
+        const fragment = document.createDocumentFragment();
+
+        products.forEach((p, i) => {
+            const card = buildCard(p, i);
+            fragment.appendChild(card);
+        });
+
+        GRID.appendChild(fragment);
+    }
+
+    function buildCard(p, index) {
+        const inStock    = !!p.in_stock;
+        const imgSrc     = p.image_url || 'https://via.placeholder.com/280x200?text=No+Image';
+        const price      = Number(p.price).toLocaleString();
+        const categoryHtml = p.category
+            ? `<span class="category-badge">${escHtml(p.category)}</span>`
+            : '';
+        const oosOverlay = !inStock
+            ? `<div class="oos-overlay">Out of Stock</div>`
+            : '';
+
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        // Stagger animation-delay so cards ripple in left-to-right
+        card.style.animationDelay = `${(index % PER_PAGE) * 40}ms`;
+        card.addEventListener('click', () => viewProduct(p.id));
+
+        card.innerHTML = `
+            <div class="product-image-wrap" data-wrap>
+                ${categoryHtml}
+                ${oosOverlay}
+                <img
+                    data-src="${imgSrc}"
+                    alt="${escHtml(p.name)}"
+                    class="product-image"
+                    loading="lazy"
+                    decoding="async"
+                >
+            </div>
+            <div class="product-info">
+                <h3 class="product-name">${escHtml(p.name)}</h3>
+                <p class="product-description">${escHtml(p.description || '')}</p>
+                <div class="product-footer">
+                    <span class="product-price">UGX ${price}</span>
+                    <button
+                        class="btn btn-primary"
+                        ${!inStock ? 'disabled' : ''}
+                        data-product-id="${p.id}"
+                    >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2.5"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                            <line x1="3" y1="6" x2="21" y2="6"/>
+                            <path d="M16 10a4 4 0 01-8 0"/>
+                        </svg>
+                        ${inStock ? 'Add to Cart' : 'Out of Stock'}
+                    </button>
                 </div>
-            `).join('');
+                <div class="stock-info ${!inStock ? 'out' : ''}">
+                    ${p.stock_quantity} in stock
+                </div>
+            </div>
+        `;
+
+        // Wire up the cart button without polluting global scope
+        const btn = card.querySelector('[data-product-id]');
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            addToCart(p.id);
+        });
+
+        // Lazy-load the image: swap data-src → src and apply reveal class
+        const img  = card.querySelector('.product-image');
+        const wrap = card.querySelector('[data-wrap]');
+
+        // Use native lazy loading — browser decides when to fetch.
+        // We additionally watch with IntersectionObserver for the
+        // blur-up reveal (works even if browser ignores loading="lazy").
+        const imgObserver = new IntersectionObserver((entries, obs) => {
+            if (!entries[0].isIntersecting) return;
+            img.src = img.dataset.src;
+            img.addEventListener('load',  () => { img.classList.add('loaded'); wrap.classList.add('img-loaded'); });
+            img.addEventListener('error', () => { img.classList.add('loaded'); wrap.classList.add('img-loaded'); });
+            obs.unobserve(img);
+        }, { rootMargin: '300px' });
+
+        imgObserver.observe(img);
+
+        return card;
+    }
+
+
+    /* ── Empty state ────────────────────────────────────────── */
+    function showEmptyState() {
+        GRID.innerHTML = `
+            <div class="state-message">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <p>No products found</p>
+                <small>Try a different search term</small>
+            </div>
+        `;
+    }
+
+
+    /* ── Navigation ─────────────────────────────────────────── */
+    function viewProduct(productId) {
+        window.location.href = `/products/${productId}/`;
+    }
+
+
+    /* ── Add to cart ────────────────────────────────────────── */
+    async function addToCart(productId) {
+        if (!isAuthenticated) {
+            showToast('Please login to add items to cart', 'error');
+            setTimeout(() => { window.location.href = '/login_user/'; }, 1500);
+            return;
         }
 
-        function viewProduct(productId) {
-            window.location.href = `/products/${productId}/`;
-        }
+        try {
+            const response = await fetch('/api/cart/add/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                },
+                body: JSON.stringify({ product_id: productId, quantity: 1 }),
+            });
 
-        async function addToCart(event, productId) {
-            event.stopPropagation();
-            
-            if (!isAuthenticated) {
-                showToast('Please login to add items to cart', 'error');
-                setTimeout(() => {
-                    window.location.href = '/login_user/';
-                }, 1500);
-                return;
+            const data = await response.json();
+
+            if (response.ok) {
+                showToast('Added to cart!', 'success');
+                if (typeof loadCartCount === 'function') loadCartCount();
+            } else {
+                showToast(data.error || 'Failed to add to cart', 'error');
             }
-
-            try {
-                const response = await fetch('/api/cart/add/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': csrfToken
-                    },
-                    body: JSON.stringify({
-                        product_id: productId,
-                        quantity: 1
-                    })
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    showToast('Added to cart!', 'success');
-                    loadCartCount();
-                } else {
-                    showToast(data.error || 'Failed to add to cart', 'error');
-                }
-            } catch (error) {
-                console.error('Add to cart failed:', error);
-                showToast('Failed to add to cart', 'error');
-            }
+        } catch (err) {
+            console.error('Add to cart failed:', err);
+            showToast('Failed to add to cart', 'error');
         }
+    }
+
+
+    /* ── Utility: HTML escape ───────────────────────────────── */
+    function escHtml(str) {
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
     </script>
 </body>
 </html>

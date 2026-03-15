@@ -1,0 +1,242 @@
+[
+  {
+    "seller_id": 1,
+    "full_legal_name": "Moses Kato",
+    "national_id_number": "CM92038104KJ8F",
+    "date_of_birth": "1992-03-18",
+    "phone_number": "+256772614903",
+    "physical_address": "Kalerwe Market Road, Kawempe Division",
+    "district": "Kampala",
+    "country": "Uganda",
+    "business": {
+      "business_name": "Kato Fresh Produce",
+      "business_type": "Sole Proprietorship",
+      "business_registration_no": "800234518746",
+      "tin_number": "1014327856",
+      "business_address": "Kalerwe Market, Kampala"
+    },
+    "documents": {
+      "national_id_front": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
+      "national_id_back": "https://images.unsplash.com/photo-1527980965255-d3b416303d12",
+      "selfie_with_id": "https://images.unsplash.com/photo-1544005313-94ddf0286df2",
+      "business_cert": "https://images.unsplash.com/photo-1450101499163-c8848c66ca85",
+      "proof_of_address": "https://images.unsplash.com/photo-1560518883-ce09059eeffa"
+    }
+  },
+  {
+    "seller_id": 2,
+    "full_legal_name": "Sarah Namusoke",
+    "national_id_number": "CF87049271HG5D",
+    "date_of_birth": "1987-04-22",
+    "phone_number": "+256704913662",
+    "physical_address": "Nansana East Zone B",
+    "district": "Wakiso",
+    "country": "Uganda",
+    "business": {
+      "business_name": "Namusoke Fashion House",
+      "business_type": "Sole Proprietorship",
+      "business_registration_no": "800298514032",
+      "tin_number": "1027854136",
+      "business_address": "Nansana Trading Centre"
+    },
+    "documents": {
+      "national_id_front": "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
+      "national_id_back": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d",
+      "selfie_with_id": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1",
+      "business_cert": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40",
+      "proof_of_address": "https://images.unsplash.com/photo-1582407947304-fd86f028f716"
+    }
+  },
+  {
+    "seller_id": 3,
+    "full_legal_name": "David Ocen",
+    "national_id_number": "CM94018321KL2M",
+    "date_of_birth": "1994-01-07",
+    "phone_number": "+256783229511",
+    "physical_address": "Pece Division, Lagony Road",
+    "district": "Gulu",
+    "country": "Uganda",
+    "business": {
+      "business_name": "Ocen Mobile Electronics",
+      "business_type": "Retail Shop",
+      "business_registration_no": "800345197621",
+      "tin_number": "1042398572",
+      "business_address": "Gulu Main Market"
+    },
+    "documents": {
+      "national_id_front": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
+      "national_id_back": "https://images.unsplash.com/photo-1552058544-f2b08422138a",
+      "selfie_with_id": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde",
+      "business_cert": "https://images.unsplash.com/photo-1450101499163-c8848c66ca85",
+      "proof_of_address": "https://images.unsplash.com/photo-1560518883-ce09059eeffa"
+    }
+  },
+  {
+    "seller_id": 4,
+    "full_legal_name": "Grace Achieng",
+    "national_id_number": "CF91068120QW6R",
+    "date_of_birth": "1991-06-14",
+    "phone_number": "+256751462909",
+    "physical_address": "Nyamwamba Ward",
+    "district": "Kasese",
+    "country": "Uganda",
+    "business": {
+      "business_name": "Rwenzori Crafts & Souvenirs",
+      "business_type": "Small Enterprise",
+      "business_registration_no": "800492317650",
+      "tin_number": "1073146982",
+      "business_address": "Kasese Town Center"
+    },
+    "documents": {
+      "national_id_front": "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df",
+      "national_id_back": "https://images.unsplash.com/photo-1528892952291-009c663ce843",
+      "selfie_with_id": "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e",
+      "business_cert": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40",
+      "proof_of_address": "https://images.unsplash.com/photo-1582407947304-fd86f028f716"
+    }
+  },
+  {
+    "seller_id": 5,
+    "full_legal_name": "Ibrahim Ssali",
+    "national_id_number": "CM88097314XZ1H",
+    "date_of_birth": "1988-09-11",
+    "phone_number": "+256702584337",
+    "physical_address": "Mbarara Central Division",
+    "district": "Mbarara",
+    "country": "Uganda",
+    "business": {
+      "business_name": "Ssali Agro Supplies",
+      "business_type": "Agricultural Supplier",
+      "business_registration_no": "800315928746",
+      "tin_number": "1087243569",
+      "business_address": "Mbarara Central Market"
+    },
+    "documents": {
+      "national_id_front": "https://images.unsplash.com/photo-1502767089025-6572583495b0",
+      "national_id_back": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d",
+      "selfie_with_id": "https://images.unsplash.com/photo-1527980965255-d3b416303d12",
+      "business_cert": "https://images.unsplash.com/photo-1450101499163-c8848c66ca85",
+      "proof_of_address": "https://images.unsplash.com/photo-1560518883-ce09059eeffa"
+    }
+  },
+  {
+    "seller_id": 6,
+    "full_legal_name": "Joseph Ssempijja",
+    "national_id_number": "CM89047216LD7P",
+    "date_of_birth": "1989-04-12",
+    "phone_number": "+256781642319",
+    "physical_address": "Kisaasi Kulambiro Road",
+    "district": "Kampala",
+    "country": "Uganda",
+    "business": {
+      "business_name": "Ssempijja Hardware Supplies",
+      "business_type": "Retail Shop",
+      "business_registration_no": "800523179642",
+      "tin_number": "1098762315",
+      "business_address": "Kisaasi Trading Centre, Kampala"
+    },
+    "documents": {
+      "national_id_front": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7",
+      "national_id_back": "https://images.unsplash.com/photo-1520813792240-56fc4a3765a7",
+      "selfie_with_id": "https://images.unsplash.com/photo-1552058544-f2b08422138a",
+      "business_cert": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40",
+      "proof_of_address": "https://images.unsplash.com/photo-1560518883-ce09059eeffa"
+    }
+  },
+  {
+    "seller_id": 7,
+    "full_legal_name": "Betty Nalwanga",
+    "national_id_number": "CF93018475TR4B",
+    "date_of_birth": "1993-01-16",
+    "phone_number": "+256709875621",
+    "physical_address": "Mukono Central Division",
+    "district": "Mukono",
+    "country": "Uganda",
+    "business": {
+      "business_name": "Nalwanga Beauty Supplies",
+      "business_type": "Sole Proprietorship",
+      "business_registration_no": "800634125879",
+      "tin_number": "1105647893",
+      "business_address": "Mukono Taxi Park Area"
+    },
+    "documents": {
+      "national_id_front": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1",
+      "national_id_back": "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce",
+      "selfie_with_id": "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
+      "business_cert": "https://images.unsplash.com/photo-1450101499163-c8848c66ca85",
+      "proof_of_address": "https://images.unsplash.com/photo-1582407947304-fd86f028f716"
+    }
+  },
+  {
+    "seller_id": 8,
+    "full_legal_name": "Patrick Okello",
+    "national_id_number": "CM86078312WE9M",
+    "date_of_birth": "1986-07-30",
+    "phone_number": "+256776451239",
+    "physical_address": "Lira Central Division",
+    "district": "Lira",
+    "country": "Uganda",
+    "business": {
+      "business_name": "Okello Electronics",
+      "business_type": "Electronics Retailer",
+      "business_registration_no": "800712436598",
+      "tin_number": "1117856240",
+      "business_address": "Lira Main Street"
+    },
+    "documents": {
+      "national_id_front": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
+      "national_id_back": "https://images.unsplash.com/photo-1531123897727-8f129e1688ce",
+      "selfie_with_id": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde",
+      "business_cert": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40",
+      "proof_of_address": "https://images.unsplash.com/photo-1560518883-ce09059eeffa"
+    }
+  },
+  {
+    "seller_id": 9,
+    "full_legal_name": "Harriet Nansubuga",
+    "national_id_number": "CF92057468KP5T",
+    "date_of_birth": "1992-05-04",
+    "phone_number": "+256750924613",
+    "physical_address": "Masaka Road, Nyendo",
+    "district": "Masaka",
+    "country": "Uganda",
+    "business": {
+      "business_name": "Nansubuga Catering Services",
+      "business_type": "Catering Business",
+      "business_registration_no": "800845123670",
+      "tin_number": "1123459786",
+      "business_address": "Nyendo Market Street"
+    },
+    "documents": {
+      "national_id_front": "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df",
+      "national_id_back": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d",
+      "selfie_with_id": "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e",
+      "business_cert": "https://images.unsplash.com/photo-1450101499163-c8848c66ca85",
+      "proof_of_address": "https://images.unsplash.com/photo-1582407947304-fd86f028f716"
+    }
+  },
+  {
+    "seller_id": 10,
+    "full_legal_name": "Ronald Tumwesigye",
+    "national_id_number": "CM91028139YU2K",
+    "date_of_birth": "1991-02-21",
+    "phone_number": "+256702763118",
+    "physical_address": "Ntinda Ministers Village",
+    "district": "Kampala",
+    "country": "Uganda",
+    "business": {
+      "business_name": "Tumwesigye Auto Parts",
+      "business_type": "Auto Parts Dealer",
+      "business_registration_no": "800912345874",
+      "tin_number": "1136782451",
+      "business_address": "Ntinda Trading Centre"
+    },
+    "documents": {
+      "national_id_front": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
+      "national_id_back": "https://images.unsplash.com/photo-1520813792240-56fc4a3765a7",
+      "selfie_with_id": "https://images.unsplash.com/photo-1552058544-f2b08422138a",
+      "business_cert": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40",
+      "proof_of_address": "https://images.unsplash.com/photo-1560518883-ce09059eeffa"
+    }
+  }
+]
