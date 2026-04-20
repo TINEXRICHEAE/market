@@ -7,11 +7,7 @@
     {% load static %}
     {% load humanize %}
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         html, body {
             width: 100%;
@@ -20,23 +16,21 @@
             background: #0a0a0a;
         }
 
-        /* ============ FULLSCREEN IFRAME ============ */
+        /* ── Fullscreen iframe ─────────────────────────────────────────── */
         #paymentFrame {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
             border: none;
             z-index: 1;
             background: #0a0a0a;
+            transition: opacity 0.3s ease;
         }
 
-        /* ============ FLOATING CONTROLS (top-left) ============ */
+        /* ── Floating controls (top-left) ──────────────────────────────── */
         #floatingControls {
             position: fixed;
-            top: 16px;
-            left: 16px;
+            top: 16px; left: 16px;
             z-index: 100;
             display: flex;
             gap: 8px;
@@ -44,8 +38,7 @@
         }
 
         .float-btn {
-            width: 40px;
-            height: 40px;
+            width: 40px; height: 40px;
             border-radius: 50%;
             border: none;
             cursor: pointer;
@@ -55,25 +48,16 @@
             font-size: 18px;
             box-shadow: 0 2px 12px rgba(0,0,0,0.4);
             transition: transform 0.15s, box-shadow 0.15s;
-            text-decoration: none;
             background: rgba(255,255,255,0.92);
             color: #222;
             backdrop-filter: blur(6px);
         }
+        .float-btn:hover  { transform: scale(1.08); box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        .float-btn:active { transform: scale(0.96); }
 
-        .float-btn:hover {
-            transform: scale(1.08);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-        }
-
-        .float-btn:active {
-            transform: scale(0.96);
-        }
-
-        /* ============ LOADING OVERLAY ============ */
+        /* ── Loading overlay ───────────────────────────────────────────── */
         #loadingOverlay {
-            position: fixed;
-            inset: 0;
+            position: fixed; inset: 0;
             background: #0a0a0a;
             display: flex;
             flex-direction: column;
@@ -82,25 +66,17 @@
             z-index: 50;
             transition: opacity 0.4s ease;
         }
-
-        #loadingOverlay.fade-out {
-            opacity: 0;
-            pointer-events: none;
-        }
+        #loadingOverlay.fade-out { opacity: 0; pointer-events: none; }
 
         .loader-ring {
-            width: 52px;
-            height: 52px;
+            width: 52px; height: 52px;
             border: 3px solid rgba(255,255,255,0.1);
             border-top-color: #f0e040;
             border-radius: 50%;
             animation: spin 0.9s linear infinite;
             margin-bottom: 20px;
         }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .loader-text {
             color: rgba(255,255,255,0.5);
@@ -110,7 +86,6 @@
             letter-spacing: 2px;
             text-transform: uppercase;
         }
-
         .loader-amount {
             color: #f0e040;
             font-family: 'Segoe UI', sans-serif;
@@ -118,11 +93,41 @@
             font-weight: 800;
             margin-top: 8px;
         }
+        #loadingSubtext {
+            color: rgba(255,255,255,0.35);
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-top: 10px;
+            display: none;
+        }
 
-        /* ============ STATUS OVERLAY ============ */
-        #statusOverlay {
+        /* ── PesaPal transition banner (shown briefly during src swap) ── */
+        #pesapalBanner {
             position: fixed;
-            inset: 0;
+            top: 0; left: 0; right: 0;
+            z-index: 90;
+            background: #f0e040;
+            color: #0a0a0a;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-align: center;
+            padding: 8px 16px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        #pesapalBanner.show { display: flex; }
+
+        /* ── Status overlay ────────────────────────────────────────────── */
+        #statusOverlay {
+            position: fixed; inset: 0;
             background: #0a0a0a;
             display: none;
             flex-direction: column;
@@ -131,16 +136,9 @@
             z-index: 200;
             padding: 2rem;
         }
+        #statusOverlay.show { display: flex; }
 
-        #statusOverlay.show {
-            display: flex;
-        }
-
-        .status-icon {
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
-        }
-
+        .status-icon  { font-size: 4rem; margin-bottom: 1.5rem; }
         .status-title {
             font-family: 'Segoe UI', sans-serif;
             font-size: 1.6rem;
@@ -150,7 +148,6 @@
             margin-bottom: 0.75rem;
             text-align: center;
         }
-
         .status-subtitle {
             font-family: 'Segoe UI', sans-serif;
             font-size: 0.85rem;
@@ -159,7 +156,6 @@
             margin-bottom: 2.5rem;
             max-width: 320px;
         }
-
         .status-btn {
             padding: 14px 40px;
             font-family: 'Segoe UI', sans-serif;
@@ -169,30 +165,17 @@
             letter-spacing: 2px;
             border: none;
             cursor: pointer;
-            text-decoration: none;
             display: inline-block;
             transition: transform 0.15s;
         }
+        .status-btn:hover { transform: translateY(-2px); }
+        .status-btn.success { background: #f0e040; color: #0a0a0a; }
+        .status-btn.error   { background: #fff;     color: #0a0a0a; }
 
-        .status-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .status-btn.success {
-            background: #f0e040;
-            color: #0a0a0a;
-        }
-
-        .status-btn.error {
-            background: #fff;
-            color: #0a0a0a;
-        }
-
-        /* ============ SECURITY BADGE (bottom-right) ============ */
+        /* ── Security badge (bottom-right) ─────────────────────────────── */
         #securityBadge {
             position: fixed;
-            bottom: 16px;
-            right: 16px;
+            bottom: 16px; right: 16px;
             z-index: 100;
             background: rgba(0,0,0,0.65);
             backdrop-filter: blur(6px);
@@ -208,18 +191,14 @@
             color: rgba(255,255,255,0.55);
             letter-spacing: 0.5px;
             pointer-events: none;
+            transition: opacity 0.3s;
         }
+        #securityBadge .lock { color: #f0e040; font-size: 0.9rem; }
 
-        #securityBadge .lock {
-            color: #f0e040;
-            font-size: 0.9rem;
-        }
-
-        /* ============ ORDER INFO PILL (top-right, fades after load) ============ */
+        /* ── Order info pill (top-right) ───────────────────────────────── */
         #orderPill {
             position: fixed;
-            top: 16px;
-            right: 16px;
+            top: 16px; right: 16px;
             z-index: 100;
             background: rgba(0,0,0,0.65);
             backdrop-filter: blur(6px);
@@ -235,21 +214,13 @@
             color: rgba(255,255,255,0.7);
             transition: opacity 0.5s ease;
         }
-
-        #orderPill.fade-out {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        #orderPill .amount-pill {
-            color: #f0e040;
-            font-weight: 900;
-        }
+        #orderPill.fade-out  { opacity: 0; pointer-events: none; }
+        #orderPill .amount-pill { color: #f0e040; font-weight: 900; }
     </style>
 </head>
 <body>
 
-    <!-- Fullscreen Payment Iframe -->
+    <!-- Fullscreen payment iframe — src is swapped between Fair Cashier and PesaPal -->
     <iframe
         id="paymentFrame"
         src="{{ payment_url }}"
@@ -258,34 +229,40 @@
         title="Fair Cashier Payment Gateway">
     </iframe>
 
-    <!-- Floating Controls (back + refresh) -->
+    <!-- Floating controls -->
     <div id="floatingControls">
-        <button class="float-btn" id="backBtn" title="Go back" onclick="confirmBack()">←</button>
+        <button class="float-btn" id="backBtn"    title="Go back"           onclick="confirmBack()">←</button>
         <button class="float-btn" id="refreshBtn" title="Reload payment page" onclick="reloadFrame()">↺</button>
     </div>
 
-    <!-- Order Info Pill -->
+    <!-- Order info pill -->
     <div id="orderPill">
         <span>Order {{ order_number }}</span>
         <span class="amount-pill">UGX {{ amount|floatformat:0|intcomma }}</span>
     </div>
 
-    <!-- Loading Overlay -->
+    <!-- PesaPal transition banner -->
+    <div id="pesapalBanner">
+        🔒 Redirecting to PesaPal secure payment…
+    </div>
+
+    <!-- Loading overlay -->
     <div id="loadingOverlay">
         <div class="loader-ring"></div>
-        <div class="loader-text">Connecting securely</div>
+        <div class="loader-text" id="loadingText">Connecting securely</div>
         <div class="loader-amount">UGX {{ amount|floatformat:0|intcomma }}</div>
+        <div id="loadingSubtext">Opening PesaPal…</div>
     </div>
 
-    <!-- Status Overlay (shown after postMessage) -->
+    <!-- Status overlay -->
     <div id="statusOverlay">
-        <div class="status-icon" id="statusIcon">✅</div>
-        <div class="status-title" id="statusTitle" style="color:#f0e040;">Payment Successful</div>
+        <div class="status-icon"    id="statusIcon">✅</div>
+        <div class="status-title"   id="statusTitle"    style="color:#f0e040;">Payment Successful</div>
         <div class="status-subtitle" id="statusSubtitle">Your payment has been processed. Redirecting…</div>
-        <a href="#" class="status-btn success" id="statusBtn">View Order</a>
+        <button class="status-btn success" id="statusBtn">View Order</button>
     </div>
 
-    <!-- Security Badge -->
+    <!-- Security badge -->
     <div id="securityBadge">
         <span class="lock">🔒</span>
         Secured by Fair Cashier
@@ -293,90 +270,117 @@
 
     <script>
         const FAIR_CASHIER_DOMAIN = '{{ fair_cashier_domain }}';
-        const REQUEST_ID = '{{ request_id }}';
-        const ORDER_NUMBER = '{{ order_number }}';
+        const REQUEST_ID          = '{{ request_id }}';
+        const ORDER_NUMBER        = '{{ order_number }}';
+        const ORIGINAL_PAYMENT_URL = '{{ payment_url }}';  // Fair Cashier payment page
+
+        const frame          = document.getElementById('paymentFrame');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const loadingText    = document.getElementById('loadingText');
+        const loadingSubtext = document.getElementById('loadingSubtext');
+        const orderPill      = document.getElementById('orderPill');
+        const pesapalBanner  = document.getElementById('pesapalBanner');
+        const securityBadge  = document.getElementById('securityBadge');
 
         let paymentCompleted = false;
+        // Track what the frame is currently showing:
+        //   'faircashier' — our payment_page_pin
+        //   'pesapal'     — PesaPal hosted payment page
+        //   'callback'    — our pesapal_callback page
+        let frameMode = 'faircashier';
 
-        // ============ IFRAME LOAD ============
-        const frame = document.getElementById('paymentFrame');
-        const loadingOverlay = document.getElementById('loadingOverlay');
-        const orderPill = document.getElementById('orderPill');
-
+        // ── Iframe load ────────────────────────────────────────────────────
         frame.addEventListener('load', function () {
             setTimeout(() => {
                 loadingOverlay.classList.add('fade-out');
-                // Fade out order pill after 4s
+                loadingSubtext.style.display = 'none';
+                // Fade out order pill after 4 s
                 setTimeout(() => orderPill.classList.add('fade-out'), 4000);
             }, 600);
         });
 
         frame.addEventListener('error', function () {
-            showStatus('error', '⚠️', 'Failed to Load', 'Could not reach the payment gateway. Please try again.', 'Go Back', () => {
-                window.location.href = '/cart/';
-            });
+            showStatus('error', '⚠️', 'Failed to Load',
+                'Could not reach the payment gateway. Please try again.',
+                'Go Back', () => { window.location.href = '/cart/'; });
         });
 
-        // ============ POSTMESSAGE HANDLER ============
+        // ── postMessage handler ────────────────────────────────────────────
         window.addEventListener('message', function (event) {
-            const isDev = event.origin.includes('localhost') || event.origin.includes('127.0.0.1');
+            const isDev     = event.origin.includes('localhost') || event.origin.includes('127.0.0.1');
             const isTrusted = event.origin === FAIR_CASHIER_DOMAIN;
-            if (!isDev && !isTrusted) return;
+            // Also allow messages from PesaPal's own domain when in pesapal mode
+            const isPesapal = event.origin.includes('pesapal.com');
+            if (!isDev && !isTrusted && !isPesapal) return;
 
             if (paymentCompleted) return;
 
             const data = event.data;
+            if (!data || !data.type) return;
+
+            // ── pesapal_redirect: Fair Cashier payment page needs a top-up.
+            //    Swap the iframe src to the PesaPal URL.
+            if (data.type === 'pesapal_redirect' && data.url) {
+                _swapToPesapal(data.url);
+                return;
+            }
+
+            // ── pesapal_complete: PesaPal callback page signals success.
+            //    Swap back to the Fair Cashier payment page so the buyer can
+            //    complete the escrow/pay step with their now-funded wallet.
+            if (data.type === 'pesapal_complete') {
+                _swapToFairCashier();
+                return;
+            }
+
+            // ── pesapal_failed: PesaPal callback page signals failure.
+            //    Swap back to Fair Cashier so the buyer can try again.
+            if (data.type === 'pesapal_failed') {
+                _swapToFairCashier({ topupFailed: true, status: data.status });
+                return;
+            }
+
+            // ── Standard payment outcomes ─────────────────────────────────
 
             if (data.type === 'payment_success') {
                 paymentCompleted = true;
-                showStatus(
-                    'success', '✅', 'Payment Successful!',
+                showStatus('success', '✅', 'Payment Successful!',
                     'Your order has been confirmed. Redirecting…',
                     'View Order',
-                    () => { window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=success`; }
-                );
+                    () => { window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=success`; });
                 setTimeout(() => {
                     window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=success`;
                 }, 2500);
             }
 
             else if (data.type === 'payment_escrowed') {
-                // Buyer paid → funds held in seller's reserved balance until delivery confirmed
                 paymentCompleted = true;
-                showStatus(
-                    'success', '🔒', 'Payment Secured!',
+                showStatus('success', '🔒', 'Payment Secured!',
                     'Funds are held safely in escrow. The seller will be paid once you confirm delivery.',
                     'View Order',
-                    () => { window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=escrowed`; }
-                );
+                    () => { window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=escrowed`; });
                 setTimeout(() => {
                     window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=escrowed`;
                 }, 3000);
             }
 
             else if (data.type === 'payment_deposited') {
-                // Buyer reserved funds in own wallet (old flow)
                 paymentCompleted = true;
-                showStatus(
-                    'success', '💰', 'Funds Reserved!',
+                showStatus('success', '💰', 'Funds Reserved!',
                     'Money has been secured in your wallet. The seller can see your funds are ready.',
                     'View Order',
-                    () => { window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=deposited`; }
-                );
+                    () => { window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=deposited`; });
                 setTimeout(() => {
                     window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=deposited`;
                 }, 3000);
             }
 
             else if (data.type === 'payment_mixed') {
-                // Mix of escrowed + deposited items
                 paymentCompleted = true;
-                showStatus(
-                    'success', '✅', 'Payment Processed!',
+                showStatus('success', '✅', 'Payment Processed!',
                     'Your payment has been secured. Funds are held until you confirm delivery.',
                     'View Order',
-                    () => { window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=escrowed`; }
-                );
+                    () => { window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=escrowed`; });
                 setTimeout(() => {
                     window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=escrowed`;
                 }, 2500);
@@ -389,18 +393,89 @@
 
             else if (data.type === 'payment_failed') {
                 paymentCompleted = true;
-                showStatus(
-                    'error', '❌', 'Payment Failed',
+                showStatus('error', '❌', 'Payment Failed',
                     data.message || 'An error occurred during payment. Please try again.',
                     'Try Again',
-                    () => { window.location.href = '/cart/'; }
-                );
+                    () => { window.location.href = '/cart/'; });
             }
         });
 
-        // ============ FLOATING BUTTON ACTIONS ============
+        // ── Swap iframe src to PesaPal ─────────────────────────────────────
+        function _swapToPesapal(pesapalUrl) {
+            frameMode = 'pesapal';
+
+            // Show transition banner briefly
+            pesapalBanner.classList.add('show');
+
+            // Show loading overlay with PesaPal-specific text
+            loadingText.textContent        = 'Opening PesaPal';
+            loadingSubtext.style.display   = 'block';
+            loadingOverlay.classList.remove('fade-out');
+            frame.style.opacity            = '0';
+
+            // Update security badge
+            securityBadge.innerHTML = '<span class="lock">🔒</span> Secured by PesaPal';
+
+            // Swap src
+            frame.src = pesapalUrl;
+
+            // Once loaded, hide loading overlay and banner
+            frame.onload = function () {
+                setTimeout(() => {
+                    loadingOverlay.classList.add('fade-out');
+                    pesapalBanner.classList.remove('show');
+                    frame.style.opacity = '1';
+                    loadingSubtext.style.display = 'none';
+                    frame.onload = null;   // clear so next swap gets a fresh handler
+                }, 500);
+            };
+        }
+
+        // ── Swap iframe src back to Fair Cashier ───────────────────────────
+        function _swapToFairCashier(opts) {
+            frameMode = 'faircashier';
+
+            const msg     = opts?.topupFailed
+                ? 'Returning to payment page…'
+                : 'Wallet funded! Returning to payment page…';
+            const subtext = opts?.topupFailed
+                ? 'Top-up was not completed'
+                : 'Completing your order…';
+
+            loadingText.textContent      = msg;
+            loadingSubtext.textContent   = subtext;
+            loadingSubtext.style.display = 'block';
+            loadingOverlay.classList.remove('fade-out');
+            frame.style.opacity = '0';
+            pesapalBanner.classList.remove('show');
+
+            // Restore security badge
+            securityBadge.innerHTML = '<span class="lock">🔒</span> Secured by Fair Cashier';
+
+            // Swap back to original payment page
+            // The payment_page_pin will reload with the current (now-funded) wallet balance.
+            frame.src = ORIGINAL_PAYMENT_URL;
+
+            frame.onload = function () {
+                setTimeout(() => {
+                    loadingOverlay.classList.add('fade-out');
+                    loadingSubtext.style.display = 'none';
+                    frame.style.opacity = '1';
+                    frame.onload = null;
+                }, 500);
+            };
+        }
+
+        // ── Floating button actions ────────────────────────────────────────
         function confirmBack() {
             if (paymentCompleted) { window.location.href = '/orders/'; return; }
+            // If on PesaPal page, swap back first instead of confirming leave
+            if (frameMode === 'pesapal') {
+                if (confirm('Cancel top-up and return to the payment page?')) {
+                    _swapToFairCashier({ topupFailed: true });
+                }
+                return;
+            }
             if (confirm('Payment is in progress. Go back anyway? Your order will be cancelled.')) {
                 window.location.href = `/payment/return/?request_id=${REQUEST_ID}&status=cancelled`;
             }
@@ -408,37 +483,35 @@
 
         function reloadFrame() {
             if (paymentCompleted) return;
+            loadingText.textContent = 'Connecting securely';
             loadingOverlay.classList.remove('fade-out');
             frame.src = frame.src;
         }
 
-        // ============ STATUS OVERLAY ============
+        // ── Status overlay ─────────────────────────────────────────────────
         function showStatus(type, icon, title, subtitle, btnLabel, btnAction) {
-            document.getElementById('statusIcon').textContent = icon;
+            document.getElementById('statusIcon').textContent     = icon;
             const titleEl = document.getElementById('statusTitle');
-            titleEl.textContent = title;
-            titleEl.style.color = type === 'success' ? '#f0e040' : '#ff5555';
+            titleEl.textContent  = title;
+            titleEl.style.color  = type === 'success' ? '#f0e040' : '#ff5555';
             document.getElementById('statusSubtitle').textContent = subtitle;
-
             const btn = document.getElementById('statusBtn');
             btn.textContent = btnLabel;
-            btn.className = `status-btn ${type}`;
-            btn.onclick = (e) => { e.preventDefault(); btnAction(); };
-
-            // Hide iframe, show overlay
+            btn.className   = `status-btn ${type}`;
+            btn.onclick     = btnAction;
             frame.style.opacity = '0';
             loadingOverlay.classList.add('fade-out');
             document.getElementById('statusOverlay').classList.add('show');
         }
 
-        // ============ KEEP SESSION ALIVE ============
+        // ── Keep session alive ─────────────────────────────────────────────
         setInterval(() => {
             if (!paymentCompleted) {
                 fetch('/api/csrf/', { credentials: 'include' }).catch(() => {});
             }
         }, 60000);
 
-        // ============ NAVIGATION GUARD ============
+        // ── Navigation guard ───────────────────────────────────────────────
         window.addEventListener('beforeunload', function (e) {
             if (!paymentCompleted) {
                 e.preventDefault();

@@ -1,3 +1,6 @@
+
+const homeUrl = "{% url 'home' %}";
+
 // Add this function at the top level
 function getCookie(name) {
   let cookieValue = null;
@@ -67,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
           } else {
             showMessage(data.message, 'success');
             setTimeout(() => {
-              window.history.back(); // Go back to previous page
+              window.location.href = '/'; // Go back to home page
             }, 1500);
           }
         })

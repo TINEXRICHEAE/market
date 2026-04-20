@@ -42,6 +42,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8001",
     "http://localhost:8001",   # Fair Cashier
     "http://localhost:1337",   # Strapi (for ZKP verification)
+    "https://edt-unfortunately-personality-singles.trycloudflare.com",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -51,6 +52,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1:8001",
     "http://localhost:8001",
+    "https://edt-unfortunately-personality-singles.trycloudflare.com",
 ]
 
 # CORS settings for cross-app communication
@@ -65,7 +67,8 @@ ALLOWED_HOSTS = [
     "http://127.0.0.1:8001",  # Fair Cashier
     "http://localhost:8001",   # Fair Cashier
     "http://10.103.49.49:8000",  # E-commerce app
-    "http://0.0.0.0:8000/"
+    "http://0.0.0.0:8000/",
+    "edt-unfortunately-personality-singles.trycloudflare.com"
 ]
 
 # Ensure CSRF cookie is accessible for cross-app communication
